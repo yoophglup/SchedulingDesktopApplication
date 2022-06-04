@@ -16,7 +16,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("../Scenes/loginscreen.fxml"));
         primaryStage.setTitle("SchedulingDesktopApplication");
-        primaryStage.setScene(new Scene(root, 320, 275));
+        primaryStage.setScene(new Scene(root, 340, 200));
         primaryStage.show();
     }
 

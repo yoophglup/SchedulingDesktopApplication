@@ -15,34 +15,34 @@
 <GridPane alignment="center" hgap="10" prefHeight="200.0" prefWidth="336.0" vgap="10" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Controller">
    <columnConstraints>
       <ColumnConstraints />
-      <ColumnConstraints />
+      <ColumnConstraints minWidth="340.0" />
    </columnConstraints>
    <rowConstraints>
-      <RowConstraints />
+      <RowConstraints minHeight="200.0" />
    </rowConstraints>
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="520.0" GridPane.columnIndex="1">
          <children>
-            <PasswordField layoutX="84.0" layoutY="88.0" prefHeight="25.0" prefWidth="142.0">
+            <TextField fx:id="uservalue" layoutX="120.0" layoutY="59.0" prefHeight="25.0" prefWidth="97.0">
+               <tooltip>
+                  <Tooltip text="Enter your username" />
+               </tooltip></TextField>
+            <PasswordField fx:id="passvalue" layoutX="120.0" layoutY="88.0" prefHeight="25.0" prefWidth="97.0">
                <tooltip>
                   <Tooltip text="Enter your password" />
                </tooltip>
             </PasswordField>
-            <TextField layoutX="84.0" layoutY="59.0" prefHeight="25.0" prefWidth="142.0">
-               <tooltip>
-                  <Tooltip text="Enter your username" />
-               </tooltip></TextField>
             <Button fx:id="login" layoutX="84.0" layoutY="152.0" mnemonicParsing="false" onAction="#validate" text="Login" />
-            <Button layoutX="191.0" layoutY="152.0" mnemonicParsing="false" onAction="#quit_clicked" text="Exit" />
-            <Text layoutX="89.0" layoutY="17.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Login">
+            <Button fx:id="exitbut" layoutX="191.0" layoutY="152.0" mnemonicParsing="false" onAction="#quit_clicked" text="Exit" />
+            <Text fx:id="titletext" layoutX="1.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Login" textAlignment="CENTER" wrappingWidth="336.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Text layoutX="25.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
-            <Text layoutX="25.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
+            <Text fx:id="unametext" layoutX="25.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
+            <Text fx:id="pwordtext" layoutX="25.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
             <Label fx:id="outputbox" contentDisplay="TOP" layoutX="237.0" layoutY="40.0" prefHeight="89.0" prefWidth="82.0" textOverrun="CLIP" AnchorPane.topAnchor="40.0" />
-            <Label fx:id="locationdata" contentDisplay="TOP" layoutX="-2.0" layoutY="129.0" prefHeight="71.0" prefWidth="82.0" />
+            <Label fx:id="locationdata" contentDisplay="TOP" layoutX="1.0" layoutY="153.0" prefHeight="25.0" prefWidth="75.0" />
          </children>
       </AnchorPane>
    </children>
