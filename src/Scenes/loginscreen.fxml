@@ -4,7 +4,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -23,15 +22,8 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="520.0" GridPane.columnIndex="1">
          <children>
-            <TextField fx:id="uservalue" layoutX="120.0" layoutY="59.0" prefHeight="25.0" prefWidth="97.0">
-               <tooltip>
-                  <Tooltip text="Enter your username" />
-               </tooltip></TextField>
-            <PasswordField fx:id="passvalue" layoutX="120.0" layoutY="88.0" prefHeight="25.0" prefWidth="97.0">
-               <tooltip>
-                  <Tooltip text="Enter your password" />
-               </tooltip>
-            </PasswordField>
+            <TextField fx:id="uservalue" layoutX="120.0" layoutY="59.0" prefHeight="25.0" prefWidth="97.0" text="test" />
+            <PasswordField fx:id="passvalue" layoutX="120.0" layoutY="88.0" prefHeight="25.0" prefWidth="97.0" text="test" />
             <Button fx:id="login" layoutX="84.0" layoutY="152.0" mnemonicParsing="false" onAction="#validate" text="Login" />
             <Button fx:id="exitbut" layoutX="191.0" layoutY="152.0" mnemonicParsing="false" onAction="#quit_clicked" text="Exit" />
             <Text fx:id="titletext" layoutX="1.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please Login" textAlignment="CENTER" wrappingWidth="336.0">
@@ -41,7 +33,7 @@
             </Text>
             <Text fx:id="unametext" layoutX="25.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Username:" />
             <Text fx:id="pwordtext" layoutX="25.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
-            <Label fx:id="outputbox" contentDisplay="TOP" layoutX="237.0" layoutY="40.0" prefHeight="89.0" prefWidth="82.0" textOverrun="CLIP" AnchorPane.topAnchor="40.0" />
+            <Label fx:id="outputbox" contentDisplay="TOP" layoutX="237.0" layoutY="40.0" prefHeight="89.0" prefWidth="97.0" textAlignment="CENTER" textOverrun="CLIP" AnchorPane.topAnchor="40.0" />
             <Label fx:id="locationdata" contentDisplay="TOP" layoutX="1.0" layoutY="153.0" prefHeight="25.0" prefWidth="75.0" />
          </children>
       </AnchorPane>
