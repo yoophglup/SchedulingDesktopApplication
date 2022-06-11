@@ -72,10 +72,10 @@ public class Controller {
                     if (Locale.getDefault()!=Locale.US) {
                         outputbox.setText("Bienvenue\n"+uservalue.getText());
                     }
-                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+                    Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root, 640, 350);
-                    stage.setTitle("Edit Customer Records");
+                    Scene scene = new Scene(root, 340, 200);
+                    stage.setTitle("Main Menu");
                     stage.setScene(scene);
                     stage.show();
                     }
