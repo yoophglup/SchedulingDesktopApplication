@@ -9,26 +9,27 @@
 
 <AnchorPane layoutX="1.0" layoutY="1.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerEditController">
    <children>
-      <AnchorPane layoutX="-7.0" prefHeight="339.0" prefWidth="726.0">
+      <AnchorPane layoutX="-3.0" prefHeight="339.0" prefWidth="726.0">
          <children>
-            <Button layoutX="241.0" layoutY="287.0" mnemonicParsing="false" text="Edit Customer" />
-            <TableView fx:id="customertable" layoutX="66.0" layoutY="70.0" prefHeight="200.0" prefWidth="508.0">
+            <TableView fx:id="customertable" layoutX="66.0" layoutY="70.0" prefHeight="205.0" prefWidth="634.0">
               <columns>
                 <TableColumn fx:id="Customer_ID" prefWidth="90.0" text="Customer_ID" />
                 <TableColumn fx:id="Customer_Name" minWidth="0.0" prefWidth="111.0" text="Customer_Name" />
                   <TableColumn fx:id="Address" minWidth="0.0" prefWidth="108.0" text="Address" />
                   <TableColumn fx:id="Postal_Code" prefWidth="106.0" text="Postal_Code" />
                   <TableColumn fx:id="Phone" minWidth="0.0" prefWidth="75.0" text="Phone" />
+                  <TableColumn fx:id="Division" minWidth="0.0" prefWidth="75.0" text="Division" />
               </columns>
             </TableView>
-            <Text fx:id="titletext" layoutX="152.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Customer " textAlignment="CENTER" wrappingWidth="336.0">
+            <Text fx:id="titletext" layoutX="152.0" layoutY="40.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Customer Records" textAlignment="CENTER" wrappingWidth="336.0">
                <font>
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button layoutX="377.0" layoutY="287.0" mnemonicParsing="false" text="Delete Customer" />
+            <Button layoutX="238.0" layoutY="288.0" mnemonicParsing="false" text="Delete Customer" />
             <Button fx:id="AddNewButton" layoutX="66.0" layoutY="287.0" mnemonicParsing="false" onAction="#switchSceneAddNewCustomer" text="Add New Customer" />
             <Button layoutX="522.0" layoutY="287.0" mnemonicParsing="false" onAction="#LoadMainMenu" text="Cancel" />
+            <Button layoutX="387.0" layoutY="288.0" mnemonicParsing="false" text="Save Changes" />
          </children>
       </AnchorPane>
    </children>

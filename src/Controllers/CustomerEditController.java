@@ -8,10 +8,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -29,6 +31,8 @@ public class CustomerEditController {
     public TableColumn Address;
     public TableColumn Postal_Code;
     public TableColumn Phone;
+    public TableColumn Division;
+    public Button AddNewButton;
 
     private ObservableList<ObservableList> data;
 
@@ -36,13 +40,25 @@ public class CustomerEditController {
     public void initialize(){
         try {
             TableView tableView = customertable;
+            tableView.setEditable(true);
+
             Customer_ID.setCellValueFactory(new PropertyValueFactory<Customer, Integer>("Customer_ID"));
             Customer_Name.setCellValueFactory(new PropertyValueFactory<Customer, String>("Customer_Name"));
+            Customer_Name.setCellFactory(TextFieldTableCell.forTableColumn());
             Address.setCellValueFactory(new PropertyValueFactory<Customer, String>("Address"));
+            Address.setCellFactory(TextFieldTableCell.forTableColumn());
+
             Postal_Code.setCellValueFactory(new PropertyValueFactory<Customer, String>("Postal_Code"));
+            Postal_Code.setCellFactory(TextFieldTableCell.forTableColumn());
+
             Phone.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
+            Phone.setCellFactory(TextFieldTableCell.forTableColumn());
+
+            Division.setCellValueFactory(new PropertyValueFactory<Customer, String>("Division"));
+            Division.setCellFactory(TextFieldTableCell.forTableColumn());
+
             PreparedStatement ps = JDBC.getConnection().prepareStatement("select c.Customer_ID,c.Customer_Name,c.Address,c.Postal_Code,c.Phone,c.Division_ID,f.Division,f.Country_ID,t.Country from customers c join first_level_divisions f on c.Division_ID=f.Division_ID join countries t on f.Country_ID=t.Country_ID;\n");
-            ObservableList<String> allcust = FXCollections.observableArrayList();
+            ObservableList<Customer> allcust = FXCollections.observableArrayList();
             ResultSet rs = ps.executeQuery();
 
             Integer ct=0;
@@ -55,11 +71,13 @@ public class CustomerEditController {
                 String thiscountry=rs.getString("Country");
                 String thisPostal_Code=rs.getString("Postal_Code");
                 String thisphone=rs.getString("Phone");
-                String thisdivisionlabel=rs.getString("Division");
-                Integer thisdivision=rs.getInt("Division_ID");
-                System.out.println(thisid+" "+thiscust+" "+thisaddress+thisdivisionlabel+thiscountry+" "+thisPostal_Code+" "+thisphone+" "+thisdivision);
-                tableView.getItems().add(new Customer(thisid,thiscust,thisaddress+", "+thisdivisionlabel,thisPostal_Code,thisphone));
-            }
+                String thisdivision=rs.getString("Division");
+                Integer thisdivisionid=rs.getInt("Division_ID");
+                System.out.println(thisid+" "+thiscust+" "+thisaddress+thisdivision+thiscountry+" "+thisPostal_Code+" "+thisphone+" "+thisdivision);
+                Customer thiscustomer=new Customer(thisid,thiscust,thisaddress,thisPostal_Code,thisphone,thisdivision);
+                allcust.add(thiscustomer);
+                //tableView.getItems().add(new Customer(thisid,thiscust,thisaddress,thisPostal_Code,thisphone,thisdivision));
+            }tableView.setItems(allcust);
 
         } catch (SQLException e) {
             System.out.println("Error on Building Data");
