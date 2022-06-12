@@ -38,4 +38,21 @@ public class MainMenuController {
     }
 
 
+    public void ApointmentEditor(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/ApointmentEditor.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 680, 400);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    public void LoadScheduler(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Scheduler.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 680, 400);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.show();
+    }
 }
