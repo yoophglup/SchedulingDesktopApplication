@@ -107,4 +107,59 @@ public class CustomerEditController {
         stage.show();
 
     }
+
+    public void deleteCustomer(ActionEvent actionEvent) throws SQLException {
+        ObservableList<Customer> thislist = customertable.getSelectionModel().getSelectedItems();
+        for (Customer ct : thislist) {
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Appointment_ID from appointments join customers on appointments.Customer_ID="+ct.getCustomer_ID());
+            ResultSet resultSet = preparedStatement.executeQuery();
+            boolean existingapointments=false;
+            while (resultSet.next()){
+                Integer thisapointmentid=resultSet.getInt("Appointment_ID");
+                existingapointments=true;}
+            if (existingapointments ==true) {
+                System.out.println("Unable to Delete due to existing appointments");
+            }else {
+                System.out.println("Deleting...");
+                try {
+                    PreparedStatement del = JDBC.getConnection().prepareStatement("delete from customers where Customer_ID="+ct.getCustomer_ID());
+                    del.executeUpdate();
+                    System.out.println("Deleted");
+                }catch(Exception e){
+                    System.out.println(e);
+                    System.out.println("Unable to Delete");
+
+                }
+                }
+
+            }
+        try {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 750, 400);
+            stage.setTitle("Edit Customer Records");
+            stage.setScene(scene);
+            stage.show();
+        }catch(Exception e){
+
+        }
+        }
+
+
+
+    public void saveAlteredData(ActionEvent actionEvent) {
+
+
+    }
+
+    public void editApointments(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AppointmentEditor.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 750, 400);
+        stage.setTitle("Edit Appointments");
+        stage.setScene(scene);
+        stage.show();
+
+
+    }
 }

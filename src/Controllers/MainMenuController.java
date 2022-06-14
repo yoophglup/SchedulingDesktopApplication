@@ -15,7 +15,7 @@ public class MainMenuController {
     public void LoadCustomerEditor(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 680, 400);
+        Scene scene = new Scene(root, 750, 400);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
         stage.show();
@@ -39,9 +39,9 @@ public class MainMenuController {
 
 
     public void ApointmentEditor(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/ApointmentEditor.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AppointmentEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 680, 400);
+        Scene scene = new Scene(root, 750, 400);
         stage.setTitle("Main Menu");
         stage.setScene(scene);
         stage.show();
@@ -50,7 +50,7 @@ public class MainMenuController {
     public void LoadScheduler(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Scheduler.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 680, 400);
+        Scene scene = new Scene(root, 750, 400);
         stage.setTitle("Main Menu");
         stage.setScene(scene);
         stage.show();

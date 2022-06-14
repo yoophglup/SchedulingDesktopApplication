@@ -9,7 +9,7 @@
 
 <AnchorPane layoutX="1.0" layoutY="1.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerEditController">
    <children>
-      <AnchorPane layoutX="-3.0" prefHeight="339.0" prefWidth="726.0">
+      <AnchorPane layoutX="-1.0" prefHeight="339.0" prefWidth="726.0">
          <children>
             <TableView fx:id="customertable" layoutX="66.0" layoutY="70.0" prefHeight="205.0" prefWidth="634.0">
               <columns>
@@ -26,10 +26,11 @@
                   <Font size="24.0" />
                </font>
             </Text>
-            <Button layoutX="238.0" layoutY="288.0" mnemonicParsing="false" text="Delete Customer" />
+            <Button layoutX="221.0" layoutY="288.0" mnemonicParsing="false" onAction="#deleteCustomer" text="Delete Customer" />
             <Button fx:id="AddNewButton" layoutX="66.0" layoutY="287.0" mnemonicParsing="false" onAction="#switchSceneAddNewCustomer" text="Add New Customer" />
-            <Button layoutX="522.0" layoutY="287.0" mnemonicParsing="false" onAction="#LoadMainMenu" text="Cancel" />
-            <Button layoutX="387.0" layoutY="288.0" mnemonicParsing="false" text="Save Changes" />
+            <Button layoutX="642.0" layoutY="288.0" mnemonicParsing="false" onAction="#LoadMainMenu" text="Cancel" />
+            <Button layoutX="531.0" layoutY="288.0" mnemonicParsing="false" onAction="#saveAlteredData" text="Save Changes" />
+            <Button layoutX="363.0" layoutY="288.0" mnemonicParsing="false" onAction="#editApointments" prefHeight="25.0" prefWidth="120.0" text="Edit Apointments" />
          </children>
       </AnchorPane>
    </children>
