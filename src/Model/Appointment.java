@@ -9,14 +9,14 @@ public class Appointment {
     private String Start;
     private String End;
     private String Create_Date;
-    private String Create_By;
+    private String Created_By;
     private String Last_Update;
-    private String Last_Updated_by;
+    private String Last_Updated_By;
     private Integer Customer_ID;
     private Integer User_ID;
     private Integer Contact_ID;
 
-    public Appointment(Integer appointment_ID, String title, String description, String location, String type, String start, String end, String Create_Date, String Create_By, String last_Update, String last_Updated_by, Integer customer_ID, Integer user_ID, Integer contact_ID) {
+    public Appointment(Integer appointment_ID, String title, String description, String location, String type, String start, String end, String create_Date, String create_By, String last_Update, String last_Updated_by, Integer customer_ID, Integer user_ID, Integer contact_ID) {
         this.appointment_ID = appointment_ID;
         Title = title;
         Description = description;
@@ -24,10 +24,10 @@ public class Appointment {
         Type = type;
         Start = start;
         End = end;
-        Create_Date = create_date;
-        Create_By = create_y;
+        Create_Date=create_Date;
+        Created_By=create_By;
         Last_Update = last_Update;
-        Last_Updated_by = last_Updated_by;
+        Last_Updated_By = last_Updated_by;
         Customer_ID = customer_ID;
         User_ID = user_ID;
         Contact_ID = contact_ID;
@@ -37,12 +37,26 @@ public class Appointment {
         return Create_Date;
     }
 
-    public String getCreate_By() {
-        return Create_By;
-    }
+
 
     public Integer getAppointment_ID() {
         return appointment_ID;
+    }
+
+    public String getLast_Updated_By() {
+        return Last_Updated_By;
+    }
+
+    public void setCreate_Date(String create_Date) {
+        Create_Date = create_Date;
+    }
+
+    public void setLast_Update(String last_Update) {
+        Last_Update = last_Update;
+    }
+
+    public void setLast_Updated_By(String last_Updated_By) {
+        Last_Updated_By = last_Updated_By;
     }
 
     public String getTitle() {
@@ -73,16 +87,14 @@ public class Appointment {
         return Create_Date;
     }
 
-    public String getCreate_by() {
-        return Create_By;
-    }
+
 
     public String getLast_Update() {
         return Last_Update;
     }
 
     public String getLast_Updated_by() {
-        return Last_Updated_by;
+        return Last_Updated_By;
     }
 
     public Integer getCustomer_ID() {
@@ -139,5 +151,13 @@ public class Appointment {
 
     public void setContact_ID(Integer contact_ID) {
         Contact_ID = contact_ID;
+    }
+
+    public String getCreated_By() {
+        return Created_By;
+    }
+
+    public void setCreated_By(String created_By) {
+        Created_By = created_By;
     }
 }

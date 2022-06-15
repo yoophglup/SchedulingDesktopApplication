@@ -195,7 +195,7 @@ public class CustomerEditController {
         Create_Date1.setCellValueFactory(new PropertyValueFactory<Appointment, String>("Create_Date"));
         Create_By1.setCellValueFactory(new PropertyValueFactory<Appointment, String>("Created_By"));
         Last_Update1.setCellValueFactory(new PropertyValueFactory<Appointment, String>("Last_Update"));
-        Last_Updated_By1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Last_Update_By"));;
+        Last_Updated_By1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Last_Updated_By"));;
         Customer_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Customer_ID"));
         User_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("User_ID"));
         ContactID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Contact_ID"));
