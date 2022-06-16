@@ -20,12 +20,12 @@
       <Text layoutX="90.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Postal Code" />
       <Text layoutX="118.0" layoutY="254.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone" />
       <Text layoutX="108.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Division" />
-      <TextField layoutX="160.0" layoutY="122.0" />
-      <TextField layoutX="160.0" layoutY="158.0" />
-      <TextField layoutX="160.0" layoutY="196.0" />
-      <TextField layoutX="160.0" layoutY="237.0" />
-      <ComboBox layoutX="160.0" layoutY="279.0" prefWidth="150.0" />
-      <Button layoutX="160.0" layoutY="341.0" mnemonicParsing="false" text="Save" />
+      <TextField fx:id="Customer_Name_input" layoutX="160.0" layoutY="122.0" />
+      <TextField fx:id="Address_input" layoutX="160.0" layoutY="158.0" />
+      <TextField fx:id="Postal_Code_input" layoutX="160.0" layoutY="196.0" />
+      <TextField fx:id="Phone_input" layoutX="160.0" layoutY="237.0" />
+      <ComboBox fx:id="Division_input" layoutX="160.0" layoutY="279.0" prefWidth="150.0" />
+      <Button layoutX="160.0" layoutY="341.0" mnemonicParsing="false" onAction="#addNewCustomer" text="Save" />
       <Button layoutX="256.0" layoutY="341.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
       <Label alignment="TOP_LEFT" contentDisplay="TOP" layoutX="375.0" layoutY="133.0" prefHeight="180.0" prefWidth="221.0" text="Enter the customer's name, address, postal code, phone number, and select the correct division.  Click save to save the new customer to the database and return to the previous screen.  Click cancel to return to the previous screen without saving any data." textAlignment="CENTER" textOverrun="CLIP" wrapText="true">
          <font>

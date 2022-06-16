@@ -9,23 +9,24 @@
 
 <AnchorPane layoutX="1.0" layoutY="1.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.CustomerEditController">
    <children>
-      <AnchorPane layoutY="-4.0" prefHeight="429.0" prefWidth="730.0">
+      <AnchorPane layoutY="-4.0" prefHeight="433.0" prefWidth="1348.0">
          <children>
             <TableView fx:id="customertable" layoutX="66.0" layoutY="50.0" onMouseClicked="#loadAppointments" prefHeight="120.0" prefWidth="646.0">
               <columns>
-                <TableColumn fx:id="Customer_ID" prefWidth="35.0" text="Customer_ID" />
-                <TableColumn fx:id="Customer_Name" minWidth="0.0" prefWidth="73.0" text="Customer_Name" />
-                  <TableColumn fx:id="Address" minWidth="0.0" prefWidth="68.0" text="Address" />
-                  <TableColumn fx:id="Postal_Code" prefWidth="69.0" text="Postal_Code" />
-                  <TableColumn fx:id="Phone" minWidth="0.0" prefWidth="52.0" text="Phone" />
-                  <TableColumn fx:id="Division" minWidth="0.0" prefWidth="76.0" text="Division" />
-                  <TableColumn fx:id="Division2" minWidth="0.0" prefWidth="83.0" text="Create_Date" />
-                  <TableColumn fx:id="Division3" minWidth="0.0" prefWidth="88.0" text="Create_By" />
-                  <TableColumn fx:id="Division4" minWidth="0.0" prefWidth="72.0" text="Last_Update" />
-                  <TableColumn fx:id="Division41" minWidth="0.0" prefWidth="101.0" text="Last_Updated_by" />
+                <TableColumn fx:id="Customer_ID" prefWidth="92.0" text="Customer_ID" />
+                <TableColumn fx:id="Customer_Name" minWidth="0.0" prefWidth="110.0" text="Customer_Name" />
+                  <TableColumn fx:id="Address" minWidth="0.0" prefWidth="140.0" text="Address" />
+                  <TableColumn fx:id="Postal_Code" prefWidth="86.0" text="Postal_Code" />
+                  <TableColumn fx:id="Phone" minWidth="0.0" prefWidth="101.0" text="Phone" />
+                  <TableColumn fx:id="Division" minWidth="0.0" prefWidth="129.0" text="Division" />
+
+                  <TableColumn fx:id="Create_Date" minWidth="0.0" prefWidth="128.0" text="Create_Date" />
+                  <TableColumn fx:id="Create_By" minWidth="0.0" text="Created_By" />
+                  <TableColumn fx:id="Last_Update" minWidth="0.0" prefWidth="141.0" text="Last_Update" />
+                  <TableColumn fx:id="Last_Updated_By" minWidth="0.0" prefWidth="113.0" text="Last_Updated_by" />
               </columns>
             </TableView>
-            <Text fx:id="titletext" layoutX="178.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Customer Records" textAlignment="CENTER" wrappingWidth="336.0">
+            <Text fx:id="titletext" layoutX="216.0" layoutY="34.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit Customers and Appointments" textAlignment="CENTER" wrappingWidth="380.0">
                <font>
                   <Font size="24.0" />
                </font>
@@ -34,28 +35,28 @@
             <Button fx:id="AddNewButton" layoutX="66.0" layoutY="170.0" mnemonicParsing="false" onAction="#switchSceneAddNewCustomer" text="Add New Customer" />
             <Button layoutX="666.0" layoutY="390.0" mnemonicParsing="false" onAction="#LoadMainMenu" text="Cancel" />
             <Button layoutX="621.0" layoutY="170.0" mnemonicParsing="false" onAction="#saveAlteredData" text="Save Changes" />
-            <Button layoutX="222.0" layoutY="350.0" mnemonicParsing="false" text="Delete Appointment" />
-            <Button layoutX="66.0" layoutY="350.0" mnemonicParsing="false" text="Add New Appointment" />
-            <TableView fx:id="appointmentsTable" layoutX="63.0" layoutY="222.0" prefHeight="128.0" prefWidth="652.0">
+            <Button layoutX="223.0" layoutY="363.0" mnemonicParsing="false" onAction="#DeleteAppointment" text="Delete Appointment" />
+            <Button layoutX="63.0" layoutY="363.0" mnemonicParsing="false" text="Add New Appointment" />
+            <TableView fx:id="appointmentsTable" layoutX="66.0" layoutY="222.0" prefHeight="140.0" prefWidth="646.0">
                <columns>
-                  <TableColumn fx:id="Appointment_ID1" prefWidth="29.0" text="Appointment_ID" />
-                  <TableColumn fx:id="Title1" minWidth="0.0" prefWidth="38.0" text="Title" />
-                  <TableColumn fx:id="Description1" minWidth="0.0" prefWidth="70.0" text="Description" />
-                  <TableColumn fx:id="Location1" prefWidth="56.0" text="Location" />
-                  <TableColumn fx:id="Type1" minWidth="0.0" prefWidth="44.0" text="Type" />
-                  <TableColumn fx:id="Start1" minWidth="0.0" prefWidth="49.0" text="Start" />
-                  <TableColumn fx:id="End1" minWidth="0.0" prefWidth="47.0" text="End" />
-                  <TableColumn fx:id="Create_Date1" minWidth="0.0" prefWidth="83.0" text="Create_Date" />
-                  <TableColumn fx:id="Create_By1" minWidth="0.0" prefWidth="83.0" text="Create_By" />
-                  <TableColumn fx:id="Last_Update1" minWidth="0.0" prefWidth="44.0" text="Last_Update" />
-                  <TableColumn fx:id="Last_Updated_By1" minWidth="0.0" prefWidth="69.0" text="Last_Updated_By" />
-                  <TableColumn fx:id="Customer_ID1" minWidth="0.0" prefWidth="73.0" text="Customer_ID" />
-                  <TableColumn fx:id="User_ID1" minWidth="0.0" prefWidth="51.0" text="User_ID" />
-                  <TableColumn fx:id="ContactID1" minWidth="0.0" prefWidth="51.0" text="Contact_ID" />
+                  <TableColumn fx:id="Appointment_ID1" prefWidth="103.0" text="Appointment_ID" />
+                  <TableColumn fx:id="Title1" minWidth="0.0" prefWidth="44.0" text="Title" />
+                  <TableColumn fx:id="Description1" minWidth="0.0" prefWidth="157.0" text="Description" />
+                  <TableColumn fx:id="Location1" minWidth="0.0" prefWidth="88.0" text="Location" />
+                  <TableColumn fx:id="Type1" minWidth="0.0" prefWidth="123.0" text="Type" />
+                  <TableColumn fx:id="Start1" minWidth="0.0" prefWidth="134.0" text="Start" />
+                  <TableColumn fx:id="End1" minWidth="0.0" prefWidth="128.0" text="End" />
+                  <TableColumn fx:id="Create_Date1" minWidth="0.0" prefWidth="180.0" text="Create_Date" />
+                  <TableColumn fx:id="Create_By1" minWidth="0.0" prefWidth="90.0" text="Created_By" />
+                  <TableColumn fx:id="Last_Update1" minWidth="0.0" prefWidth="127.0" text="Last_Update" />
+                  <TableColumn fx:id="Last_Updated_By1" minWidth="0.0" prefWidth="120.0" text="Last_Updated_By" />
+                  <TableColumn fx:id="Customer_ID1" minWidth="0.0" prefWidth="87.0" text="Customer_ID" />
+                  <TableColumn fx:id="User_ID1" minWidth="0.0" prefWidth="59.0" text="User_ID" />
+                  <TableColumn fx:id="ContactID1" minWidth="0.0" prefWidth="98.0" text="Contact_ID" />
 
                </columns>
             </TableView>
-            <Button layoutX="626.0" layoutY="350.0" mnemonicParsing="false" onAction="#saveAlteredAppointmentData" text="Save Changes" />
+            <Button layoutX="621.0" layoutY="363.0" mnemonicParsing="false" onAction="#saveAlteredAppointmentData" text="Save Changes" />
             <Text layoutX="66.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments Table" />
             <Text layoutX="66.0" layoutY="48.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customers Table" />
          </children>

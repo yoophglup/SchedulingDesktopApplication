@@ -9,15 +9,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -34,6 +32,12 @@ public class CustomerEditController {
     public TableColumn Postal_Code;
     public TableColumn Phone;
     public TableColumn Division;
+    public TableColumn Create_Date;
+    public TableColumn Create_By;
+    public TableColumn Last_Update;
+    public TableColumn Last_Updated_By;
+
+
 
     public Button AddNewButton;
     public TableView appointmentsTable;
@@ -51,6 +55,7 @@ public class CustomerEditController {
     public TableColumn Customer_ID1;
     public TableColumn User_ID1;
     public TableColumn ContactID1;
+
 
     public void initialize() {
         try {
@@ -74,14 +79,17 @@ public class CustomerEditController {
             Division.setCellValueFactory(new PropertyValueFactory<Customer, String>("Division"));
             Division.setCellFactory(TextFieldTableCell.forTableColumn());
 
-            PreparedStatement ps = JDBC.getConnection().prepareStatement("select c.Customer_ID,c.Customer_Name,c.Address,c.Postal_Code,c.Phone,c.Division_ID,f.Division,f.Country_ID,t.Country from customers c join first_level_divisions f on c.Division_ID=f.Division_ID join countries t on f.Country_ID=t.Country_ID;\n");
+            Create_Date.setCellValueFactory(new PropertyValueFactory<Customer, String>("Create_Date"));;
+            Create_By.setCellValueFactory(new PropertyValueFactory<Customer, String>("Created_By"));;
+            Last_Update.setCellValueFactory(new PropertyValueFactory<Customer, String>("Last_Update"));;
+            Last_Updated_By.setCellValueFactory(new PropertyValueFactory<Customer, String>("Last_Updated_By"));;
+
+
+
+            PreparedStatement ps = JDBC.getConnection().prepareStatement("select c.Customer_ID,c.Customer_Name,c.Address,c.Postal_Code,c.Phone,c.Division_ID,c.Create_Date,c.Created_By,c.Last_Update,c.Last_Updated_By,f.Division,f.Country_ID,t.Country from customers c join first_level_divisions f on c.Division_ID=f.Division_ID join countries t on f.Country_ID=t.Country_ID;\n");
             ObservableList<Customer> allcust = FXCollections.observableArrayList();
             ResultSet rs = ps.executeQuery();
-
-            Integer ct = 0;
             while (rs.next()) {
-                ct = ct + 1;
-                System.out.println("CT = " + ct);
                 Integer thisid = rs.getInt("Customer_ID");
                 String thiscust = rs.getString("Customer_Name");
                 String thisaddress = rs.getString("Address");
@@ -90,8 +98,11 @@ public class CustomerEditController {
                 String thisphone = rs.getString("Phone");
                 String thisdivision = rs.getString("Division");
                 Integer thisdivisionid = rs.getInt("Division_ID");
-                System.out.println(thisid + " " + thiscust + " " + thisaddress + thisdivision + thiscountry + " " + thisPostal_Code + " " + thisphone + " " + thisdivision);
-                Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision);
+                String thisCreate_Date = rs.getString("Create_Date");
+                String thisCreate_By = rs.getString("Created_By");
+                String thisLast_Update = rs.getString("Last_Update");
+                String thisLast_Updated_By = rs.getString("Last_Updated_By");
+                Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision,thisdivisionid,thisCreate_Date,thisCreate_By,thisLast_Update,thisLast_Updated_By);
                 allcust.add(thiscustomer);
                 //tableView.getItems().add(new Customer(thisid,thiscust,thisaddress,thisPostal_Code,thisphone,thisdivision));
             }
@@ -137,9 +148,21 @@ public class CustomerEditController {
             }
             if (existingapointments == true) {
                 System.out.println("Unable to Delete due to existing appointments");
+                Alert ExistingAppointments = new Alert(Alert.AlertType.ERROR);
+                ExistingAppointments.setTitle("Unable to Delete Customer");
+                ExistingAppointments.setHeaderText("The customer has appoinments, you must first delete the appointments \nbefore you can delete the customer.");
+                ExistingAppointments.setContentText("Remove associated appointments first.");
+                ExistingAppointments.showAndWait();
             } else {
                 System.out.println("Deleting...");
-                try {
+                Alert areyousure = new Alert(Alert.AlertType.CONFIRMATION);
+                areyousure.setTitle("CONFIRMATION");
+                areyousure.setHeaderText("You are about to delete the selected customer.");
+                areyousure.setContentText("This cannot be undone. Are you sure?");
+                areyousure.showAndWait();
+                if (areyousure.getResult().getButtonData().toString() == "OK_DONE") {
+
+                    try {
                     PreparedStatement del = JDBC.getConnection().prepareStatement("delete from customers where Customer_ID=" + ct.getCustomer_ID());
                     del.executeUpdate();
                     System.out.println("Deleted");
@@ -147,6 +170,7 @@ public class CustomerEditController {
                     System.out.println(e);
                     System.out.println("Unable to Delete");
 
+                    }
                 }
             }
 
@@ -154,7 +178,7 @@ public class CustomerEditController {
         try {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            Scene scene = new Scene(root, 750, 400);
+            Scene scene = new Scene(root, 750, 450);
             stage.setTitle("Edit Customer Records");
             stage.setScene(scene);
             stage.show();
@@ -172,7 +196,7 @@ public class CustomerEditController {
     public void editApointments(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AppointmentEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 400);
+        Scene scene = new Scene(root, 750, 450);
         stage.setTitle("Edit Appointments");
         stage.setScene(scene);
         stage.show();
@@ -233,6 +257,43 @@ public class CustomerEditController {
             Appointmentlist.add(thisappointment);
             System.out.println(thisCreate_date);
         }appointmentsTable.setItems(Appointmentlist);
+
+    }
+
+    public void DeleteAppointment(ActionEvent actionEvent) {
+        ObservableList<Appointment> selectlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        for (Appointment SelectedAppointment : selectlist) {
+            System.out.println(SelectedAppointment.getAppointment_ID());
+            System.out.println("Deleting...");
+            Alert areyousure = new Alert(Alert.AlertType.CONFIRMATION);
+            areyousure.setTitle("CONFIRMATION");
+            areyousure.setHeaderText("You are about to delete the selected appointment.");
+            areyousure.setContentText("This cannot be undone. Are you sure?");
+            areyousure.showAndWait();
+            if (areyousure.getResult().getButtonData().toString() == "OK_DONE") {
+
+                try {
+                    PreparedStatement deleteAppointment = JDBC.getConnection().prepareStatement("delete from appointments where Appointment_ID=" + SelectedAppointment.getAppointment_ID());
+                    deleteAppointment.executeUpdate();
+                    System.out.println("Deleted");
+                    try {
+                        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+                        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                        Scene scene = new Scene(root, 750, 450);
+                        stage.setTitle("Edit Customer Records");
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (Exception e) {
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                    System.out.println("Unable to Delete");
+
+                }
+            }
+
+        }
+
 
     }
 }
