@@ -1,6 +1,14 @@
 package Model;
 
+import Controllers.JDBC;
 import com.sun.javafx.image.IntPixelGetter;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Customer {
     private Integer Customer_ID;
@@ -14,14 +22,29 @@ public class Customer {
     private String Created_By;
     private String Last_Update;
     private String Last_Updated_By;
-
-    public Customer(Integer customer_ID, String customer_Name, String address, String postal_Code, String phone, String division, Integer division_ID, String create_Date, String created_By, String last_Update, String last_Updated_By) {
+    private ComboBox DivisionCombobox;
+    public Customer(Integer customer_ID, String customer_Name, String address, String postal_Code, String phone, String division, Integer division_ID, String create_Date, String created_By, String last_Update, String last_Updated_By) throws SQLException {
         Customer_ID = customer_ID;
         Customer_Name = customer_Name;
         Address = address;
         Postal_Code = postal_Code;
         Phone = phone;
+
+
+
+        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Division from first_level_divisions;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        ObservableList<String> all_divisionsList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+             String thisStringDivision=resultSet.getString("Division");
+             all_divisionsList.add(thisStringDivision);
+             }
+
         this.division = division;
+        this.DivisionCombobox=new ComboBox(FXCollections.observableArrayList(all_divisionsList));
+        this.DivisionCombobox.setValue(this.division);
+
+
         Division_ID = division_ID;
         Create_Date = create_Date;
         Created_By = created_By;
@@ -29,48 +52,12 @@ public class Customer {
         Last_Updated_By = last_Updated_By;
     }
 
-    public void setCustomer_ID(Integer customer_ID) {
-        Customer_ID = customer_ID;
+    public void setDivisionCombobox(ComboBox divisionComboBox) {
+        DivisionCombobox = divisionComboBox;
     }
 
-    public void setCustomer_Name(String customer_Name) {
-        Customer_Name = customer_Name;
-    }
-
-    public void setAddress(String address) {
-        Address = address;
-    }
-
-    public void setPostal_Code(String postal_Code) {
-        Postal_Code = postal_Code;
-    }
-
-    public void setPhone(String phone) {
-        Phone = phone;
-    }
-
-    public void setDivision(String division) {
-        this.division = division;
-    }
-
-    public void setDivision_ID(Integer division_ID) {
-        Division_ID = division_ID;
-    }
-
-    public void setCreate_Date(String create_Date) {
-        Create_Date = create_Date;
-    }
-
-    public void setCreated_By(String created_By) {
-        Created_By = created_By;
-    }
-
-    public void setLast_Update(String last_Update) {
-        Last_Update = last_Update;
-    }
-
-    public void setLast_Updated_By(String last_Updated_By) {
-        Last_Updated_By = last_Updated_By;
+    public ComboBox getDivisionCombobox() {
+        return DivisionCombobox;
     }
 
     public Integer getCustomer_ID() {

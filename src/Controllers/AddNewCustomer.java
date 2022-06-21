@@ -27,14 +27,13 @@ public class AddNewCustomer {
     public void initialize() throws SQLException {
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Division from first_level_divisions;");
         ResultSet resultSet = preparedStatement.executeQuery();
-        ObservableList<String> all_divisions = FXCollections.observableArrayList();
-
-        boolean existingapointments = false;
+        ObservableList<String> all_divisionsList = FXCollections.observableArrayList();
         while (resultSet.next()) {
-            String thisDivision=resultSet.getString("Division");
-            all_divisions.add(thisDivision);
+            String thisStringDivision=resultSet.getString("Division");
+            all_divisionsList.add(thisStringDivision);
         }
-        Division_input.setItems(all_divisions);
+            ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(all_divisionsList));
+        Division_input.setItems(all_divisionsList);
 
     }
 

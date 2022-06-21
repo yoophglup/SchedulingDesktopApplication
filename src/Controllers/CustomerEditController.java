@@ -15,14 +15,10 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import java.io.IOException;
-import java.net.URL;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.ResourceBundle;
 
 public class CustomerEditController {
     public TableView customertable;
@@ -31,6 +27,7 @@ public class CustomerEditController {
     public TableColumn Address;
     public TableColumn Postal_Code;
     public TableColumn Phone;
+    public TableColumn DivisionCombobox;
     public TableColumn Division;
     public TableColumn Create_Date;
     public TableColumn Create_By;
@@ -75,10 +72,11 @@ public class CustomerEditController {
 
             Phone.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
             Phone.setCellFactory(TextFieldTableCell.forTableColumn());
+            DivisionCombobox.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionCombobox"));
+            Division.setCellFactory(TextFieldTableCell.forTableColumn());
 
             Division.setCellValueFactory(new PropertyValueFactory<Customer, String>("Division"));
             Division.setCellFactory(TextFieldTableCell.forTableColumn());
-
             Create_Date.setCellValueFactory(new PropertyValueFactory<Customer, String>("Create_Date"));;
             Create_By.setCellValueFactory(new PropertyValueFactory<Customer, String>("Created_By"));;
             Last_Update.setCellValueFactory(new PropertyValueFactory<Customer, String>("Last_Update"));;
@@ -104,7 +102,6 @@ public class CustomerEditController {
                 String thisLast_Updated_By = rs.getString("Last_Updated_By");
                 Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision,thisdivisionid,thisCreate_Date,thisCreate_By,thisLast_Update,thisLast_Updated_By);
                 allcust.add(thiscustomer);
-                //tableView.getItems().add(new Customer(thisid,thiscust,thisaddress,thisPostal_Code,thisphone,thisdivision));
             }
             tableView.setItems(allcust);
 
