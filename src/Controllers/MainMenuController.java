@@ -15,7 +15,7 @@ public class MainMenuController {
     public void LoadCustomerEditor(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 450);
+        Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
         stage.show();

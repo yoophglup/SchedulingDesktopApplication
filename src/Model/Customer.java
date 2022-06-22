@@ -1,5 +1,6 @@
 package Model;
 
+import Controllers.CustomerEditController;
 import Controllers.JDBC;
 import com.sun.javafx.image.IntPixelGetter;
 import javafx.collections.FXCollections;
@@ -22,7 +23,7 @@ public class Customer {
     private String Created_By;
     private String Last_Update;
     private String Last_Updated_By;
-    private ComboBox DivisionCombobox;
+    public ComboBox DivisionCombobox;
     public Customer(Integer customer_ID, String customer_Name, String address, String postal_Code, String phone, String division, Integer division_ID, String create_Date, String created_By, String last_Update, String last_Updated_By) throws SQLException {
         Customer_ID = customer_ID;
         Customer_Name = customer_Name;
@@ -39,12 +40,10 @@ public class Customer {
              String thisStringDivision=resultSet.getString("Division");
              all_divisionsList.add(thisStringDivision);
              }
-
+        
         this.division = division;
         this.DivisionCombobox=new ComboBox(FXCollections.observableArrayList(all_divisionsList));
         this.DivisionCombobox.setValue(this.division);
-
-
         Division_ID = division_ID;
         Create_Date = create_Date;
         Created_By = created_By;

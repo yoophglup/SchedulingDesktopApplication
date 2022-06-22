@@ -52,7 +52,7 @@ public class CustomerEditController {
     public TableColumn Customer_ID1;
     public TableColumn User_ID1;
     public TableColumn ContactID1;
-
+    public ObservableList<Customer> AllCustomers;
 
     public void initialize() {
         try {
@@ -73,7 +73,7 @@ public class CustomerEditController {
             Phone.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
             Phone.setCellFactory(TextFieldTableCell.forTableColumn());
             DivisionCombobox.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionCombobox"));
-            Division.setCellFactory(TextFieldTableCell.forTableColumn());
+
 
             Division.setCellValueFactory(new PropertyValueFactory<Customer, String>("Division"));
             Division.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -103,6 +103,7 @@ public class CustomerEditController {
                 Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision,thisdivisionid,thisCreate_Date,thisCreate_By,thisLast_Update,thisLast_Updated_By);
                 allcust.add(thiscustomer);
             }
+            AllCustomers=allcust;
             tableView.setItems(allcust);
 
         } catch (SQLException e) {
@@ -289,6 +290,22 @@ public class CustomerEditController {
                 }
             }
 
+        }
+
+
+    }
+
+    public void ValueChanged(TableColumn.CellEditEvent cellEditEvent) {
+        System.out.println();
+        System.out.println(cellEditEvent.getTableColumn().getText());
+        System.out.println(cellEditEvent.getOldValue());
+        System.out.println(cellEditEvent.getNewValue());
+    }
+
+    public void SaveCustomerData(MouseEvent mouseEvent) {
+        ObservableList<Customer> selectlist = AllCustomers;
+        for (Customer Selectedcustomer : selectlist){
+            System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
         }
 
 
