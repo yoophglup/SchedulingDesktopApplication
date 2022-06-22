@@ -5,6 +5,7 @@ import Model.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
@@ -33,6 +34,7 @@ public class CustomerEditController {
     public TableColumn Create_By;
     public TableColumn Last_Update;
     public TableColumn Last_Updated_By;
+    public ObservableList<Customer> prelist;
 
 
 
@@ -104,6 +106,7 @@ public class CustomerEditController {
                 allcust.add(thiscustomer);
             }
             AllCustomers=allcust;
+            prelist=AllCustomers;
             tableView.setItems(allcust);
 
         } catch (SQLException e) {
@@ -307,7 +310,9 @@ public class CustomerEditController {
         for (Customer Selectedcustomer : selectlist){
             System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
         }
-
+        for (Customer Selectedcustomer : prelist){
+            System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
+        }
 
     }
 }
