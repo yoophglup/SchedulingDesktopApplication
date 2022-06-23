@@ -19,9 +19,11 @@ import javafx.stage.Stage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.Objects;
 
 public class CustomerEditController {
+    public static String uservalue;
     public TableView customertable;
     public TableColumn Customer_Name;
     public TableColumn Customer_ID;
@@ -29,12 +31,11 @@ public class CustomerEditController {
     public TableColumn Postal_Code;
     public TableColumn Phone;
     public TableColumn DivisionCombobox;
-    public TableColumn Division;
+    //public TableColumn Division;
     public TableColumn Create_Date;
     public TableColumn Create_By;
     public TableColumn Last_Update;
     public TableColumn Last_Updated_By;
-    public ObservableList<Customer> prelist;
 
 
 
@@ -55,6 +56,10 @@ public class CustomerEditController {
     public TableColumn User_ID1;
     public TableColumn ContactID1;
     public ObservableList<Customer> AllCustomers;
+    public ObservableList<String> DefaultDivisions=FXCollections.observableArrayList();
+
+    public ObservableList<String> ModSqlCommandsSaved=FXCollections.observableArrayList();
+
 
     public void initialize() {
         try {
@@ -77,8 +82,8 @@ public class CustomerEditController {
             DivisionCombobox.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionCombobox"));
 
 
-            Division.setCellValueFactory(new PropertyValueFactory<Customer, String>("Division"));
-            Division.setCellFactory(TextFieldTableCell.forTableColumn());
+            //Division.setCellValueFactory(new PropertyValueFactory<Customer, String>("Division"));
+            //Division.setCellFactory(TextFieldTableCell.forTableColumn());
             Create_Date.setCellValueFactory(new PropertyValueFactory<Customer, String>("Create_Date"));;
             Create_By.setCellValueFactory(new PropertyValueFactory<Customer, String>("Created_By"));;
             Last_Update.setCellValueFactory(new PropertyValueFactory<Customer, String>("Last_Update"));;
@@ -106,7 +111,11 @@ public class CustomerEditController {
                 allcust.add(thiscustomer);
             }
             AllCustomers=allcust;
-            prelist=AllCustomers;
+            for (Customer Selectedcustomer : AllCustomers){
+                //System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
+                DefaultDivisions.add(Selectedcustomer.DivisionCombobox.getValue().toString());
+            }
+
             tableView.setItems(allcust);
 
         } catch (SQLException e) {
@@ -225,8 +234,8 @@ public class CustomerEditController {
         User_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("User_ID"));
         ContactID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Contact_ID"));
 
-        ObservableList<Customer> clicklist = customertable.getSelectionModel().getSelectedItems();
         ObservableList<Appointment> Appointmentlist = FXCollections.observableArrayList();
+        ObservableList<Customer> clicklist = customertable.getSelectionModel().getSelectedItems();
 
         Integer ClickedCustomer_ID = 0;
         for (Customer ct : clicklist) {
@@ -298,20 +307,57 @@ public class CustomerEditController {
 
     }
 
-    public void ValueChanged(TableColumn.CellEditEvent cellEditEvent) {
-        System.out.println();
-        System.out.println(cellEditEvent.getTableColumn().getText());
-        System.out.println(cellEditEvent.getOldValue());
-        System.out.println(cellEditEvent.getNewValue());
+    public void ValueChanged(TableColumn.CellEditEvent cellEditEvent){
+        //System.out.println();
+        //System.out.println(cellEditEvent.getTableColumn().getText());
+        //System.out.println(cellEditEvent.getOldValue());
+        //System.out.println(cellEditEvent.getNewValue());
+        Object oldvalue=cellEditEvent.getOldValue();
+        Object newvalue=cellEditEvent.getNewValue();
+        String tablename=cellEditEvent.getTableColumn().getText();
+
+        ObservableList<Customer> clicklist = customertable.getSelectionModel().getSelectedItems();
+        Integer ClickedCustomer_ID = 0;
+        for (Customer ct : clicklist) {
+            ClickedCustomer_ID = ct.getCustomer_ID();
+        }
+        String updatedbysql= "update customers set Last_Updated_By ='"+uservalue+"' where Customer_ID="+ClickedCustomer_ID+";";
+        String last_updatesql="update customers set Last_Update = now() where Customer_ID="+ClickedCustomer_ID+";";
+        String sqlstring="update customers set "+tablename+" = '"+newvalue+"' where Customer_ID="+ClickedCustomer_ID+";";
+        ModSqlCommandsSaved.add(updatedbysql);
+        ModSqlCommandsSaved.add(last_updatesql);
+        ModSqlCommandsSaved.add(sqlstring);
+
+
     }
 
-    public void SaveCustomerData(MouseEvent mouseEvent) {
+
+    public void SaveCustomerData(MouseEvent mouseEvent) throws SQLException {
+        ObservableList<String> hasDivisionschanged = FXCollections.observableArrayList();
         ObservableList<Customer> selectlist = AllCustomers;
-        for (Customer Selectedcustomer : selectlist){
-            System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
+        int x = 0;
+        for (Customer Selectedcustomer : selectlist) {
+            hasDivisionschanged.add(Selectedcustomer.DivisionCombobox.getValue().toString());
+            if (!DefaultDivisions.get(x).equals(Selectedcustomer.DivisionCombobox.getValue().toString())) {
+                String sqlstring = "update customers set Division_ID=(select Division_Id from first_level_divisions where Division='" + Selectedcustomer.DivisionCombobox.getValue().toString() + "') where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
+                String updatedbysql = "update customers set Last_Updated_By ='" + uservalue + "' where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
+                String last_updatesql = "update customers set Last_Update = now() where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
+                ModSqlCommandsSaved.add(sqlstring);
+                ModSqlCommandsSaved.add(updatedbysql);
+                ModSqlCommandsSaved.add(last_updatesql);
+
+            }
+
+            x++;
         }
-        for (Customer Selectedcustomer : prelist){
-            System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
+        for (String st : ModSqlCommandsSaved) {
+            System.out.println(st);
+
+            PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
+            thisSQLstatement.executeUpdate();
+            System.out.println("Records Updated!");
+
+
         }
 
     }

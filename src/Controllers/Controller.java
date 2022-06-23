@@ -72,6 +72,7 @@ public class Controller {
                     if (Locale.getDefault()!=Locale.US) {
                         outputbox.setText("Bienvenue\n"+uservalue.getText());
                     }
+                    CustomerEditController.uservalue=uservalue.getText();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
                     Scene scene = new Scene(root, 340, 200);
