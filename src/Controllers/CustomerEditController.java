@@ -240,7 +240,7 @@ public class CustomerEditController {
         Type1.setCellFactory(TextFieldTableCell.forTableColumn());
 
         Start1.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDate>("Start"));
-        Start1.setCellFactory(TextFieldTableCell.forTableColumn());
+        //Start1.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Start1.setCellValueFactory(new PropertyValueFactory<Appointment, String>("Start"));
         //Start1.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -391,13 +391,21 @@ public class CustomerEditController {
     }
 
     public void apointmenteditStart(TableColumn.CellEditEvent event) throws IOException {
+        ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
+        Integer ClickedAppointment_ID = 0;
+        for (Appointment SingleAppointment : clicklist) {
+            ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
+            SingleAppointment.setStart(" ");
+        }
+        Appointmentpicker.ClickedAppointment_ID=ClickedAppointment_ID;
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/appointmentpicker.fxml")));
-        //Stage stage = (Stage) ((Node) event.getTableView()).getScene().getWindow();
-        Scene scene = new Scene(root, 640, 400);
+        Scene scene = new Scene(root, 380, 200);
         Stage stage2= new Stage();
         stage2.setTitle("Pick a New Date");
         stage2.setScene(scene);
-        stage2.show();
+        stage2.setAlwaysOnTop(true);
+        stage2.showAndWait();
+        event.a
     }
 }
 
