@@ -23,6 +23,8 @@ public class Appointment {
         Location = location;
         Type = type;
         Start = start;
+
+
         End = end;
         Create_Date=create_Date;
         Created_By=create_By;

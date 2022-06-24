@@ -45,7 +45,7 @@
                   <TableColumn fx:id="Description1" minWidth="0.0" prefWidth="157.0" text="Description" />
                   <TableColumn fx:id="Location1" minWidth="0.0" prefWidth="88.0" text="Location" />
                   <TableColumn fx:id="Type1" minWidth="0.0" prefWidth="123.0" text="Type" />
-                  <TableColumn fx:id="Start1" minWidth="0.0" prefWidth="134.0" text="Start" />
+                  <TableColumn fx:id="Start1" minWidth="0.0" onEditStart="#apointmenteditStart" prefWidth="134.0" text="Start" />
                   <TableColumn fx:id="End1" minWidth="0.0" prefWidth="128.0" text="End" />
                   <TableColumn fx:id="Create_Date1" minWidth="0.0" prefWidth="180.0" text="Create_Date" />
                   <TableColumn fx:id="Create_By1" minWidth="0.0" prefWidth="90.0" text="Created_By" />
