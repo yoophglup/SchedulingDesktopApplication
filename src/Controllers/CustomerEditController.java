@@ -2,6 +2,9 @@ package Controllers;
 
 import Model.Appointment;
 import Model.Customer;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
+import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -13,9 +16,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
+import javafx.scene.robot.Robot;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.sql.PreparedStatement;
@@ -23,10 +29,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 public class CustomerEditController {
     public static String uservalue;
+    public static String newsqldate;
+    public static String newdatefrompick;
+
     public TableView customertable;
     public TableColumn Customer_Name;
     public TableColumn Customer_ID;
@@ -58,9 +68,11 @@ public class CustomerEditController {
     public TableColumn User_ID1;
     public TableColumn ContactID1;
     public ObservableList<Customer> AllCustomers;
+
     public ObservableList<String> DefaultDivisions = FXCollections.observableArrayList();
 
     public ObservableList<String> ModSqlCommandsSaved = FXCollections.observableArrayList();
+    public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
 
 
     public void initialize() {
@@ -202,27 +214,29 @@ public class CustomerEditController {
         }
     }
 
+    public void saveAlteredAppointmentData(ActionEvent actionEvent) throws SQLException, IOException {
 
-    public void saveAlteredData(ActionEvent actionEvent) {
+
+        for (String st : AppointmentModSqlCommandsSaved) {
+            System.out.println(st);
+            PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
+            thisSQLstatement.executeUpdate();
+            System.out.println("Records Updated!");
 
 
-    }
-
-    public void editApointments(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AppointmentEditor.fxml")));
+        }
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 450);
-        stage.setTitle("Edit Appointments");
+        Scene scene = new Scene(root, 850, 450);
+        stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
         stage.show();
 
-
-    }
-
-    public void saveAlteredAppointmentData(ActionEvent actionEvent) {
     }
 
     public void loadAppointments(MouseEvent mouseEvent) throws SQLException {
+        appointmentsTable.refresh();
+        appointmentsTable.requestFocus();
         appointmentsTable.setEditable(true);
 
         Appointment_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Appointment_ID"));
@@ -240,7 +254,7 @@ public class CustomerEditController {
         Type1.setCellFactory(TextFieldTableCell.forTableColumn());
 
         Start1.setCellValueFactory(new PropertyValueFactory<Appointment, LocalDate>("Start"));
-        //Start1.setCellFactory(TextFieldTableCell.forTableColumn());
+        Start1.setCellFactory(TextFieldTableCell.forTableColumn());
 
         //Start1.setCellValueFactory(new PropertyValueFactory<Appointment, String>("Start"));
         //Start1.setCellFactory(TextFieldTableCell.forTableColumn());
@@ -277,6 +291,7 @@ public class CustomerEditController {
             String thisLocation = apresults.getString("Location");
             String thisType = apresults.getString("Type");
             String thisStart = apresults.getString("Start");
+
             String thisEnd = apresults.getString("End");
 
             String thisCreate_date = apresults.getString("Create_Date");
@@ -333,10 +348,6 @@ public class CustomerEditController {
     }
 
     public void ValueChanged(TableColumn.CellEditEvent cellEditEvent) {
-        //System.out.println();
-        //System.out.println(cellEditEvent.getTableColumn().getText());
-        //System.out.println(cellEditEvent.getOldValue());
-        //System.out.println(cellEditEvent.getNewValue());
         Object oldvalue = cellEditEvent.getOldValue();
         Object newvalue = cellEditEvent.getNewValue();
         String tablename = cellEditEvent.getTableColumn().getText();
@@ -354,8 +365,25 @@ public class CustomerEditController {
         ModSqlCommandsSaved.add(sqlstring);
     }
 
+    public void ValueChangedAppointments(TableColumn.CellEditEvent cellEditEvent) {
+        Object oldvalue = cellEditEvent.getOldValue();
+        Object newvalue = cellEditEvent.getNewValue();
+        String tablename = cellEditEvent.getTableColumn().getText();
 
-    public void SaveCustomerData(MouseEvent mouseEvent) throws SQLException, IOException {
+        ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
+        Integer ClickedAppointment_ID = 0;
+        for (Appointment apt : clicklist) {
+            ClickedAppointment_ID = apt.getAppointment_ID();
+        }
+        String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + ClickedAppointment_ID + ";";
+        String last_updatesql = "update appointments set Last_Update = now() where Appointment_ID=" + ClickedAppointment_ID + ";";
+        String sqlstring = "update appointments set " + tablename + " = '" + newvalue + "' where Appointment_ID=" + ClickedAppointment_ID + ";";
+        AppointmentModSqlCommandsSaved.add(updatedbysql);
+        AppointmentModSqlCommandsSaved.add(last_updatesql);
+        AppointmentModSqlCommandsSaved.add(sqlstring);
+    }
+
+    public void SaveCustomerData(ActionEvent actionEvent) throws SQLException, IOException {
         ObservableList<String> hasDivisionschanged = FXCollections.observableArrayList();
         ObservableList<Customer> selectlist = AllCustomers;
         int x = 0;
@@ -382,7 +410,7 @@ public class CustomerEditController {
 
         }
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
-        Stage stage = (Stage) ((Node) mouseEvent.getSource()).getScene().getWindow();
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
@@ -390,22 +418,113 @@ public class CustomerEditController {
 
     }
 
-    public void apointmenteditStart(TableColumn.CellEditEvent event) throws IOException {
+    public void appointmenteditCommit(TableColumn.CellEditEvent event) throws IOException {
+        Appointmentpicker.namebox="Start";
+
+        Appointmentpicker.olddatevalue= String.valueOf(event.getNewValue());
+        System.out.println("Entered date: "+Appointmentpicker.olddatevalue);
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
         Integer ClickedAppointment_ID = 0;
         for (Appointment SingleAppointment : clicklist) {
             ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
-            SingleAppointment.setStart(" ");
-        }
+                   }
         Appointmentpicker.ClickedAppointment_ID=ClickedAppointment_ID;
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/appointmentpicker.fxml")));
         Scene scene = new Scene(root, 380, 200);
+
         Stage stage2= new Stage();
         stage2.setTitle("Pick a New Date");
         stage2.setScene(scene);
         stage2.setAlwaysOnTop(true);
         stage2.showAndWait();
-        event.a
+
+        System.out.println(appointmentsTable.getEditingCell().getTableColumn().getCellObservableValue(0).getValue());
+        System.out.println(newsqldate);
+        System.out.println(newdatefrompick);
+        ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        ObservableList<Appointment> EditedAppointmentlist= FXCollections.observableArrayList();
+        for (Appointment SingleAppointment : currentlist) {
+        System.out.println(SingleAppointment.getAppointment_ID());
+            Integer thisappointmentID = SingleAppointment.getAppointment_ID();
+            String thisTitle = SingleAppointment.getTitle();
+            System.out.println(appointmentsTable.getItems());
+            String thisDescription = SingleAppointment.getDescription();
+            String thisLocation = SingleAppointment.getLocation();
+            String thisType = SingleAppointment.getType();
+            String thisStart = newdatefrompick;
+            String thisEnd = SingleAppointment.getEnd();
+            String thisCreate_date = SingleAppointment.getCreate_Date();
+            String thisCreate_by = SingleAppointment.getCreated_By();
+            String thisLastUpdate = SingleAppointment.getLast_Update();
+            String thisLastUpdatedby = SingleAppointment.getLast_Updated_By();
+            Integer thisCustomer_ID = SingleAppointment.getCustomer_ID();
+            Integer thisUser_ID = SingleAppointment.getUser_ID();
+            Integer thisContact_ID = SingleAppointment.getContact_ID();
+            Appointment thisappointment = new Appointment(thisappointmentID, thisTitle, thisDescription, thisLocation, thisType, thisStart, thisEnd, thisCreate_date, thisCreate_by, thisLastUpdate, thisLastUpdatedby, thisCustomer_ID, thisUser_ID, thisContact_ID);
+            EditedAppointmentlist.add(thisappointment);
+        }
+        appointmentsTable.setItems(EditedAppointmentlist);
+        AppointmentModSqlCommandsSaved.add(newsqldate);
+
+    }
+
+    public void appointmenteditEndCommit(TableColumn.CellEditEvent event) throws IOException {
+        Appointmentpicker.namebox="End";
+        Appointmentpicker.olddatevalue= String.valueOf(event.getNewValue());
+        System.out.println("Entered date: "+Appointmentpicker.olddatevalue);
+        ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
+        Integer ClickedAppointment_ID = 0;
+        for (Appointment SingleAppointment : clicklist) {
+            ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
+        }
+        Appointmentpicker.ClickedAppointment_ID=ClickedAppointment_ID;
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/appointmentpicker.fxml")));
+        Scene scene = new Scene(root, 380, 200);
+
+        Stage stage2= new Stage();
+        stage2.setTitle("Pick a New Date");
+        stage2.setScene(scene);
+        stage2.setAlwaysOnTop(true);
+        stage2.showAndWait();
+
+        System.out.println(appointmentsTable.getEditingCell().getTableColumn().getCellObservableValue(0).getValue());
+        System.out.println(newsqldate);
+        System.out.println(newdatefrompick);
+        ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        ObservableList<Appointment> EditedAppointmentlist= FXCollections.observableArrayList();
+        for (Appointment SingleAppointment : currentlist) {
+            System.out.println(SingleAppointment.getAppointment_ID());
+            Integer thisappointmentID = SingleAppointment.getAppointment_ID();
+            String thisTitle = SingleAppointment.getTitle();
+            System.out.println(appointmentsTable.getItems());
+            String thisDescription = SingleAppointment.getDescription();
+            String thisLocation = SingleAppointment.getLocation();
+            String thisType = SingleAppointment.getType();
+            String thisStart = SingleAppointment.getStart();
+            String thisEnd = newdatefrompick;
+            String thisCreate_date = SingleAppointment.getCreate_Date();
+            String thisCreate_by = SingleAppointment.getCreated_By();
+            String thisLastUpdate = SingleAppointment.getLast_Update();
+            String thisLastUpdatedby = SingleAppointment.getLast_Updated_By();
+            Integer thisCustomer_ID = SingleAppointment.getCustomer_ID();
+            Integer thisUser_ID = SingleAppointment.getUser_ID();
+            Integer thisContact_ID = SingleAppointment.getContact_ID();
+            Appointment thisappointment = new Appointment(thisappointmentID, thisTitle, thisDescription, thisLocation, thisType, thisStart, thisEnd, thisCreate_date, thisCreate_by, thisLastUpdate, thisLastUpdatedby, thisCustomer_ID, thisUser_ID, thisContact_ID);
+            EditedAppointmentlist.add(thisappointment);
+        }
+        appointmentsTable.setItems(EditedAppointmentlist);
+        AppointmentModSqlCommandsSaved.add(newsqldate);
+
+    }
+
+
+    public void appointmentStartToEdit(TableColumn.CellEditEvent cellEditEvent) throws InterruptedException {
+        Thread.sleep(20 );
+        Robot keyboard = new Robot();
+        System.out.println("Start is being Edited");
+        cellEditEvent.getTableView().requestFocus();
+        keyboard.keyPress(KeyCode.ENTER);
+
     }
 }
 

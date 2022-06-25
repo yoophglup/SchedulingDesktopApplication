@@ -9,10 +9,15 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 
+import java.time.LocalDate;
+
 import static java.lang.String.valueOf;
 
 public class Appointmentpicker {
+    public static String olddatevalue;
     public static Integer ClickedAppointment_ID;
+    public static String namebox;
+
     public DatePicker AppointmentDatepicker;
     public ComboBox apphour;
     public ComboBox appmins;
@@ -36,16 +41,28 @@ public class Appointmentpicker {
             }
 
         }
+
+        //AppointmentDatepicker.setValue(LocalDate.parse(olddatevalue));
+        String ddate=olddatevalue.substring(0,10);
+        String dhour=olddatevalue.substring(11,13);
+        String dmins=olddatevalue.substring(14,16);
+
+        System.out.println(ddate+"|"+dhour+"|"+dmins);
+        AppointmentDatepicker.setValue(LocalDate.parse(ddate));
         apphour.setItems(hourslist);
+        apphour.setValue(dhour);
         appmins.setItems(minslist);
+        appmins.setValue(dmins);
     }
     //2020-05-28 12:00:00
     public void SubmitNewAppointment(ActionEvent actionEvent) {
 
         String sqlsubstring=AppointmentDatepicker.getValue()+" "+apphour.getValue()+":"+appmins.getValue()+":00";
+        String sqlstring="update appointments set "+namebox+"='"+sqlsubstring+"' where Appointment_ID="+ClickedAppointment_ID+";";
+        CustomerEditController.newsqldate=sqlstring;
+        CustomerEditController.newdatefrompick=sqlsubstring;
 
-        String sqlstring="update appointments set start='"+sqlsubstring+"' where Appointment_ID="+ClickedAppointment_ID+";";
-        System.out.println(sqlstring);
+
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
