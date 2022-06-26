@@ -1,4 +1,4 @@
-package Scenes;
+package Controllers;
 
 public class AddNewAppointment {
 }
