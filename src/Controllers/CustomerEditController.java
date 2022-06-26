@@ -276,26 +276,26 @@ public class CustomerEditController {
             if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
                 String sqlstring = "update appointments set Customer_ID=" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
                 String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                String last_updatesql = "update appointments set Last_Update = now() where Customer_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String last_updatesql = "update appointments set Last_Update = now() where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
                 AppointmentModSqlCommandsSaved.add(sqlstring);
                 AppointmentModSqlCommandsSaved.add(updatedbysql);
                 AppointmentModSqlCommandsSaved.add(last_updatesql);
             }
-            if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
-                String sqlstring = "update appointments set Customer_ID=" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                String last_updatesql = "update appointments set Last_Update = now() where Customer_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                AppointmentModSqlCommandsSaved.add(sqlstring);
-                AppointmentModSqlCommandsSaved.add(updatedbysql);
-                AppointmentModSqlCommandsSaved.add(last_updatesql);
+            if (!DefaultAppointmentsUser_ID.get(x).equals(SelectedAppointment.User_IDComboBox.getValue().toString())) {
+                String sqlstring2 = "update appointments set User_ID=" + SelectedAppointment.User_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String updatedbysql2 = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String last_updatesql2 = "update appointments set Last_Update = now() where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                AppointmentModSqlCommandsSaved.add(sqlstring2);
+                AppointmentModSqlCommandsSaved.add(updatedbysql2);
+                AppointmentModSqlCommandsSaved.add(last_updatesql2);
             }
-            if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
-                String sqlstring = "update appointments set Customer_ID=" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                String last_updatesql = "update appointments set Last_Update = now() where Customer_ID=" + SelectedAppointment.getAppointment_ID() + ";";
-                AppointmentModSqlCommandsSaved.add(sqlstring);
-                AppointmentModSqlCommandsSaved.add(updatedbysql);
-                AppointmentModSqlCommandsSaved.add(last_updatesql);
+            if (!DefaultAppointmentsContact_ID.get(x).equals(SelectedAppointment.ContactIDComboBox.getValue().toString())) {
+                String sqlstring3 = "update appointments set Contact_ID=" + SelectedAppointment.ContactIDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String updatedbysql3 = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String last_updatesql3 = "update appointments set Last_Update = now() where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                AppointmentModSqlCommandsSaved.add(sqlstring3);
+                AppointmentModSqlCommandsSaved.add(updatedbysql3);
+                AppointmentModSqlCommandsSaved.add(last_updatesql3);
             }
             x++;
 
