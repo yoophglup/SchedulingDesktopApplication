@@ -38,11 +38,11 @@ public class MainMenuController {
     }
 
 
-    public void ApointmentEditor(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AppointmentEditor.fxml")));
+    public void AddNewAppointment(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewAppointment.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 750, 400);
-        stage.setTitle("Main Menu");
+        stage.setTitle("Add a new Appointment");
         stage.setScene(scene);
         stage.show();
     }

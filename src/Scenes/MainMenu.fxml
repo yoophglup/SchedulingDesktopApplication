@@ -9,11 +9,10 @@
    <children>
       <AnchorPane prefHeight="200.0" prefWidth="340.0">
          <children>
-            <Button layoutX="167.0" layoutY="31.0" mnemonicParsing="false" onAction="#LoadCustomerEditor" text="Edit Customer Records" />
+            <Button layoutX="39.0" layoutY="36.0" mnemonicParsing="false" onAction="#LoadCustomerEditor" prefHeight="38.0" prefWidth="265.0" text="Edit Customer or Appointments" />
             <Button layoutX="269.0" layoutY="161.0" mnemonicParsing="false" onAction="#ExitApplication" text="Exit" />
-            <Button layoutX="161.0" layoutY="75.0" mnemonicParsing="false" onAction="#ApointmentEditor" text="Edit Apointment Records" />
             <Button layoutX="188.0" layoutY="122.0" mnemonicParsing="false" onAction="#LoadScheduler" text="Desktop Scheduler" />
-            <Text layoutX="29.0" layoutY="83.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a button to continue." wrappingWidth="105.390625">
+            <Text layoutX="52.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a button to continue." wrappingWidth="105.390625">
                <font>
                   <Font size="18.0" />
                </font>
