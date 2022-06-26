@@ -1,5 +1,15 @@
 package Model;
 
+import Controllers.JDBC;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableColumn;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 public class Appointment {
     private Integer appointment_ID;
     private String Title;
@@ -15,16 +25,17 @@ public class Appointment {
     private Integer Customer_ID;
     private Integer User_ID;
     private Integer Contact_ID;
+    public ComboBox Customer_IDComboBox;
+    public ComboBox User_IDComboBox;
+    public ComboBox ContactIDComboBox;
 
-    public Appointment(Integer appointment_ID, String title, String description, String location, String type, String start, String end, String create_Date, String create_By, String last_Update, String last_Updated_by, Integer customer_ID, Integer user_ID, Integer contact_ID) {
+    public Appointment(Integer appointment_ID, String title, String description, String location, String type, String start, String end, String create_Date, String create_By, String last_Update, String last_Updated_by, Integer customer_ID, Integer user_ID, Integer contact_ID) throws SQLException {
         this.appointment_ID = appointment_ID;
         Title = title;
         Description = description;
         Location = location;
         Type = type;
         Start = start;
-
-
         End = end;
         Create_Date=create_Date;
         Created_By=create_By;
@@ -33,6 +44,66 @@ public class Appointment {
         Customer_ID = customer_ID;
         User_ID = user_ID;
         Contact_ID = contact_ID;
+
+        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_ID from customers;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        ObservableList<Integer> all_Customer_IDList = FXCollections.observableArrayList();
+        while (resultSet.next()) {
+            Integer thisStringID=resultSet.getInt("Customer_ID");
+            all_Customer_IDList.add(thisStringID);
+        }
+        this.Customer_IDComboBox=new ComboBox(FXCollections.observableArrayList(all_Customer_IDList).sorted());
+        this.Customer_IDComboBox.setValue(Customer_ID);
+
+
+        PreparedStatement preparedStatement2 = JDBC.getConnection().prepareStatement("select User_ID from users;");
+        ResultSet resultSet2 = preparedStatement2.executeQuery();
+        ObservableList<Integer> all_User_IDList = FXCollections.observableArrayList();
+        while (resultSet2.next()) {
+            Integer thisStringID=resultSet2.getInt("User_ID");
+            all_User_IDList.add(thisStringID);
+        }
+        this.User_IDComboBox=new ComboBox(FXCollections.observableArrayList(all_User_IDList).sorted());
+        this.User_IDComboBox.setValue(User_ID);
+
+
+
+        PreparedStatement preparedStatement3 = JDBC.getConnection().prepareStatement("select Contact_ID from contacts;");
+        ResultSet resultSet3 = preparedStatement3.executeQuery();
+        ObservableList<Integer> all_contact_IDList = FXCollections.observableArrayList();
+        while (resultSet3.next()) {
+            Integer thisStringID=resultSet3.getInt("Contact_ID");
+            all_contact_IDList.add(thisStringID);
+        }
+        this.ContactIDComboBox=new ComboBox(FXCollections.observableArrayList(all_contact_IDList).sorted());
+        this.ContactIDComboBox.setValue(Contact_ID);
+
+
+
+    }
+
+    public void setCustomer_IDComboBox(ComboBox customer_IDComboBox) {
+        Customer_IDComboBox = customer_IDComboBox;
+    }
+
+    public void setUser_IDComboBox(ComboBox user_IDComboBox) {
+        User_IDComboBox = user_IDComboBox;
+    }
+
+    public void setContactIDComboBox(ComboBox contactIDComboBox) {
+        ContactIDComboBox = contactIDComboBox;
+    }
+
+    public ComboBox getCustomer_IDComboBox() {
+        return Customer_IDComboBox;
+    }
+
+    public ComboBox getUser_IDComboBox() {
+        return User_IDComboBox;
+    }
+
+    public ComboBox getContactIDComboBox() {
+        return ContactIDComboBox;
     }
 
     public String getCreate_Date() {

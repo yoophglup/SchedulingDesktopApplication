@@ -67,12 +67,20 @@ public class CustomerEditController {
     public TableColumn Customer_ID1;
     public TableColumn User_ID1;
     public TableColumn ContactID1;
+    public TableColumn Customer_IDComboBox;
+    public TableColumn User_IDComboBox;
+    public TableColumn ContactIDComboBox;
     public ObservableList<Customer> AllCustomers;
+    public ObservableList<Appointment> AllAppointments;
 
     public ObservableList<String> DefaultDivisions = FXCollections.observableArrayList();
+    public ObservableList<String> DefaultAppointmentsCustomer_ID = FXCollections.observableArrayList();
+    public ObservableList<String> DefaultAppointmentsUser_ID = FXCollections.observableArrayList();
+    public ObservableList<String> DefaultAppointmentsContact_ID = FXCollections.observableArrayList();
 
     public ObservableList<String> ModSqlCommandsSaved = FXCollections.observableArrayList();
     public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
+
 
 
     public void initialize() {
@@ -214,10 +222,25 @@ public class CustomerEditController {
         }
     }
 
-    public void saveAlteredAppointmentData(ActionEvent actionEvent) throws SQLException, IOException {
+    public void SaveCustomerData(ActionEvent actionEvent) throws SQLException, IOException {
+        ObservableList<String> hasDivisionschanged = FXCollections.observableArrayList();
+        ObservableList<Customer> selectlist = AllCustomers;
+        int x = 0;
+        for (Customer Selectedcustomer : selectlist) {
+            hasDivisionschanged.add(Selectedcustomer.DivisionCombobox.getValue().toString());
+            if (!DefaultDivisions.get(x).equals(Selectedcustomer.DivisionCombobox.getValue().toString())) {
+                String sqlstring = "update customers set Division_ID=(select Division_Id from first_level_divisions where Division='" + Selectedcustomer.DivisionCombobox.getValue().toString() + "') where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
+                String updatedbysql = "update customers set Last_Updated_By ='" + uservalue + "' where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
+                String last_updatesql = "update customers set Last_Update = now() where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
+                ModSqlCommandsSaved.add(sqlstring);
+                ModSqlCommandsSaved.add(updatedbysql);
+                ModSqlCommandsSaved.add(last_updatesql);
 
+            }
 
-        for (String st : AppointmentModSqlCommandsSaved) {
+            x++;
+        }
+        for (String st : ModSqlCommandsSaved) {
             System.out.println(st);
             PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
             thisSQLstatement.executeUpdate();
@@ -233,6 +256,66 @@ public class CustomerEditController {
         stage.show();
 
     }
+
+
+    public void saveAlteredAppointmentData(ActionEvent actionEvent) throws SQLException, IOException {
+        ObservableList<String> hasCustomer_IDchanged = FXCollections.observableArrayList();
+        ObservableList<String> hasUser_IDchanged = FXCollections.observableArrayList();
+        ObservableList<String> hasContact_IDchanged = FXCollections.observableArrayList();
+
+        ObservableList<Appointment> selectlist = AllAppointments;
+
+        int x = 0;
+        for (Appointment SelectedAppointment : selectlist) {
+            hasUser_IDchanged.add(SelectedAppointment.Customer_IDComboBox.getValue().toString());
+            hasCustomer_IDchanged.add(SelectedAppointment.Customer_IDComboBox.getValue().toString());
+            hasContact_IDchanged.add(SelectedAppointment.ContactIDComboBox.getValue().toString());
+
+            System.out.println(SelectedAppointment.Customer_IDComboBox.getValue().toString());
+            System.out.println(DefaultAppointmentsCustomer_ID.get(x));
+            if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
+                String sqlstring = "update appointments set Customer_ID=" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String last_updatesql = "update appointments set Last_Update = now() where Customer_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                AppointmentModSqlCommandsSaved.add(sqlstring);
+                AppointmentModSqlCommandsSaved.add(updatedbysql);
+                AppointmentModSqlCommandsSaved.add(last_updatesql);
+            }
+            if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
+                String sqlstring = "update appointments set Customer_ID=" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String last_updatesql = "update appointments set Last_Update = now() where Customer_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                AppointmentModSqlCommandsSaved.add(sqlstring);
+                AppointmentModSqlCommandsSaved.add(updatedbysql);
+                AppointmentModSqlCommandsSaved.add(last_updatesql);
+            }
+            if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
+                String sqlstring = "update appointments set Customer_ID=" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + " where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                String last_updatesql = "update appointments set Last_Update = now() where Customer_ID=" + SelectedAppointment.getAppointment_ID() + ";";
+                AppointmentModSqlCommandsSaved.add(sqlstring);
+                AppointmentModSqlCommandsSaved.add(updatedbysql);
+                AppointmentModSqlCommandsSaved.add(last_updatesql);
+            }
+            x++;
+
+        }
+            for (String st : AppointmentModSqlCommandsSaved) {
+                System.out.println(st);
+                PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
+                thisSQLstatement.executeUpdate();
+                System.out.println("Records Updated!");
+
+
+            }
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 850, 450);
+            stage.setTitle("Edit Customer Records");
+            stage.setScene(scene);
+            stage.show();
+        }
+
 
     public void loadAppointments(MouseEvent mouseEvent) throws SQLException {
         appointmentsTable.refresh();
@@ -268,9 +351,13 @@ public class CustomerEditController {
         Last_Updated_By1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Last_Updated_By"));
         ;
 
-        Customer_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Customer_ID"));
-        User_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("User_ID"));
-        ContactID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Contact_ID"));
+        //Customer_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Customer_ID"));
+        //User_ID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("User_ID"));
+        //ContactID1.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Contact_ID"));
+        //DivisionCombobox.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionCombobox"));
+        Customer_IDComboBox.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("Customer_IDComboBox"));
+        User_IDComboBox.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("User_IDComboBox"));
+        ContactIDComboBox.setCellValueFactory(new PropertyValueFactory<Appointment, Integer>("ContactIDComboBox"));
 
         ObservableList<Appointment> Appointmentlist = FXCollections.observableArrayList();
         ObservableList<Customer> clicklist = customertable.getSelectionModel().getSelectedItems();
@@ -302,12 +389,17 @@ public class CustomerEditController {
             Integer thisCustomer_ID = apresults.getInt("Customer_ID");
             Integer thisUser_ID = apresults.getInt("User_ID");
             Integer thisContact_ID = apresults.getInt("Contact_ID");
+
             Appointment thisappointment = new Appointment(thisappointmentID, thisTitle, thisDescription, thisLocation, thisType, thisStart, thisEnd, thisCreate_date, thisCreate_by, thisLastUpdate, thisLastUpdatedby, thisCustomer_ID, thisUser_ID, thisContact_ID);
+            DefaultAppointmentsCustomer_ID.add(thisappointment.getCustomer_ID().toString());
+            DefaultAppointmentsUser_ID.add(thisappointment.getUser_ID().toString());
+            DefaultAppointmentsContact_ID.add(thisappointment.getContact_ID().toString());
+
             Appointmentlist.add(thisappointment);
             System.out.println(thisCreate_date);
         }
         appointmentsTable.setItems(Appointmentlist);
-
+            AllAppointments=Appointmentlist;
     }
 
     public void DeleteAppointment(ActionEvent actionEvent) {
@@ -383,42 +475,8 @@ public class CustomerEditController {
         AppointmentModSqlCommandsSaved.add(sqlstring);
     }
 
-    public void SaveCustomerData(ActionEvent actionEvent) throws SQLException, IOException {
-        ObservableList<String> hasDivisionschanged = FXCollections.observableArrayList();
-        ObservableList<Customer> selectlist = AllCustomers;
-        int x = 0;
-        for (Customer Selectedcustomer : selectlist) {
-            hasDivisionschanged.add(Selectedcustomer.DivisionCombobox.getValue().toString());
-            if (!DefaultDivisions.get(x).equals(Selectedcustomer.DivisionCombobox.getValue().toString())) {
-                String sqlstring = "update customers set Division_ID=(select Division_Id from first_level_divisions where Division='" + Selectedcustomer.DivisionCombobox.getValue().toString() + "') where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
-                String updatedbysql = "update customers set Last_Updated_By ='" + uservalue + "' where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
-                String last_updatesql = "update customers set Last_Update = now() where Customer_ID=" + Selectedcustomer.getCustomer_ID() + ";";
-                ModSqlCommandsSaved.add(sqlstring);
-                ModSqlCommandsSaved.add(updatedbysql);
-                ModSqlCommandsSaved.add(last_updatesql);
 
-            }
-
-            x++;
-        }
-        for (String st : ModSqlCommandsSaved) {
-            System.out.println(st);
-            PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
-            thisSQLstatement.executeUpdate();
-            System.out.println("Records Updated!");
-
-
-        }
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 850, 450);
-        stage.setTitle("Edit Customer Records");
-        stage.setScene(scene);
-        stage.show();
-
-    }
-
-    public void appointmenteditCommit(TableColumn.CellEditEvent event) throws IOException {
+    public void appointmenteditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox="Start";
 
         Appointmentpicker.olddatevalue= String.valueOf(event.getNewValue());
@@ -468,7 +526,7 @@ public class CustomerEditController {
 
     }
 
-    public void appointmenteditEndCommit(TableColumn.CellEditEvent event) throws IOException {
+    public void appointmenteditEndCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox="End";
         Appointmentpicker.olddatevalue= String.valueOf(event.getNewValue());
         System.out.println("Entered date: "+Appointmentpicker.olddatevalue);
