@@ -1,10 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
-
+<?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SchedulerController">
    <children>
-      <AnchorPane layoutX="-8.0" layoutY="-6.0" prefHeight="406.0" prefWidth="609.0" />
+      <AnchorPane layoutX="-8.0" layoutY="-6.0" prefHeight="429.0" prefWidth="618.0">
+         <children>
+            <ComboBox fx:id="User_ID_combo" layoutX="26.0" layoutY="37.0" prefHeight="25.0" prefWidth="112.0" />
+             <TableView fx:id="appointmentsTable" layoutX="66.0" layoutY="222.0" prefHeight="155.0" prefWidth="678.0">
+                 <columns>
+                     <TableColumn fx:id="Appointment_ID" prefWidth="103.0" text="Appointment_ID" />
+                     <TableColumn fx:id="Title" minWidth="0.0" prefWidth="44.0" text="Title" />
+                     <TableColumn fx:id="Description" minWidth="0.0" prefWidth="157.0" text="Description" />
+                     <TableColumn fx:id="Location" minWidth="0.0" prefWidth="88.0" text="Location" />
+                     <TableColumn fx:id="Type" minWidth="0.0" prefWidth="123.0" text="Type" />
+                     <TableColumn fx:id="Start" minWidth="0.0" prefWidth="134.0" text="Start" />
+                     <TableColumn fx:id="End" minWidth="0.0" prefWidth="128.0" text="End" />
+                     <TableColumn fx:id="Customer_ID" minWidth="0.0" prefWidth="94.0" text="Customer_ID" />
+                     <TableColumn fx:id="User_ID" minWidth="0.0" prefWidth="65.0" text="User_ID" />
+
+                 </columns>
+             </TableView>
+            <RadioButton layoutX="168.0" layoutY="69.0" mnemonicParsing="false" text="Month" />
+            <RadioButton layoutX="273.0" layoutY="69.0" mnemonicParsing="false" text="Week" />
+            <Text layoutX="518.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" />
+         </children></AnchorPane>
    </children>
 </AnchorPane>
