@@ -70,6 +70,8 @@ public class Appointmentpicker {
     }
 
     public void CancelSetNewAppointment(ActionEvent actionEvent) {
+        CustomerEditController.newdatefrompick=olddatevalue;
+
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }

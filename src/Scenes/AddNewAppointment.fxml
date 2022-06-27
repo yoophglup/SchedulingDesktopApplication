@@ -8,9 +8,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="414.0" prefWidth="642.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddNewAppointment">
+<AnchorPane prefHeight="438.0" prefWidth="551.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.AddNewAppointment">
    <children>
-      <Text layoutX="9.0" layoutY="73.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a New Appointment" textAlignment="CENTER" wrappingWidth="617.693359375">
+      <Text layoutX="15.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Add a New Appointment" textAlignment="CENTER" wrappingWidth="520.693359375">
          <font>
             <Font size="36.0" />
          </font>
@@ -24,22 +24,22 @@
       <Text layoutX="33.0" layoutY="330.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Date:" />
       <Text layoutX="318.0" layoutY="144.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Type:" />
       <Text layoutX="36.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Date:" wrappingWidth="63.0" />
-      <TextField fx:id="Customer_Name_input3" layoutX="116.0" layoutY="100.0" />
-      <TextField fx:id="Customer_Name_input4" layoutX="352.0" layoutY="99.0" />
-      <TextField fx:id="Customer_Name_input5" layoutX="116.0" layoutY="127.0" />
-      <TextField fx:id="Customer_Name_input6" layoutX="352.0" layoutY="127.0" />
-      <ComboBox layoutX="116.0" layoutY="184.0" prefHeight="25.0" prefWidth="73.0" />
-      <ComboBox layoutX="114.0" layoutY="257.0" prefWidth="150.0" />
-      <ComboBox layoutX="439.0" layoutY="351.0" prefHeight="25.0" prefWidth="62.0" />
-      <ComboBox layoutX="368.0" layoutY="352.0" prefHeight="25.0" prefWidth="50.0" />
-      <ComboBox layoutX="117.0" layoutY="222.0" prefHeight="25.0" prefWidth="73.0" />
-      <ComboBox layoutX="368.0" layoutY="313.0" prefHeight="25.0" prefWidth="48.0" />
-      <ComboBox layoutX="438.0" layoutY="313.0" prefHeight="25.0" prefWidth="63.0" />
+      <TextField fx:id="TitletextInput" layoutX="116.0" layoutY="100.0" />
+      <TextField fx:id="DescriptionTextInput" layoutX="352.0" layoutY="99.0" />
+      <TextField fx:id="LocationTextInput" layoutX="116.0" layoutY="127.0" />
+      <TextField fx:id="TypeTextInput" layoutX="352.0" layoutY="127.0" />
+      <ComboBox fx:id="CustomerNameCbox" layoutX="116.0" layoutY="184.0" prefHeight="25.0" prefWidth="149.0" />
+      <ComboBox fx:id="emailCbox" layoutX="117.0" layoutY="257.0" onAction="#ContactEmailComboBoxHasAction" prefHeight="25.0" prefWidth="149.0" />
+      <ComboBox fx:id="EndMinCbox" layoutX="434.0" layoutY="352.0" prefHeight="25.0" prefWidth="73.0" />
+      <ComboBox fx:id="EndHourCbox" layoutX="356.0" layoutY="352.0" prefHeight="25.0" prefWidth="62.0" />
+      <ComboBox fx:id="ContactNameCbox" layoutX="117.0" layoutY="222.0" onAction="#ContactNameComboBoxHasAction" prefHeight="25.0" prefWidth="149.0" />
+      <ComboBox fx:id="StartHourCbox" layoutX="356.0" layoutY="313.0" prefHeight="25.0" prefWidth="62.0" />
+      <ComboBox fx:id="StartMinCbox" layoutX="434.0" layoutY="313.0" prefHeight="25.0" prefWidth="73.0" />
       <Text layoutX="274.0" layoutY="201.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text layoutX="530.0" layoutY="204.0" strokeType="OUTSIDE" strokeWidth="0.0" />
       <Text layoutX="24.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contact E-Mail:" />
-      <DatePicker layoutX="99.0" layoutY="313.0" prefHeight="25.0" prefWidth="167.0" />
-      <DatePicker layoutX="99.0" layoutY="350.0" prefHeight="25.0" prefWidth="167.0" />
+      <DatePicker fx:id="StartDatePick" layoutX="99.0" layoutY="313.0" prefHeight="25.0" prefWidth="167.0" />
+      <DatePicker fx:id="EndDatePick" layoutX="99.0" layoutY="350.0" prefHeight="25.0" prefWidth="167.0" />
       <Text layoutX="424.0" layoutY="335.0" strokeType="OUTSIDE" strokeWidth="0.0" text=":">
          <font>
             <Font size="25.0" />
@@ -50,11 +50,11 @@
             <Font size="25.0" />
          </font>
       </Text>
-      <Text layoutX="367.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User:" />
-      <ComboBox layoutX="403.0" layoutY="235.0" prefHeight="25.0" prefWidth="133.0" />
-      <Button layoutX="573.0" layoutY="377.0" mnemonicParsing="false" text="Submit" />
-      <Button layoutX="510.0" layoutY="377.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
+      <Text layoutX="324.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID:" />
+      <ComboBox fx:id="UserCbox" layoutX="373.0" layoutY="235.0" prefHeight="25.0" prefWidth="133.0" />
+      <Button layoutX="470.0" layoutY="403.0" mnemonicParsing="false" onAction="#submitNewAppointment" text="Submit" />
+      <Button layoutX="403.0" layoutY="405.0" mnemonicParsing="false" onAction="#cancel" text="Cancel" />
       <Text layoutX="290.0" layoutY="329.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
-      <Text layoutX="289.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Start Time:" />
+      <Text layoutX="292.0" layoutY="369.0" strokeType="OUTSIDE" strokeWidth="0.0" text="End Time:" />
    </children>
 </AnchorPane>

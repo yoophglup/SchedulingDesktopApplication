@@ -584,7 +584,7 @@ public class CustomerEditController {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewAppointment.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 400);
+        Scene scene = new Scene(root, 550, 450);
         stage.setTitle("Add a new Appointment");
         stage.setScene(scene);
         stage.show();

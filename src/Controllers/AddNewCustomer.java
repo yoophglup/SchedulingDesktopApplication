@@ -12,6 +12,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -47,7 +48,34 @@ public class AddNewCustomer {
 
     }
 
-    public void addNewCustomer(ActionEvent actionEvent) {
+    public void addNewCustomer(ActionEvent actionEvent) throws SQLException, IOException {
+        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Max(Customer_ID) from customers;");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        Integer CustomerID = null;
+        while (resultSet.next()) {
+            CustomerID = resultSet.getInt("Max(Customer_ID)") + 1;
+        }
+        System.out.println(CustomerID);
+        String Customer_Name= Customer_Name_input.getText();
+        String Address=Address_input.getText();
+        String Postal=Postal_Code_input.getText();
+        String Phone= Phone_input.getText();
+        String Create_Date="NOW()";
+        String Created_By=CustomerEditController.uservalue;
+        String Last_Update="NOW()";
+        String Last_Updated_BY=CustomerEditController.uservalue;
+        String Division_ID="(select Division_ID from first_level_divisions where Division='"+Division_input.getValue().toString()+"')";
+        String AddNewCustomerSQL="insert into customers values("+CustomerID+",\""+Customer_Name+"\",'"+Address+"','"+Postal+"','"+Phone+"',"+Create_Date+",'"+Created_By+"',"+Last_Update+",'"+Last_Updated_BY+"',"+Division_ID+");";
+        System.out.println(AddNewCustomerSQL);
+        preparedStatement = JDBC.getConnection().prepareStatement(AddNewCustomerSQL);
+        preparedStatement.execute();
+
+        Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 850, 450);
+        stage.setTitle("Edit Customer Records");
+        stage.setScene(scene);
+        stage.show();
 
     }
 }
