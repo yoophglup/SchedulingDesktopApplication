@@ -37,6 +37,8 @@ public class CustomerEditController {
     public static String newsqldate;
     public static String newdatefrompick;
     public static String selectedcustomerID;
+    public static boolean isfromschedular;
+    public static Integer schedularselectedcustomerID;
 
     public TableView customertable;
     public TableColumn Customer_Name;
@@ -83,7 +85,7 @@ public class CustomerEditController {
     public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
 
 
-    public void initialize() {
+    public void initialize() throws SQLException {
         try {
             TableView tableView = customertable;
             customertable.setEditable(true);
@@ -147,7 +149,7 @@ public class CustomerEditController {
             System.out.println("Error on Building Data");
             System.out.println(e);
         }
-
+        loadAppointments(null);
     }
 
     public void switchSceneAddNewCustomer(ActionEvent actionEvent) throws Exception {
@@ -360,6 +362,10 @@ public class CustomerEditController {
             ClickedCustomer_ID = ct.getCustomer_ID();
         }
         selectedcustomerID=ClickedCustomer_ID.toString();
+        if (isfromschedular){
+            ClickedCustomer_ID = schedularselectedcustomerID;
+            isfromschedular=false;
+        }
         System.out.println("Loading Appointments from Clicked user" + ClickedCustomer_ID);
         PreparedStatement sqlappointment = JDBC.getConnection().prepareStatement("select * from appointments where Customer_ID=" + ClickedCustomer_ID);
         ResultSet apresults = sqlappointment.executeQuery();

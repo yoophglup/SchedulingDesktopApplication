@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TableColumn?>
@@ -7,12 +8,12 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SchedulerController">
+<AnchorPane prefHeight="363.0" prefWidth="702.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.SchedulerController">
    <children>
-      <AnchorPane layoutX="-8.0" layoutY="-6.0" prefHeight="429.0" prefWidth="618.0">
+      <AnchorPane fx:id="AllRadio" layoutX="-10.0" layoutY="-16.0" onDragDetected="#AllRadioClicked" prefHeight="379.0" prefWidth="698.0">
          <children>
-            <ComboBox fx:id="User_ID_combo" layoutX="26.0" layoutY="37.0" prefHeight="25.0" prefWidth="112.0" />
-             <TableView fx:id="appointmentsTable" layoutX="66.0" layoutY="222.0" prefHeight="155.0" prefWidth="678.0">
+            <ComboBox fx:id="User_ID_combo" layoutX="26.0" layoutY="37.0" onAction="#IDChanged" prefHeight="25.0" prefWidth="112.0" />
+             <TableView fx:id="appointmentsTable" layoutX="14.0" layoutY="158.0" onMouseClicked="#selectappointment" prefHeight="155.0" prefWidth="678.0">
                  <columns>
                      <TableColumn fx:id="Appointment_ID" prefWidth="103.0" text="Appointment_ID" />
                      <TableColumn fx:id="Title" minWidth="0.0" prefWidth="44.0" text="Title" />
@@ -26,9 +27,13 @@
 
                  </columns>
              </TableView>
-            <RadioButton layoutX="168.0" layoutY="69.0" mnemonicParsing="false" text="Month" />
-            <RadioButton layoutX="273.0" layoutY="69.0" mnemonicParsing="false" text="Week" />
-            <Text layoutX="518.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" />
+            <RadioButton fx:id="MonthRadio" layoutX="449.0" layoutY="102.0" mnemonicParsing="false" onAction="#MonthRadioClicked" text="Month" />
+            <RadioButton fx:id="WeekRadio" layoutX="302.0" layoutY="102.0" mnemonicParsing="false" onAction="#WeekRadioClicked" text="Week" />
+            <Text layoutX="311.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Appointments" />
+            <Button layoutX="640.0" layoutY="330.0" mnemonicParsing="false" onAction="#ReturntoMenu" text="Return" />
+            <Button layoutX="518.0" layoutY="330.0" mnemonicParsing="false" onAction="#EditAppointment" text="Edit Appointment" />
+            <Button layoutX="367.0" layoutY="330.0" mnemonicParsing="false" onAction="#AddNewAppointment" text="Add New Appointment" />
+            <RadioButton fx:id="AllViewRadio" layoutX="153.0" layoutY="102.0" mnemonicParsing="false" onAction="#AllRadioClicked" text="All" />
          </children></AnchorPane>
    </children>
 </AnchorPane>
