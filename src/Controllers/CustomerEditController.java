@@ -224,6 +224,11 @@ public class CustomerEditController {
                     try {
                         PreparedStatement del = JDBC.getConnection().prepareStatement("delete from customers where Customer_ID=" + ct.getCustomer_ID());
                         del.executeUpdate();
+                        Alert deletedone = new Alert(Alert.AlertType.INFORMATION);
+                        deletedone.setTitle("INFORMATION");
+                        deletedone.setHeaderText("The selected customer "+ct.getCustomer_ID()+" has been deleted..");
+                        deletedone.setContentText("Delete Complete!");
+                        deletedone.showAndWait();
                         System.out.println("Deleted");
                     } catch (Exception e) {
                         System.out.println(e);
@@ -475,6 +480,11 @@ public class CustomerEditController {
                 try {
                     PreparedStatement deleteAppointment = JDBC.getConnection().prepareStatement("delete from appointments where Appointment_ID=" + SelectedAppointment.getAppointment_ID());
                     deleteAppointment.executeUpdate();
+                    Alert deletedone = new Alert(Alert.AlertType.INFORMATION);
+                    deletedone.setTitle("INFORMATION");
+                    deletedone.setHeaderText("The selected appointment has been deleted..");
+                    deletedone.setContentText("Appointment ID "+SelectedAppointment.getAppointment_ID()+" with the type " +SelectedAppointment.getType()+" has been canceled. Delete Complete!");
+                    deletedone.showAndWait();
                     System.out.println("Deleted");
                     try {
                         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));

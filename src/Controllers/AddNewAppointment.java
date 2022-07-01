@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.*;
 import java.util.Objects;
 
 public class AddNewAppointment {
@@ -151,8 +152,33 @@ public class AddNewAppointment {
         String Description=DescriptionTextInput.getText();
         String Location= LocationTextInput.getText();
         String Type=TypeTextInput.getText();
+
         String Start=StartDatePick.getValue().toString()+" "+StartHourCbox.getValue().toString()+":"+StartMinCbox.getValue().toString();
+        Start=Start+":00";
+        LocalDate localcreateDate = LocalDate.parse(Start.substring(0,10));
+        LocalTime localCreateTime = LocalTime.parse(Start.substring(11,19));
+        ZoneId UTCZone= ZoneId.of("UTC");
+        ZoneId localZoneId = ZoneId.systemDefault();
+        ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
+        Instant llc= ThisCreate_date.toInstant();
+        ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(UTCZone);
+        ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(localZoneId);
+        Start=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
+
+
         String End=EndDatePick.getValue().toString()+" "+EndHourCbox.getValue().toString()+":"+EndMinCbox.getValue().toString();
+        End=End+":00";
+        localcreateDate = LocalDate.parse(End.substring(0,10));
+        localCreateTime = LocalTime.parse(End.substring(11,19));
+        UTCZone= ZoneId.of("UTC");
+        localZoneId = ZoneId.systemDefault();
+        ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
+        llc= ThisCreate_date.toInstant();
+        ddc = ThisCreate_date.withZoneSameInstant(UTCZone);
+        ddl = ThisCreate_date.withZoneSameInstant(localZoneId);
+        End=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
+
+
         String Create_Date="NOW()";
         String Created_By=CustomerEditController.uservalue;
         String Last_Update="NOW()";
