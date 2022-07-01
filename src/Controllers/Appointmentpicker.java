@@ -9,7 +9,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 
-import java.time.LocalDate;
+import java.time.*;
 
 import static java.lang.String.valueOf;
 
@@ -58,9 +58,21 @@ public class Appointmentpicker {
     public void SubmitNewAppointment(ActionEvent actionEvent) {
 
         String sqlsubstring=AppointmentDatepicker.getValue()+" "+apphour.getValue()+":"+appmins.getValue()+":00";
+        LocalDate localcreateDate = LocalDate.parse(sqlsubstring.substring(0,10));
+        LocalTime localCreateTime = LocalTime.parse(sqlsubstring.substring(11,19));
+        ZoneId UTCZone= ZoneId.of("UTC");
+        ZoneId localZoneId = ZoneId.systemDefault();
+        ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
+        Instant llc= ThisCreate_date.toInstant();
+        ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(UTCZone);
+        ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(localZoneId);
+
+        sqlsubstring=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
+        String formdata=ddl.toString().replaceFirst("T"," ").substring(0,16)+":00";
+        System.out.println("sqlsub "+sqlsubstring);
         String sqlstring="update appointments set "+namebox+"='"+sqlsubstring+"' where Appointment_ID="+ClickedAppointment_ID+";";
         CustomerEditController.newsqldate=sqlstring;
-        CustomerEditController.newdatefrompick=sqlsubstring;
+        CustomerEditController.newdatefrompick=formdata;
 
 
 

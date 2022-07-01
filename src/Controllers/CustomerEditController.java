@@ -27,7 +27,8 @@ import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
+import java.time.*;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -130,9 +131,30 @@ public class CustomerEditController {
                 String thisphone = rs.getString("Phone");
                 String thisdivision = rs.getString("Division");
                 Integer thisdivisionid = rs.getInt("Division_ID");
+
                 String thisCreate_Date = rs.getString("Create_Date");
+                LocalDate localcreateDate = LocalDate.parse(thisCreate_Date.substring(0,10));
+                LocalTime localCreateTime = LocalTime.parse(thisCreate_Date.substring(11,19));
+                ZoneId UTCZone= ZoneId.of("UTC");
+                ZoneId localZoneId = ZoneId.systemDefault();
+                ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
+                Instant llc= ThisCreate_date.toInstant();
+                ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
+                thisCreate_Date=ddc.toString().replaceFirst("T"," ").substring(0,19);
+
+
                 String thisCreate_By = rs.getString("Created_By");
+
                 String thisLast_Update = rs.getString("Last_Update");
+                localcreateDate = LocalDate.parse(thisLast_Update.substring(0,10));
+                localCreateTime = LocalTime.parse(thisLast_Update.substring(11,19));
+                UTCZone= ZoneId.of("UTC");
+                localZoneId = ZoneId.systemDefault();
+                ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
+                llc= ThisCreate_date.toInstant();
+                ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
+                thisLast_Update=ddc.toString().replaceFirst("T"," ").substring(0,19);
+
                 String thisLast_Updated_By = rs.getString("Last_Updated_By");
                 Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision, thisdivisionid, thisCreate_Date, thisCreate_By, thisLast_Update, thisLast_Updated_By);
                 allcust.add(thiscustomer);
@@ -377,19 +399,55 @@ public class CustomerEditController {
 
             String thisLocation = apresults.getString("Location");
             String thisType = apresults.getString("Type");
+
             String thisStart = apresults.getString("Start");
 
+            LocalDate localcreateDate = LocalDate.parse(thisStart.substring(0,10));
+            LocalTime localCreateTime = LocalTime.parse(thisStart.substring(11,19));
+            ZoneId UTCZone= ZoneId.of("UTC");
+            ZoneId localZoneId = ZoneId.systemDefault();
+            ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
+            Instant llc= ThisCreate_date.toInstant();
+            ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
+            thisStart=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
+
             String thisEnd = apresults.getString("End");
+            localcreateDate = LocalDate.parse(thisEnd.substring(0,10));
+            localCreateTime = LocalTime.parse(thisEnd.substring(11,19));
+            UTCZone= ZoneId.of("UTC");
+            localZoneId = ZoneId.systemDefault();
+            ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
+            llc= ThisCreate_date.toInstant();
+            ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
+            thisEnd=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
+
 
             String thisCreate_date = apresults.getString("Create_Date");
+            localcreateDate = LocalDate.parse(thisCreate_date.substring(0,10));
+            localCreateTime = LocalTime.parse(thisCreate_date.substring(11,19));
+            UTCZone= ZoneId.of("UTC");
+            localZoneId = ZoneId.systemDefault();
+            ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
+            llc= ThisCreate_date.toInstant();
+            ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
+            thisCreate_date=ddc.toString().replaceFirst("T"," ").substring(0,19);
 
             String thisCreate_by = apresults.getString("Created_By");
+
             String thisLastUpdate = apresults.getString("Last_Update");
+            localcreateDate = LocalDate.parse(thisLastUpdate.substring(0,10));
+            localCreateTime = LocalTime.parse(thisLastUpdate.substring(11,19));
+            UTCZone= ZoneId.of("UTC");
+            localZoneId = ZoneId.systemDefault();
+            ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
+            llc= ThisCreate_date.toInstant();
+            ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
+            thisLastUpdate=ddc.toString().replaceFirst("T"," ").substring(0,19);
+
             String thisLastUpdatedby = apresults.getString("Last_Updated_By");
             Integer thisCustomer_ID = apresults.getInt("Customer_ID");
             Integer thisUser_ID = apresults.getInt("User_ID");
             Integer thisContact_ID = apresults.getInt("Contact_ID");
-
             Appointment thisappointment = new Appointment(thisappointmentID, thisTitle, thisDescription, thisLocation, thisType, thisStart, thisEnd, thisCreate_date, thisCreate_by, thisLastUpdate, thisLastUpdatedby, thisCustomer_ID, thisUser_ID, thisContact_ID);
             DefaultAppointmentsCustomer_ID.add(thisappointment.getCustomer_ID().toString());
             DefaultAppointmentsUser_ID.add(thisappointment.getUser_ID().toString());
