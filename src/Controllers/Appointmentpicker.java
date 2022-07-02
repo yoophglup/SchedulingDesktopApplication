@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
@@ -54,7 +55,7 @@ public class Appointmentpicker {
         appmins.setItems(minslist);
         appmins.setValue(dmins);
     }
-    //2020-05-28 12:00:00
+
     public void SubmitNewAppointment(ActionEvent actionEvent) {
 
         String sqlsubstring=AppointmentDatepicker.getValue()+" "+apphour.getValue()+":"+appmins.getValue()+":00";

@@ -7,19 +7,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import javax.security.auth.callback.Callback;
 import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
+import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class AddNewAppointment {
+    public Boolean DoNotLeave=false;
+
     public TextField DescriptionTextInput;
     public TextField TitletextInput;
     public TextField LocationTextInput;
@@ -103,8 +105,8 @@ public class AddNewAppointment {
         StartMinCbox.setItems(minslist);
         EndMinCbox.setItems(minslist);
 
-
-
+        StartDatePick.setValue(LocalDate.of(1998,10,8));
+        EndDatePick.setValue(LocalDate.of(1998,10,9));
     }
 
     public void cancel(ActionEvent actionEvent) throws Exception {
@@ -117,7 +119,23 @@ public class AddNewAppointment {
 
     }
 
+    public void checkinput(String datestring){
+        DayOfWeek Saturday=LocalDate.of(1980,10,04).getDayOfWeek();
+        DayOfWeek Sunday=LocalDate.of(1980,10,05).getDayOfWeek();
+        System.out.println(datestring.substring(0,10));
+       LocalDate thisdate=LocalDate.parse(datestring.substring(0,10));
+        System.out.println("look "+thisdate.getDayOfWeek().toString().substring(0,1));
+        if (thisdate.getDayOfWeek()==Saturday | thisdate.getDayOfWeek()==Sunday){
+            DoNotLeave=true;
+            Alert areyousure = new Alert(Alert.AlertType.ERROR);
+            areyousure.setTitle("Unable to Schedule Appointment");
+            areyousure.setHeaderText("The date chosen is outside of business hours.");
+            areyousure.setContentText("Please choose a new date");
+            areyousure.showAndWait();
+        }else    {    DoNotLeave=false;    }
 
+
+    }
     public void ContactNameComboBoxHasAction(ActionEvent actionEvent) throws SQLException {
         String newContactName=ContactNameCbox.getValue().toString();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Email from contacts where Contact_Name='" + newContactName + "';");
@@ -152,8 +170,8 @@ public class AddNewAppointment {
         String Description=DescriptionTextInput.getText();
         String Location= LocationTextInput.getText();
         String Type=TypeTextInput.getText();
-
         String Start=StartDatePick.getValue().toString()+" "+StartHourCbox.getValue().toString()+":"+StartMinCbox.getValue().toString();
+        checkinput(Start);
         Start=Start+":00";
         LocalDate localcreateDate = LocalDate.parse(Start.substring(0,10));
         LocalTime localCreateTime = LocalTime.parse(Start.substring(11,19));
@@ -187,10 +205,13 @@ public class AddNewAppointment {
         String User_ID=UserCbox.getValue().toString();
         String Contact_ID="(Select Contact_ID from contacts where Email='"+emailCbox.getValue().toString()+"')";
         System.out.println(AppointmentID);
+
+
         System.out.println(Title);
         System.out.println(Description);
         System.out.println(Location);
         System.out.println(Type);
+
         System.out.println(Start);
         System.out.println(End);
         System.out.println(Create_Date);
@@ -210,13 +231,14 @@ public class AddNewAppointment {
             System.out.println("Unable to Add appointment");
             System.out.println(e);
         }
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 850, 450);
-        stage.setTitle("Edit Customer Records");
-        stage.setScene(scene);
-        stage.show();
-
+        if (DoNotLeave==false) {
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, 850, 450);
+            stage.setTitle("Edit Customer Records");
+            stage.setScene(scene);
+            stage.show();
+        }
 
     }
 }

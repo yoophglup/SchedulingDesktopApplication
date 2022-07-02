@@ -29,6 +29,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
 import java.time.format.DateTimeFormatterBuilder;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -40,7 +41,7 @@ public class CustomerEditController {
     public static String selectedcustomerID;
     public static boolean isfromschedular;
     public static Integer schedularselectedcustomerID;
-
+    public String ChangedData;
     public TableView customertable;
     public TableColumn Customer_Name;
     public TableColumn Customer_ID;
@@ -53,6 +54,8 @@ public class CustomerEditController {
     public TableColumn Create_By;
     public TableColumn Last_Update;
     public TableColumn Last_Updated_By;
+    public ObservableList<String> Changedatalist=FXCollections.observableArrayList();
+    public ObservableList<String> ChangedatalistR=FXCollections.observableArrayList();
 
 
     public Button AddNewButton;
@@ -389,6 +392,7 @@ public class CustomerEditController {
             ClickedCustomer_ID = ct.getCustomer_ID();
         }
         selectedcustomerID=ClickedCustomer_ID.toString();
+
         if (isfromschedular){
             ClickedCustomer_ID = schedularselectedcustomerID;
             isfromschedular=false;
@@ -535,6 +539,12 @@ public class CustomerEditController {
         for (Appointment apt : clicklist) {
             ClickedAppointment_ID = apt.getAppointment_ID();
         }
+        cellEditEvent.getTablePosition().getRow();
+        ChangedData=String.valueOf(cellEditEvent.getTablePosition().getRow())+tablename;
+        ChangedatalistR.add(ChangedData);
+        Changedatalist.add(newvalue);
+
+        Changedatalist.contains()
         String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + ClickedAppointment_ID + ";";
         String last_updatesql = "update appointments set Last_Update = now() where Appointment_ID=" + ClickedAppointment_ID + ";";
         String sqlstring = "update appointments set " + tablename + " = '" + newvalue + "' where Appointment_ID=" + ClickedAppointment_ID + ";";
@@ -567,18 +577,45 @@ public class CustomerEditController {
         System.out.println(appointmentsTable.getEditingCell().getTableColumn().getCellObservableValue(0).getValue());
         System.out.println(newsqldate);
         System.out.println(newdatefrompick);
-        ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        //ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        ObservableList<Appointment> currentlist = appointmentsTable.getItems();
         ObservableList<Appointment> EditedAppointmentlist = FXCollections.observableArrayList();
+        Integer count=0;
+        for (String thisstring : Changedatalist){
+            System.out.println("thisstring: "+thisstring);
+            System.out.println("thisstring: "+thisstring.);
+
+
+        }
         for (Appointment SingleAppointment : currentlist) {
+
             System.out.println(SingleAppointment.getAppointment_ID());
             Integer thisappointmentID = SingleAppointment.getAppointment_ID();
+
             String thisTitle = SingleAppointment.getTitle();
+
+            //look here thats not right;
+            if (ChangedatalistR.contains(count+thisTitle)){
+                thisTitle=Changedatalist.get(count);
+            }
             System.out.println(appointmentsTable.getItems());
+
             String thisDescription = SingleAppointment.getDescription();
+
             String thisLocation = SingleAppointment.getLocation();
+
             String thisType = SingleAppointment.getType();
-            String thisStart = newdatefrompick;
+
+            String thisStart=SingleAppointment.getStart();
+
+            System.out.println(event.getTablePosition().getRow());
+
+            if (event.getTablePosition().getRow()==count){
+            thisStart = newdatefrompick;}
+
             String thisEnd = SingleAppointment.getEnd();
+
+
             String thisCreate_date = SingleAppointment.getCreate_Date();
             String thisCreate_by = SingleAppointment.getCreated_By();
             String thisLastUpdate = SingleAppointment.getLast_Update();
@@ -588,6 +625,7 @@ public class CustomerEditController {
             Integer thisContact_ID = SingleAppointment.getContact_ID();
             Appointment thisappointment = new Appointment(thisappointmentID, thisTitle, thisDescription, thisLocation, thisType, thisStart, thisEnd, thisCreate_date, thisCreate_by, thisLastUpdate, thisLastUpdatedby, thisCustomer_ID, thisUser_ID, thisContact_ID);
             EditedAppointmentlist.add(thisappointment);
+            count++;
         }
         appointmentsTable.setItems(EditedAppointmentlist);
         AppointmentModSqlCommandsSaved.add(newsqldate);
