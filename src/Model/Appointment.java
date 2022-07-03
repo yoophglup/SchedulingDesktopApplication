@@ -45,15 +45,19 @@ public class Appointment {
         User_ID = user_ID;
         Contact_ID = contact_ID;
 
-        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_ID from customers;");
+        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_ID,Customer_Name from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();
         ObservableList<Integer> all_Customer_IDList = FXCollections.observableArrayList();
+        ObservableList<String> all_Customer_NameList = FXCollections.observableArrayList();
+
         while (resultSet.next()) {
             Integer thisStringID=resultSet.getInt("Customer_ID");
+            String thisCustomerName=resultSet.getString("Customer_Name");
             all_Customer_IDList.add(thisStringID);
+            all_Customer_NameList.add(thisCustomerName);
         }
-        this.Customer_IDComboBox=new ComboBox(FXCollections.observableArrayList(all_Customer_IDList).sorted());
-        this.Customer_IDComboBox.setValue(Customer_ID);
+        this.Customer_IDComboBox=new ComboBox(FXCollections.observableArrayList(all_Customer_NameList).sorted());
+        this.Customer_IDComboBox.setValue(all_Customer_NameList.get(all_Customer_IDList.indexOf(Customer_ID)));
 
 
         PreparedStatement preparedStatement2 = JDBC.getConnection().prepareStatement("select User_ID from users;");
@@ -68,16 +72,19 @@ public class Appointment {
 
 
 
-        PreparedStatement preparedStatement3 = JDBC.getConnection().prepareStatement("select Contact_ID from contacts;");
+        PreparedStatement preparedStatement3 = JDBC.getConnection().prepareStatement("select Contact_Name,Contact_ID from contacts;");
         ResultSet resultSet3 = preparedStatement3.executeQuery();
         ObservableList<Integer> all_contact_IDList = FXCollections.observableArrayList();
+        ObservableList<String> all_contact_namelist = FXCollections.observableArrayList();
+
         while (resultSet3.next()) {
             Integer thisStringID=resultSet3.getInt("Contact_ID");
+            String thisContactName=resultSet3.getString("Contact_Name");
             all_contact_IDList.add(thisStringID);
+            all_contact_namelist.add(thisContactName);
         }
-        this.ContactIDComboBox=new ComboBox(FXCollections.observableArrayList(all_contact_IDList).sorted());
-        this.ContactIDComboBox.setValue(Contact_ID);
-
+        this.ContactIDComboBox=new ComboBox(FXCollections.observableArrayList(all_contact_namelist).sorted());
+        this.ContactIDComboBox.setValue(all_contact_namelist.get(all_contact_IDList.indexOf(Contact_ID)));
 
 
     }
