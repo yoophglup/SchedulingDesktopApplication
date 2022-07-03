@@ -573,9 +573,11 @@ public class CustomerEditController {
             ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
         }
         Appointmentpicker.ClickedAppointment_ID = ClickedAppointment_ID;
+
+
+
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/appointmentpicker.fxml")));
         Scene scene = new Scene(root, 380, 200);
-
         Stage stage2 = new Stage();
         stage2.setTitle("Pick a New Date");
         stage2.setScene(scene);
@@ -662,31 +664,40 @@ public class CustomerEditController {
         for (Appointment SingleAppointment : clicklist) {
             ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
         }
-        Appointmentpicker.ClickedAppointment_ID = ClickedAppointment_ID;
+
+
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/appointmentpicker.fxml")));
         Scene scene = new Scene(root, 380, 200);
-
         Stage stage2 = new Stage();
         stage2.setTitle("Pick a New Date");
         stage2.setScene(scene);
         stage2.setAlwaysOnTop(true);
         stage2.showAndWait();
 
-        System.out.println(appointmentsTable.getEditingCell().getTableColumn().getCellObservableValue(0).getValue());
-        System.out.println(newsqldate);
-        System.out.println(newdatefrompick);
-        ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        //ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
+        ObservableList<Appointment> currentlist = appointmentsTable.getItems();
         ObservableList<Appointment> EditedAppointmentlist = FXCollections.observableArrayList();
+        Integer count=0;
+        //ChangedatalistId
+        //ChangedatalistRow
+        //ChangedatelistColumn
+        //Changedatalistvalue
+
         for (Appointment SingleAppointment : currentlist) {
-            System.out.println(SingleAppointment.getAppointment_ID());
             Integer thisappointmentID = SingleAppointment.getAppointment_ID();
             String thisTitle = SingleAppointment.getTitle();
-            System.out.println(appointmentsTable.getItems());
             String thisDescription = SingleAppointment.getDescription();
             String thisLocation = SingleAppointment.getLocation();
             String thisType = SingleAppointment.getType();
-            String thisStart = SingleAppointment.getStart();
-            String thisEnd = newdatefrompick;
+            String thisStart=SingleAppointment.getStart();
+
+            System.out.println(event.getTablePosition().getRow());
+
+
+
+            String thisEnd = SingleAppointment.getEnd();
+            if (event.getTablePosition().getRow()==count){
+                thisEnd = newdatefrompick;}
             String thisCreate_date = SingleAppointment.getCreate_Date();
             String thisCreate_by = SingleAppointment.getCreated_By();
             String thisLastUpdate = SingleAppointment.getLast_Update();
@@ -694,11 +705,45 @@ public class CustomerEditController {
             Integer thisCustomer_ID = SingleAppointment.getCustomer_ID();
             Integer thisUser_ID = SingleAppointment.getUser_ID();
             Integer thisContact_ID = SingleAppointment.getContact_ID();
+            System.out.println(ChangedatalistId.contains(SingleAppointment.getCustomer_ID().toString()));
+            Boolean hasthisIDbeenedited = ChangedatalistId.contains(thisappointmentID.toString());
+            while (hasthisIDbeenedited){
+                hasthisIDbeenedited = ChangedatalistId.contains(thisappointmentID.toString());
+                if (hasthisIDbeenedited){
+                    int changedindex=ChangedatalistId.lastIndexOf(thisappointmentID.toString());
+                    int changedcolumn=Integer.parseInt(ChangedatelistColumn.get(changedindex));
+                    System.out.println(changedcolumn);
+                    if (changedcolumn==1){
+                        thisTitle = Changedatalistvalue.get(changedindex);
+                    }
+                    if (changedcolumn==2){
+                        thisDescription = Changedatalistvalue.get(changedindex);
+                    }
+                    if (changedcolumn==3){
+                        thisLocation = Changedatalistvalue.get(changedindex);
+                    }
+                    if (changedcolumn==4){
+                        thisType = Changedatalistvalue.get(changedindex);
+                    }
+
+                    System.out.println("this Customer ID has been edited: "+ChangedatalistId);
+                    System.out.println("A value changed and stored coresponding to  "+changedindex);
+                    System.out.println("The edited column is "+ChangedatelistColumn.get(changedindex));
+                    System.out.println("the new value is "+Changedatalistvalue.get(changedindex));
+                    ChangedatalistId.remove(changedindex);
+                    ChangedatelistColumn.remove(changedindex);
+                    Changedatalistvalue.remove(changedindex);
+                }}
+
+
+
             Appointment thisappointment = new Appointment(thisappointmentID, thisTitle, thisDescription, thisLocation, thisType, thisStart, thisEnd, thisCreate_date, thisCreate_by, thisLastUpdate, thisLastUpdatedby, thisCustomer_ID, thisUser_ID, thisContact_ID);
             EditedAppointmentlist.add(thisappointment);
+            count++;
         }
         appointmentsTable.setItems(EditedAppointmentlist);
         AppointmentModSqlCommandsSaved.add(newsqldate);
+
 
     }
 
