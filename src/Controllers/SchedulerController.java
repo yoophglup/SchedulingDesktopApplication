@@ -194,7 +194,9 @@ public class SchedulerController {
             if (daysapart < viewselected){
                 System.out.println(thisappointment.getAppointment_ID()+" is "+daysapart+" days apart, which is less than "+viewselected+"days away.");
                 Appointmentlist.add(thisappointment);
-            }else {System.out.println(thisappointment.getAppointment_ID()+" is "+daysapart+" days apart, which is more than "+viewselected+"days away.");
+                System.out.println("Added to appointment list : "+thisappointment.getCustomer_ID() );
+            }else {
+                System.out.println(thisappointment.getAppointment_ID()+" is "+daysapart+" days apart, which is more than "+viewselected+"days away.");
             }
         }
         appointmentsTable.setItems(Appointmentlist);

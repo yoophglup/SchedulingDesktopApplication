@@ -20,7 +20,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.Objects;
 
 public class AddNewAppointment {
-    public Boolean DoNotLeave=false;
+    public Boolean DoNotLeave = false;
 
     public TextField DescriptionTextInput;
     public TextField TitletextInput;
@@ -40,7 +40,7 @@ public class AddNewAppointment {
     public void initialize() throws SQLException {
         System.out.println(CustomerEditController.uservalue);
         System.out.println(CustomerEditController.selectedcustomerID);
-        ObservableList<String> AllCustomerNames= FXCollections.observableArrayList();
+        ObservableList<String> AllCustomerNames = FXCollections.observableArrayList();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -48,13 +48,13 @@ public class AddNewAppointment {
             AllCustomerNames.add(thisString);
         }
         CustomerNameCbox.setItems(AllCustomerNames);
-        preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers where Customer_ID="+CustomerEditController.selectedcustomerID+";");
+        preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers where Customer_ID=" + CustomerEditController.selectedcustomerID + ";");
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             String thisString = resultSet.getString("Customer_Name");
             CustomerNameCbox.setValue(thisString);
         }
-        ObservableList<String> AllEmails= FXCollections.observableArrayList();
+        ObservableList<String> AllEmails = FXCollections.observableArrayList();
         preparedStatement = JDBC.getConnection().prepareStatement("select Email from contacts;");
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -62,7 +62,7 @@ public class AddNewAppointment {
             AllEmails.add(thisString);
         }
         emailCbox.setItems(AllEmails);
-        ObservableList<String> AllContacts= FXCollections.observableArrayList();
+        ObservableList<String> AllContacts = FXCollections.observableArrayList();
         preparedStatement = JDBC.getConnection().prepareStatement("select Contact_Name from contacts;");
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -70,7 +70,7 @@ public class AddNewAppointment {
             AllContacts.add(thisString);
         }
         ContactNameCbox.setItems(AllContacts);
-        ObservableList<String> Allusers= FXCollections.observableArrayList();
+        ObservableList<String> Allusers = FXCollections.observableArrayList();
         preparedStatement = JDBC.getConnection().prepareStatement("select User_ID from users;");
         resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
@@ -78,22 +78,22 @@ public class AddNewAppointment {
             Allusers.add(thisString);
         }
         UserCbox.setItems(Allusers.sorted());
-        ObservableList<String> hourlist=FXCollections.observableArrayList();
-        ObservableList<String> minslist=FXCollections.observableArrayList();
+        ObservableList<String> hourlist = FXCollections.observableArrayList();
+        ObservableList<String> minslist = FXCollections.observableArrayList();
 
-        for (int x=8;x<22;x++){
-            if (x<10) {
-                hourlist.add("0"+String.valueOf(x));
-            }else{
+        for (int x = 8; x < 22; x++) {
+            if (x < 10) {
+                hourlist.add("0" + String.valueOf(x));
+            } else {
                 hourlist.add(String.valueOf(x));
 
             }
 
         }
-        for (int x=0;x<60;x++){
-            if (x<10) {
-                minslist.add("0"+String.valueOf(x));
-            }else{
+        for (int x = 0; x < 60; x++) {
+            if (x < 10) {
+                minslist.add("0" + String.valueOf(x));
+            } else {
                 minslist.add(String.valueOf(x));
 
             }
@@ -105,13 +105,13 @@ public class AddNewAppointment {
         StartMinCbox.setItems(minslist);
         EndMinCbox.setItems(minslist);
 
-        StartDatePick.setValue(LocalDate.of(1998,10,8));
-        EndDatePick.setValue(LocalDate.of(1998,10,9));
+        StartDatePick.setValue(LocalDate.now());
+        EndDatePick.setValue(LocalDate.now());
     }
 
     public void cancel(ActionEvent actionEvent) throws Exception {
-        Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
-        Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
@@ -119,23 +119,58 @@ public class AddNewAppointment {
 
     }
 
-    public void checkinput(String datestring){
-        DayOfWeek Saturday=LocalDate.of(1980,10,04).getDayOfWeek();
-        DayOfWeek Sunday=LocalDate.of(1980,10,05).getDayOfWeek();
-        System.out.println(datestring.substring(0,10));
-       LocalDate thisdate=LocalDate.parse(datestring.substring(0,10));
-        System.out.println("look "+thisdate.getDayOfWeek().toString().substring(0,1));
-        if (thisdate.getDayOfWeek()==Saturday | thisdate.getDayOfWeek()==Sunday){
-            DoNotLeave=true;
+    public void checkinput(String Startstring,String EndString) throws SQLException {
+        DayOfWeek Saturday = LocalDate.of(1980, 10, 04).getDayOfWeek();
+        DayOfWeek Sunday = LocalDate.of(1980, 10, 05).getDayOfWeek();
+        System.out.println(Startstring);
+        System.out.println(EndString);
+
+        LocalDate thisdate = LocalDate.parse(Startstring.substring(0, 10));
+        //LocalDate localcreateDate = LocalDate.parse(Startstring.substring(0,10));
+        //LocalTime localCreateTime = LocalTime.parse(Startstring.substring(11,18));
+
+
+        System.out.println("look " + thisdate.getDayOfWeek().toString().substring(0, 1));
+        if (thisdate.getDayOfWeek() == Saturday | thisdate.getDayOfWeek() == Sunday) {
+            DoNotLeave = true;
             Alert areyousure = new Alert(Alert.AlertType.ERROR);
             areyousure.setTitle("Unable to Schedule Appointment");
             areyousure.setHeaderText("The date chosen is outside of business hours.");
             areyousure.setContentText("Please choose a new date");
             areyousure.showAndWait();
-        }else    {    DoNotLeave=false;    }
+        } else {
+            DoNotLeave = false;
+        }
+        if (DoNotLeave == false) {
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + Startstring + "' >= Start) as StartData,('" + EndString + "' <= End) as EndData from appointments;");
+            System.out.println(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer St = resultSet.getInt("StartData");
+                Integer En = resultSet.getInt("EndData");
+                System.out.println("St : "+St);
+                System.out.println("EN : "+En);
+                if (St == 1 & En == 1) {
+                    DoNotLeave = true;
+                    Alert areyousure = new Alert(Alert.AlertType.ERROR);
+                    areyousure.setTitle("Unable to Schedule Appointment");
+                    areyousure.setHeaderText("The date chosen is Overlapping another Appointment.");
+                    areyousure.setContentText("Please choose a new date");
+                    areyousure.showAndWait();
+                }
+
+
+            }
+
+        }
 
 
     }
+
+
+
+
+
     public void ContactNameComboBoxHasAction(ActionEvent actionEvent) throws SQLException {
         String newContactName=ContactNameCbox.getValue().toString();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Email from contacts where Contact_Name='" + newContactName + "';");
@@ -171,7 +206,6 @@ public class AddNewAppointment {
         String Location= LocationTextInput.getText();
         String Type=TypeTextInput.getText();
         String Start=StartDatePick.getValue().toString()+" "+StartHourCbox.getValue().toString()+":"+StartMinCbox.getValue().toString();
-        checkinput(Start);
         Start=Start+":00";
         LocalDate localcreateDate = LocalDate.parse(Start.substring(0,10));
         LocalTime localCreateTime = LocalTime.parse(Start.substring(11,19));
@@ -204,6 +238,9 @@ public class AddNewAppointment {
         String Customer_ID="(Select Customer_ID from customers where Customer_Name='"+CustomerNameCbox.getValue().toString()+"')";
         String User_ID=UserCbox.getValue().toString();
         String Contact_ID="(Select Contact_ID from contacts where Email='"+emailCbox.getValue().toString()+"')";
+
+        checkinput(Start,End);
+
         System.out.println(AppointmentID);
 
 
