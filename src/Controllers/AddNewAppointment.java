@@ -1,5 +1,6 @@
 package Controllers;
 
+import Model.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -119,15 +120,17 @@ public class AddNewAppointment {
 
     }
 
-    public void checkinput(String Startstring,String EndString) throws SQLException {
+    public void checkinput(String Startstring, String EndString, String CustomerID) throws SQLException {
         DayOfWeek Saturday = LocalDate.of(1980, 10, 04).getDayOfWeek();
         DayOfWeek Sunday = LocalDate.of(1980, 10, 05).getDayOfWeek();
         System.out.println(Startstring);
         System.out.println(EndString);
 
         LocalDate thisdate = LocalDate.parse(Startstring.substring(0, 10));
-        //LocalDate localcreateDate = LocalDate.parse(Startstring.substring(0,10));
-        //LocalTime localCreateTime = LocalTime.parse(Startstring.substring(11,18));
+        LocalDate thisStartDate = LocalDate.parse(Startstring.substring(0,10));
+        LocalTime thisStartTime = LocalTime.parse(Startstring.substring(11,19));
+        LocalDate thisEndDate = LocalDate.parse(Startstring.substring(0,10));
+        LocalTime thisEndTime = LocalTime.parse(Startstring.substring(11,19));
 
 
         System.out.println("look " + thisdate.getDayOfWeek().toString().substring(0, 1));
@@ -142,15 +145,18 @@ public class AddNewAppointment {
             DoNotLeave = false;
         }
         if (DoNotLeave == false) {
-            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + Startstring + "' >= Start) as StartData,('" + EndString + "' <= End) as EndData from appointments;");
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + Startstring + "' >= Start) as StartSData,('" + Startstring + "' < End) as StartEData,('"+  EndString + "' >= Start) as EndSData,('" + EndString + "' < End) as EndEData from appointments where Customer_ID="+CustomerID);
             System.out.println(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
-                Integer St = resultSet.getInt("StartData");
-                Integer En = resultSet.getInt("EndData");
+                Integer St = resultSet.getInt("StartSData");
+                Integer En = resultSet.getInt("StartEData");
+                Integer EnSt = resultSet.getInt("EndSData");
+                Integer EnEn = resultSet.getInt("EndEData");
+
                 System.out.println("St : "+St);
                 System.out.println("EN : "+En);
-                if (St == 1 & En == 1) {
+                if ((St == 1 & En == 1)|(EnSt == 1 & EnEn==1)) {
                     DoNotLeave = true;
                     Alert areyousure = new Alert(Alert.AlertType.ERROR);
                     areyousure.setTitle("Unable to Schedule Appointment");
@@ -239,7 +245,7 @@ public class AddNewAppointment {
         String User_ID=UserCbox.getValue().toString();
         String Contact_ID="(Select Contact_ID from contacts where Email='"+emailCbox.getValue().toString()+"')";
 
-        checkinput(Start,End);
+        checkinput(Start,End,Customer_ID);
 
         System.out.println(AppointmentID);
 
@@ -260,15 +266,16 @@ public class AddNewAppointment {
         System.out.println(Contact_ID);
         String NewAppointmentSQL="Insert into appointments values ("+AppointmentID+",'"+Title+"','"+Description+"','"+Location+"','"+Type+"','"+Start+"','"+End+"',"+Create_Date+",'"+Created_By+"',"+Last_Update+",'"+Last_Updated_By+"',"+Customer_ID+","+User_ID+","+Contact_ID+")";
         System.out.println(NewAppointmentSQL);
+        if (DoNotLeave==false){
         try {
             preparedStatement = JDBC.getConnection().prepareStatement(NewAppointmentSQL);
+
             preparedStatement.execute();
         }
         catch (Exception e){
             System.out.println("Unable to Add appointment");
             System.out.println(e);
         }
-        if (DoNotLeave==false) {
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 850, 450);
