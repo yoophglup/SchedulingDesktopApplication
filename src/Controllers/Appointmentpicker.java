@@ -10,6 +10,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.*;
 
 import static java.lang.String.valueOf;
@@ -18,11 +21,14 @@ public class Appointmentpicker {
     public static String olddatevalue;
     public static Integer ClickedAppointment_ID;
     public static String namebox;
+    public Boolean DoNotLeave = false;
 
     public DatePicker AppointmentDatepicker;
     public ComboBox apphour;
     public ComboBox appmins;
     public ObservableList<String> hourslist = FXCollections.observableArrayList();
+    public ObservableList<String> hourlist = FXCollections.observableArrayList();
+
     public ObservableList<String> minslist = FXCollections.observableArrayList();
 
     public void initialize() {
@@ -40,18 +46,31 @@ public class Appointmentpicker {
                 minslist.add(valueOf(i));
 
             }
+            LocalDate NowDate= LocalDate.now();
+            hourlist.clear();
+            for (int y = 0; y < 14; y++) {
+                LocalTime OpenTimeETC = LocalTime.of(8 + y, 00, 00);
+                ZonedDateTime OpenDateETC = ZonedDateTime.of(NowDate, OpenTimeETC, ZoneId.of("America/New_York"));
+                ZonedDateTime LocalOpenTime = OpenDateETC.withZoneSameInstant(ZoneId.systemDefault());
+                System.out.println(LocalOpenTime);
+                String thishour="0"+String.valueOf(LocalOpenTime.getHour());
+                hourlist.add(thishour.substring(thishour.length()-2));
+
+            }
+
 
         }
+
+        apphour.setItems(hourlist.sorted());
+        apphour.setValue(hourlist.get(0));
+
 
         //AppointmentDatepicker.setValue(LocalDate.parse(olddatevalue));
         String ddate=olddatevalue.substring(0,10);
         String dhour=olddatevalue.substring(11,13);
         String dmins=olddatevalue.substring(14,16);
-
-        System.out.println(ddate+"|"+dhour+"|"+dmins);
         AppointmentDatepicker.setValue(LocalDate.parse(ddate));
-        apphour.setItems(hourslist);
-        apphour.setValue(dhour);
+        //apphour.setItems(hourslist);
         appmins.setItems(minslist);
         appmins.setValue(dmins);
     }
@@ -76,12 +95,10 @@ public class Appointmentpicker {
         CustomerEditController.newdatefrompick=formdata;
 
 
-
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
 
     }
-
     public void CancelSetNewAppointment(ActionEvent actionEvent) {
         CustomerEditController.newdatefrompick=olddatevalue;
 

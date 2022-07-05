@@ -58,6 +58,7 @@ public class CustomerEditController {
     public ObservableList<String> ChangedatalistRow=FXCollections.observableArrayList();
     public ObservableList<String> ChangedatelistColumn=FXCollections.observableArrayList();
     public ObservableList<String> Changedatalistvalue=FXCollections.observableArrayList();
+    public Boolean DoNotLeave = false;
 
 
 

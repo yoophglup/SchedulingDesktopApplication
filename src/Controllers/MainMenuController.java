@@ -5,12 +5,45 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.time.*;
 import java.util.Objects;
 
 public class MainMenuController {
 
+
+    public Label AlertLabel;
+    public void initialize() throws SQLException {
+        AlertLabel.setText("");
+        LocalDate localcreateDate = LocalDate.now();
+        LocalTime localCreateTime = LocalTime.now();
+        ZoneId localZoneId = ZoneId.systemDefault();
+        ZoneId UTCZone = ZoneId.of("UTC");
+        ZonedDateTime LocalZonedNowDate = ZonedDateTime.of(localcreateDate, localCreateTime, localZoneId);
+        ZonedDateTime UTCLocalZonedNowDate = LocalZonedNowDate.withZoneSameInstant(UTCZone);
+
+        String StringUTCLocalZonedNowDate = UTCLocalZonedNowDate.toString().replaceFirst("T", " ").substring(0, 16) + ":00";
+        PreparedStatement sqlappointment = JDBC.getConnection().prepareStatement("select * from appointments where User_ID=(select User_ID from users where User_Name='" + CustomerEditController.uservalue + "') and Start > Now() And Start < Now()+Interval 15 minute;");
+        ResultSet apresults = sqlappointment.executeQuery();
+        while (apresults.next()) {
+            Integer thisappointmentID = apresults.getInt("Appointment_ID");
+            String Starttime = apresults.getString("Start");
+            LocalDate StarttimecreateDate = LocalDate.parse(Starttime.substring(0,10));
+            LocalTime StarttimeCreateTime = LocalTime.parse(Starttime.substring(11,19));
+            ZonedDateTime UTCStarttimeZonedNowDate =  ZonedDateTime.of(StarttimecreateDate, StarttimeCreateTime,UTCZone );
+            ZonedDateTime LocalStarttimeZonedNowDate =  UTCStarttimeZonedNowDate.withZoneSameInstant(localZoneId);
+            String StartString=LocalStarttimeZonedNowDate.toString().replaceFirst("T"," ").substring(0,16)+":00";
+            AlertLabel.setText(" Alert: An appointment is starting in less than 15 Minutes! \n " + "Appoinment #"+thisappointmentID+" Starts at "+StartString+" "+localZoneId);
+        }
+        if (AlertLabel.getText()==""){
+            AlertLabel.setText("There are no upcoming appointments.");
+        }
+    }
 
     public void LoadCustomerEditor(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));

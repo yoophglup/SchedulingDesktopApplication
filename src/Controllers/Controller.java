@@ -75,7 +75,7 @@ public class Controller {
                     CustomerEditController.uservalue=uservalue.getText();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root, 340, 200);
+                    Scene scene = new Scene(root, 600, 400);
                     stage.setTitle("Main Menu");
                     stage.setScene(scene);
                     stage.show();

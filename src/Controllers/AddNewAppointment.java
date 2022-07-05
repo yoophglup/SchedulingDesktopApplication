@@ -22,7 +22,7 @@ import java.util.Objects;
 
 public class AddNewAppointment {
     public Boolean DoNotLeave = false;
-
+    public Integer Alertnumber=0;
     public TextField DescriptionTextInput;
     public TextField TitletextInput;
     public TextField LocationTextInput;
@@ -37,6 +37,8 @@ public class AddNewAppointment {
     public DatePicker StartDatePick;
     public DatePicker EndDatePick;
     public ComboBox UserCbox;
+    public ObservableList<String> hourlist = FXCollections.observableArrayList();
+    public ObservableList<String> minslist = FXCollections.observableArrayList();
 
     public void initialize() throws SQLException {
         System.out.println(CustomerEditController.uservalue);
@@ -79,18 +81,10 @@ public class AddNewAppointment {
             Allusers.add(thisString);
         }
         UserCbox.setItems(Allusers.sorted());
-        ObservableList<String> hourlist = FXCollections.observableArrayList();
-        ObservableList<String> minslist = FXCollections.observableArrayList();
 
-        for (int x = 8; x < 22; x++) {
-            if (x < 10) {
-                hourlist.add("0" + String.valueOf(x));
-            } else {
-                hourlist.add(String.valueOf(x));
 
-            }
 
-        }
+
         for (int x = 0; x < 60; x++) {
             if (x < 10) {
                 minslist.add("0" + String.valueOf(x));
@@ -99,15 +93,38 @@ public class AddNewAppointment {
 
             }
 
-        }
+            LocalDate NowDate= LocalDate.now();
+            hourlist.clear();
+            for (int y = 0; y < 14; y++) {
+                LocalTime OpenTimeETC = LocalTime.of(8 + y, 00, 00);
+                ZonedDateTime OpenDateETC = ZonedDateTime.of(NowDate, OpenTimeETC, ZoneId.of("America/New_York"));
+                ZonedDateTime LocalOpenTime = OpenDateETC.withZoneSameInstant(ZoneId.systemDefault());
+                System.out.println(LocalOpenTime);
+                String thishour="0"+String.valueOf(LocalOpenTime.getHour());
+                hourlist.add(thishour.substring(thishour.length()-2));
 
-        StartHourCbox.setItems(hourlist);
-        EndHourCbox.setItems(hourlist);
+            }
+
+
+            }
+
+        StartHourCbox.setItems(hourlist.sorted());
+        EndHourCbox.setItems(hourlist.sorted());
         StartMinCbox.setItems(minslist);
         EndMinCbox.setItems(minslist);
-
+        StartMinCbox.setValue("00");
+        EndMinCbox.setValue("00");
         StartDatePick.setValue(LocalDate.now());
         EndDatePick.setValue(LocalDate.now());
+
+        PreparedStatement quickSQL = JDBC.getConnection().prepareStatement("Select User_ID from users where User_Name='"+CustomerEditController.uservalue+"';");
+        ObservableList<String> temp = FXCollections.observableArrayList();
+        ResultSet quickResults = quickSQL.executeQuery();
+        String UserID="";
+        while (quickResults.next()) {
+            UserID = quickResults.getString("User_ID");
+        }
+        UserCbox.setValue(UserID);
     }
 
     public void cancel(ActionEvent actionEvent) throws Exception {
@@ -121,29 +138,8 @@ public class AddNewAppointment {
     }
 
     public void checkinput(String Startstring, String EndString, String CustomerID) throws SQLException {
-        DayOfWeek Saturday = LocalDate.of(1980, 10, 04).getDayOfWeek();
-        DayOfWeek Sunday = LocalDate.of(1980, 10, 05).getDayOfWeek();
-        System.out.println(Startstring);
-        System.out.println(EndString);
-
-        LocalDate thisdate = LocalDate.parse(Startstring.substring(0, 10));
-        LocalDate thisStartDate = LocalDate.parse(Startstring.substring(0,10));
-        LocalTime thisStartTime = LocalTime.parse(Startstring.substring(11,19));
-        LocalDate thisEndDate = LocalDate.parse(Startstring.substring(0,10));
-        LocalTime thisEndTime = LocalTime.parse(Startstring.substring(11,19));
 
 
-        System.out.println("look " + thisdate.getDayOfWeek().toString().substring(0, 1));
-        if (thisdate.getDayOfWeek() == Saturday | thisdate.getDayOfWeek() == Sunday) {
-            DoNotLeave = true;
-            Alert areyousure = new Alert(Alert.AlertType.ERROR);
-            areyousure.setTitle("Unable to Schedule Appointment");
-            areyousure.setHeaderText("The date chosen is outside of business hours.");
-            areyousure.setContentText("Please choose a new date");
-            areyousure.showAndWait();
-        } else {
-            DoNotLeave = false;
-        }
         if (DoNotLeave == false) {
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + Startstring + "' >= Start) as StartSData,('" + Startstring + "' < End) as StartEData,('"+  EndString + "' >= Start) as EndSData,('" + EndString + "' < End) as EndEData from appointments where Customer_ID="+CustomerID);
             System.out.println(preparedStatement);
@@ -162,7 +158,10 @@ public class AddNewAppointment {
                     areyousure.setTitle("Unable to Schedule Appointment");
                     areyousure.setHeaderText("The date chosen is Overlapping another Appointment.");
                     areyousure.setContentText("Please choose a new date");
+                    System.out.println("Alert "+Alertnumber);
+                    if (Alertnumber==0){
                     areyousure.showAndWait();
+                    Alertnumber++;}
                 }
 
 
@@ -201,6 +200,11 @@ public class AddNewAppointment {
     }
 
     public void submitNewAppointment(ActionEvent actionEvent) throws SQLException, IOException {
+        System.out.println("Button Pressed setting Alertnumber "+Alertnumber );
+        Alertnumber=0;
+        DoNotLeave=false;
+        System.out.println("Button Pressed setting Alertnumber "+Alertnumber);
+
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Max(Appointment_ID) from appointments;");
         ResultSet resultSet = preparedStatement.executeQuery();
         Integer AppointmentID = null;
@@ -250,22 +254,9 @@ public class AddNewAppointment {
         System.out.println(AppointmentID);
 
 
-        System.out.println(Title);
-        System.out.println(Description);
-        System.out.println(Location);
-        System.out.println(Type);
 
-        System.out.println(Start);
-        System.out.println(End);
-        System.out.println(Create_Date);
-        System.out.println(Created_By);
-        System.out.println(Last_Update);
-        System.out.println(Last_Updated_By);
-        System.out.println(Customer_ID);
-        System.out.println(User_ID);
-        System.out.println(Contact_ID);
+
         String NewAppointmentSQL="Insert into appointments values ("+AppointmentID+",'"+Title+"','"+Description+"','"+Location+"','"+Type+"','"+Start+"','"+End+"',"+Create_Date+",'"+Created_By+"',"+Last_Update+",'"+Last_Updated_By+"',"+Customer_ID+","+User_ID+","+Contact_ID+")";
-        System.out.println(NewAppointmentSQL);
         if (DoNotLeave==false){
         try {
             preparedStatement = JDBC.getConnection().prepareStatement(NewAppointmentSQL);
@@ -273,7 +264,6 @@ public class AddNewAppointment {
             preparedStatement.execute();
         }
         catch (Exception e){
-            System.out.println("Unable to Add appointment");
             System.out.println(e);
         }
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
@@ -285,6 +275,8 @@ public class AddNewAppointment {
         }
 
     }
+
+
 }
 
 
