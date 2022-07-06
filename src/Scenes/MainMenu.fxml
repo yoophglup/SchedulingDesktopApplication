@@ -8,11 +8,12 @@
    <children>
       <AnchorPane layoutX="-10.0" layoutY="-7.0" prefHeight="301.0" prefWidth="432.0">
          <children>
-            <Button layoutX="204.0" layoutY="98.0" mnemonicParsing="false" onAction="#LoadCustomerEditor" prefHeight="38.0" prefWidth="197.0" text="Edit Customer and Appointments" />
-            <Button layoutX="45.0" layoutY="105.0" mnemonicParsing="false" onAction="#ExitApplication" text="Exit" />
-            <Button layoutX="244.0" layoutY="43.0" mnemonicParsing="false" onAction="#LoadScheduler" prefHeight="38.0" prefWidth="157.0" text="Desktop Scheduler" />
-            <Button layoutX="35.0" layoutY="37.0" mnemonicParsing="false" onAction="#Logout" text="Logout" />
-            <Label fx:id="AlertLabel" layoutX="37.0" layoutY="173.0" prefHeight="117.0" prefWidth="374.0" />
+            <Button layoutX="125.0" layoutY="113.0" mnemonicParsing="false" onAction="#LoadCustomerEditor" prefHeight="38.0" prefWidth="197.0" text="Edit Customer and Appointments" />
+            <Button layoutX="126.0" layoutY="202.0" mnemonicParsing="false" onAction="#ExitApplication" prefHeight="38.0" prefWidth="99.0" text="Exit" />
+            <Button layoutX="126.0" layoutY="69.0" mnemonicParsing="false" onAction="#LoadScheduler" prefHeight="38.0" prefWidth="197.0" text="Desktop Scheduler" />
+            <Button layoutX="231.0" layoutY="202.0" mnemonicParsing="false" onAction="#Logout" prefHeight="38.0" prefWidth="92.0" text="Logout" />
+            <Label fx:id="AlertLabel" layoutX="38.0" layoutY="249.0" prefHeight="64.0" prefWidth="374.0" />
+            <Button layoutX="126.0" layoutY="158.0" mnemonicParsing="false" onAction="#GenerateReports" prefHeight="38.0" prefWidth="197.0" text="Generate Reports" />
          </children>
       </AnchorPane>
    </children>

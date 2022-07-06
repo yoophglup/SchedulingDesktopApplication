@@ -5,9 +5,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -38,6 +40,11 @@ public class MainMenuController {
             ZonedDateTime UTCStarttimeZonedNowDate =  ZonedDateTime.of(StarttimecreateDate, StarttimeCreateTime,UTCZone );
             ZonedDateTime LocalStarttimeZonedNowDate =  UTCStarttimeZonedNowDate.withZoneSameInstant(localZoneId);
             String StartString=LocalStarttimeZonedNowDate.toString().replaceFirst("T"," ").substring(0,16)+":00";
+            Alert areyousure = new Alert(Alert.AlertType.CONFIRMATION);
+            areyousure.setTitle("INFORMATION");
+            areyousure.setHeaderText("An appointment assigned to your User ID is starting in less than 15 Minutes! ");
+            areyousure.setContentText(""+"Appoinment #"+thisappointmentID+" Starts at "+StartString+" "+localZoneId);
+            areyousure.showAndWait();
             AlertLabel.setText(" Alert: An appointment is starting in less than 15 Minutes! \n " + "Appoinment #"+thisappointmentID+" Starts at "+StartString+" "+localZoneId);
         }
         if (AlertLabel.getText()==""){
@@ -51,6 +58,7 @@ public class MainMenuController {
         Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -67,6 +75,7 @@ public class MainMenuController {
         Scene scene = new Scene(root, 340, 200);
         stage.setTitle("Main Menu");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -77,6 +86,7 @@ public class MainMenuController {
         Scene scene = new Scene(root, 750, 400);
         stage.setTitle("Add a new Appointment");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -86,6 +96,17 @@ public class MainMenuController {
         Scene scene = new Scene(root, 750, 400);
         stage.setTitle("Main Menu");
         stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    public void GenerateReports(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Reports.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 600, 450);
+        stage.setTitle("Generate Reports");
+        stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 }

@@ -133,6 +133,7 @@ public class AddNewAppointment {
         Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 
     }

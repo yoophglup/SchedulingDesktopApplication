@@ -188,6 +188,7 @@ public class CustomerEditController {
         Scene scene = new Scene(root, 640, 400);
         stage.setTitle("Add a New Customer");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 
 
@@ -196,9 +197,10 @@ public class CustomerEditController {
     public void LoadMainMenu(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 340, 200);
+        Scene scene = new Scene(root, 400, 350);
         stage.setTitle("Main Menu");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -766,6 +768,7 @@ public class CustomerEditController {
         Scene scene = new Scene(root, 550, 450);
         stage.setTitle("Add a new Appointment");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
     }
 }

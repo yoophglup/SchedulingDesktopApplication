@@ -15,14 +15,22 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Objects;
 
-public class Controller {
+import static java.nio.file.StandardOpenOption.APPEND;
+import static java.nio.file.StandardOpenOption.CREATE;
+
+public class LogInController {
     public Label outputbox;
     public Button login;
     public Label locationdata;
@@ -57,7 +65,13 @@ public class Controller {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
-
+    public void saveloginattempt(String Username, Boolean Password) throws IOException {
+        String logthis="LogIn Attempt: "+"UserID: "+Username+","+"Success: "+Password+" ZoneDateTimeStamp: "+ZonedDateTime.now().toString().replaceFirst("T"," ")+"\n";
+        System.out.println(logthis);
+        Path path = Path.of("login_activity.txt");
+        byte[] StringBytes = logthis.getBytes(StandardCharsets.UTF_8);
+        Files.write(path,StringBytes,CREATE,APPEND);
+    }
     public void validate(ActionEvent actionEvent) throws IOException {
 
         try {
@@ -68,6 +82,7 @@ public class Controller {
                 String pword=rs.getString("Password");
                 if (pword.equals(passvalue.getText())){
                     passwordsmatch=true;
+                    saveloginattempt(uservalue.getText(),passwordsmatch);
                     outputbox.setText("Welcome\n"+uservalue.getText());
                     if (Locale.getDefault()!=Locale.US) {
                         outputbox.setText("Bienvenue\n"+uservalue.getText());
@@ -75,15 +90,17 @@ public class Controller {
                     CustomerEditController.uservalue=uservalue.getText();
                     Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
                     Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-                    Scene scene = new Scene(root, 600, 400);
+                    Scene scene = new Scene(root, 400, 350);
                     stage.setTitle("Main Menu");
                     stage.setScene(scene);
+                    stage.centerOnScreen();
                     stage.show();
                     }
             }
 
-        if (passwordsmatch==false) {
-        outputbox.setText("Username or \npasssword is \nincorrect.\nTry Again");
+        if (!passwordsmatch) {
+            saveloginattempt(uservalue.getText(),passwordsmatch);
+            outputbox.setText("Username or \npasssword is \nincorrect.\nTry Again");
         if (Locale.getDefault()!=Locale.US){
             outputbox.setText("L'identifiant\n ou le mot de \npasse est incorrect. \nRéessayer.");
         }}} catch (SQLException throwables) {

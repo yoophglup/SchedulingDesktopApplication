@@ -33,7 +33,7 @@ public class AddNewCustomer {
             String thisStringDivision=resultSet.getString("Division");
             all_divisionsList.add(thisStringDivision);
         }
-            ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(all_divisionsList));
+            //ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(all_divisionsList));
         Division_input.setItems(all_divisionsList);
 
     }
@@ -44,6 +44,7 @@ public class AddNewCustomer {
         Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -75,6 +76,7 @@ public class AddNewCustomer {
         Scene scene = new Scene(root, 850, 450);
         stage.setTitle("Edit Customer Records");
         stage.setScene(scene);
+        stage.centerOnScreen();
         stage.show();
 
     }
