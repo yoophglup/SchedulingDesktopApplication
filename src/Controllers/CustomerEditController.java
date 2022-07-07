@@ -146,7 +146,6 @@ public class CustomerEditController {
                 ZoneId UTCZone= ZoneId.of("UTC");
                 ZoneId localZoneId = ZoneId.systemDefault();
                 ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
-                Instant llc= ThisCreate_date.toInstant();
                 ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
                 thisCreate_Date=ddc.toString().replaceFirst("T"," ").substring(0,19);
 
@@ -159,25 +158,20 @@ public class CustomerEditController {
                 UTCZone= ZoneId.of("UTC");
                 localZoneId = ZoneId.systemDefault();
                 ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
-                llc= ThisCreate_date.toInstant();
                 ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
                 thisLast_Update=ddc.toString().replaceFirst("T"," ").substring(0,19);
-
                 String thisLast_Updated_By = rs.getString("Last_Updated_By");
                 Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision, thisdivisionid, thisCreate_Date, thisCreate_By, thisLast_Update, thisLast_Updated_By);
                 allcust.add(thiscustomer);
             }
             AllCustomers = allcust;
             for (Customer Selectedcustomer : AllCustomers) {
-                //System.out.println(Selectedcustomer.DivisionCombobox.getValue().toString());
                 DefaultDivisions.add(Selectedcustomer.DivisionCombobox.getValue().toString());
             }
 
             tableView.setItems(allcust);
 
         } catch (SQLException e) {
-            System.out.println("Error on Building Data");
-            System.out.println(e);
         }
         loadAppointments(null);
     }
@@ -216,14 +210,12 @@ public class CustomerEditController {
                 existingapointments = true;
             }
             if (existingapointments == true) {
-                System.out.println("Unable to Delete due to existing appointments");
                 Alert ExistingAppointments = new Alert(Alert.AlertType.ERROR);
                 ExistingAppointments.setTitle("Unable to Delete Customer");
                 ExistingAppointments.setHeaderText("The customer has appoinments, you must first delete the appointments \nbefore you can delete the customer.");
                 ExistingAppointments.setContentText("Remove associated appointments first.");
                 ExistingAppointments.showAndWait();
             } else {
-                System.out.println("Deleting...");
                 Alert areyousure = new Alert(Alert.AlertType.CONFIRMATION);
                 areyousure.setTitle("CONFIRMATION");
                 areyousure.setHeaderText("You are about to delete the selected customer.");
@@ -239,10 +231,8 @@ public class CustomerEditController {
                         deletedone.setHeaderText("The selected customer "+ct.getCustomer_ID()+" has been deleted..");
                         deletedone.setContentText("Delete Complete!");
                         deletedone.showAndWait();
-                        System.out.println("Deleted");
                     } catch (Exception e) {
-                        System.out.println(e);
-                        System.out.println("Unable to Delete");
+
 
                     }
                 }
@@ -281,10 +271,8 @@ public class CustomerEditController {
             x++;
         }
         for (String st : ModSqlCommandsSaved) {
-            System.out.println(st);
             PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
             thisSQLstatement.executeUpdate();
-            System.out.println("Records Updated!");
 
 
         }
@@ -311,8 +299,6 @@ public class CustomerEditController {
             hasCustomer_IDchanged.add(SelectedAppointment.Customer_IDComboBox.getValue().toString());
             hasContact_IDchanged.add(SelectedAppointment.ContactIDComboBox.getValue().toString());
 
-            System.out.println(SelectedAppointment.Customer_IDComboBox.getValue().toString());
-            System.out.println(DefaultAppointmentsCustomer_ID.get(x));
             if (!DefaultAppointmentsCustomer_ID.get(x).equals(SelectedAppointment.Customer_IDComboBox.getValue().toString())) {
                 String sqlstring = "update appointments set Customer_ID=(Select Customer_ID from customers where Customer_Name='" + SelectedAppointment.Customer_IDComboBox.getValue().toString() + "') where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
                 String updatedbysql = "update appointments set Last_Updated_By ='" + uservalue + "' where Appointment_ID=" + SelectedAppointment.getAppointment_ID() + ";";
@@ -341,10 +327,8 @@ public class CustomerEditController {
 
         }
         for (String st : AppointmentModSqlCommandsSaved) {
-            System.out.println(st);
             PreparedStatement thisSQLstatement = JDBC.getConnection().prepareStatement(st);
             thisSQLstatement.executeUpdate();
-            System.out.println("Records Updated!");
 
 
         }
@@ -473,7 +457,6 @@ public class CustomerEditController {
             DefaultAppointmentsContact_ID.add(thisappointment.getContact_ID().toString());
 
             Appointmentlist.add(thisappointment);
-            System.out.println(thisCreate_date);
         }
         appointmentsTable.setItems(Appointmentlist);
         AllAppointments = Appointmentlist;
@@ -482,8 +465,7 @@ public class CustomerEditController {
     public void DeleteAppointment(ActionEvent actionEvent) {
         ObservableList<Appointment> selectlist = appointmentsTable.getSelectionModel().getSelectedItems();
         for (Appointment SelectedAppointment : selectlist) {
-            System.out.println(SelectedAppointment.getAppointment_ID());
-            System.out.println("Deleting...");
+
             Alert areyousure = new Alert(Alert.AlertType.CONFIRMATION);
             areyousure.setTitle("CONFIRMATION");
             areyousure.setHeaderText("You are about to delete the selected appointment.");
@@ -499,7 +481,6 @@ public class CustomerEditController {
                     deletedone.setHeaderText("The selected appointment has been deleted..");
                     deletedone.setContentText("Appointment ID "+SelectedAppointment.getAppointment_ID()+" with the type " +SelectedAppointment.getType()+" has been canceled. Delete Complete!");
                     deletedone.showAndWait();
-                    System.out.println("Deleted");
                     try {
                         isfromschedular=true;
                         schedularselectedcustomerID=Integer.parseInt(selectedcustomerID);
@@ -512,8 +493,7 @@ public class CustomerEditController {
                     } catch (Exception e) {
                     }
                 } catch (Exception e) {
-                    System.out.println(e);
-                    System.out.println("Unable to Delete");
+
 
                 }
             }
@@ -569,9 +549,13 @@ public class CustomerEditController {
     public void appointmenteditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox = "Start";
         Appointmentpicker.olddatevalue = String.valueOf(event.getNewValue());
-        System.out.println("Entered date: " + Appointmentpicker.olddatevalue);
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
         Integer ClickedAppointment_ID = 0;
+
+
+        clicklist.forEach(Appointment->Appointment.getAppointment_ID());
+
+
         for (Appointment SingleAppointment : clicklist) {
             ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
         }
@@ -604,7 +588,6 @@ public class CustomerEditController {
             String thisType = SingleAppointment.getType();
             String thisStart=SingleAppointment.getStart();
 
-            System.out.println(event.getTablePosition().getRow());
 
             if (event.getTablePosition().getRow()==count){
             thisStart = newdatefrompick;}
@@ -617,14 +600,12 @@ public class CustomerEditController {
             Integer thisCustomer_ID = SingleAppointment.getCustomer_ID();
             Integer thisUser_ID = SingleAppointment.getUser_ID();
             Integer thisContact_ID = SingleAppointment.getContact_ID();
-            System.out.println(ChangedatalistId.contains(SingleAppointment.getCustomer_ID().toString()));
             Boolean hasthisIDbeenedited = ChangedatalistId.contains(thisappointmentID.toString());
             while (hasthisIDbeenedited){
             hasthisIDbeenedited = ChangedatalistId.contains(thisappointmentID.toString());
             if (hasthisIDbeenedited){
                 int changedindex=ChangedatalistId.lastIndexOf(thisappointmentID.toString());
                 int changedcolumn=Integer.parseInt(ChangedatelistColumn.get(changedindex));
-                System.out.println(changedcolumn);
                 if (changedcolumn==1){
                     thisTitle = Changedatalistvalue.get(changedindex);
                 }
@@ -638,10 +619,7 @@ public class CustomerEditController {
                     thisType = Changedatalistvalue.get(changedindex);
                 }
 
-                System.out.println("this Customer ID has been edited: "+ChangedatalistId);
-                System.out.println("A value changed and stored coresponding to  "+changedindex);
-                System.out.println("The edited column is "+ChangedatelistColumn.get(changedindex));
-                System.out.println("the new value is "+Changedatalistvalue.get(changedindex));
+
                 ChangedatalistId.remove(changedindex);
                 ChangedatelistColumn.remove(changedindex);
                 Changedatalistvalue.remove(changedindex);
@@ -661,7 +639,6 @@ public class CustomerEditController {
     public void appointmenteditEndCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox = "End";
         Appointmentpicker.olddatevalue = String.valueOf(event.getNewValue());
-        System.out.println("Entered date: " + Appointmentpicker.olddatevalue);
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
         Integer ClickedAppointment_ID = 0;
         for (Appointment SingleAppointment : clicklist) {
@@ -694,7 +671,6 @@ public class CustomerEditController {
             String thisType = SingleAppointment.getType();
             String thisStart=SingleAppointment.getStart();
 
-            System.out.println(event.getTablePosition().getRow());
 
 
 
@@ -708,14 +684,12 @@ public class CustomerEditController {
             Integer thisCustomer_ID = SingleAppointment.getCustomer_ID();
             Integer thisUser_ID = SingleAppointment.getUser_ID();
             Integer thisContact_ID = SingleAppointment.getContact_ID();
-            System.out.println(ChangedatalistId.contains(SingleAppointment.getCustomer_ID().toString()));
             Boolean hasthisIDbeenedited = ChangedatalistId.contains(thisappointmentID.toString());
             while (hasthisIDbeenedited){
                 hasthisIDbeenedited = ChangedatalistId.contains(thisappointmentID.toString());
                 if (hasthisIDbeenedited){
                     int changedindex=ChangedatalistId.lastIndexOf(thisappointmentID.toString());
                     int changedcolumn=Integer.parseInt(ChangedatelistColumn.get(changedindex));
-                    System.out.println(changedcolumn);
                     if (changedcolumn==1){
                         thisTitle = Changedatalistvalue.get(changedindex);
                     }
@@ -729,10 +703,6 @@ public class CustomerEditController {
                         thisType = Changedatalistvalue.get(changedindex);
                     }
 
-                    System.out.println("this Customer ID has been edited: "+ChangedatalistId);
-                    System.out.println("A value changed and stored coresponding to  "+changedindex);
-                    System.out.println("The edited column is "+ChangedatelistColumn.get(changedindex));
-                    System.out.println("the new value is "+Changedatalistvalue.get(changedindex));
                     ChangedatalistId.remove(changedindex);
                     ChangedatelistColumn.remove(changedindex);
                     Changedatalistvalue.remove(changedindex);
@@ -754,7 +724,6 @@ public class CustomerEditController {
     public void appointmentStartToEdit(TableColumn.CellEditEvent cellEditEvent) throws InterruptedException {
         Thread.sleep(20);
         Robot keyboard = new Robot();
-        System.out.println("Start is being Edited");
         cellEditEvent.getTableView().requestFocus();
         keyboard.keyPress(KeyCode.ENTER);
 

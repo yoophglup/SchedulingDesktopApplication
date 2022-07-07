@@ -46,13 +46,14 @@ public class Appointmentpicker {
                 minslist.add(valueOf(i));
 
             }
+
+
             LocalDate NowDate= LocalDate.now();
             hourlist.clear();
             for (int y = 0; y < 14; y++) {
                 LocalTime OpenTimeETC = LocalTime.of(8 + y, 00, 00);
                 ZonedDateTime OpenDateETC = ZonedDateTime.of(NowDate, OpenTimeETC, ZoneId.of("America/New_York"));
                 ZonedDateTime LocalOpenTime = OpenDateETC.withZoneSameInstant(ZoneId.systemDefault());
-                System.out.println(LocalOpenTime);
                 String thishour="0"+String.valueOf(LocalOpenTime.getHour());
                 hourlist.add(thishour.substring(thishour.length()-2));
 
@@ -89,7 +90,6 @@ public class Appointmentpicker {
 
         sqlsubstring=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
         String formdata=ddl.toString().replaceFirst("T"," ").substring(0,16)+":00";
-        System.out.println("sqlsub "+sqlsubstring);
         String sqlstring="update appointments set "+namebox+"='"+sqlsubstring+"' where Appointment_ID="+ClickedAppointment_ID+";";
         CustomerEditController.newsqldate=sqlstring;
         CustomerEditController.newdatefrompick=formdata;

@@ -21,6 +21,7 @@ public class MainMenuController {
 
     public Label AlertLabel;
     public void initialize() throws SQLException {
+
         AlertLabel.setText("");
         LocalDate localcreateDate = LocalDate.now();
         LocalTime localCreateTime = LocalTime.now();

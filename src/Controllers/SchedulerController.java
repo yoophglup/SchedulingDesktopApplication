@@ -110,7 +110,6 @@ public class SchedulerController {
             UTCZone= ZoneId.of("UTC");
             localZoneId = ZoneId.systemDefault();
             ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
-            llc= ThisCreate_date.toInstant();
             ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
             thisEnd=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
 
@@ -121,7 +120,6 @@ public class SchedulerController {
             UTCZone= ZoneId.of("UTC");
             localZoneId = ZoneId.systemDefault();
             ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
-            llc= ThisCreate_date.toInstant();
             ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
             thisCreate_date=ddc.toString().replaceFirst("T"," ").substring(0,19);
 
@@ -133,7 +131,6 @@ public class SchedulerController {
             UTCZone= ZoneId.of("UTC");
             localZoneId = ZoneId.systemDefault();
             ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,UTCZone);
-            llc= ThisCreate_date.toInstant();
             ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
             thisLastUpdate=ddc.toString().replaceFirst("T"," ").substring(0,19);
 
@@ -219,7 +216,6 @@ public class SchedulerController {
     public void AllRadioClicked(ActionEvent actionEvent) throws SQLException {
 
         AllViewRadio.setSelected(true);
-
         viewselected=1826250;
         IDChanged(actionEvent);
 
@@ -261,13 +257,8 @@ public class SchedulerController {
 
     public void selectappointment(MouseEvent mouseEvent) {
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
+        CustomerEditController.schedularselectedcustomerID=clicklist.get(0).getUser_ID();
 
-        Integer ClickedCustomer_ID = 0;
-        for (Appointment ct : clicklist) {
-            ClickedCustomer_ID = ct.getUser_ID();
-            CustomerEditController.schedularselectedcustomerID=ClickedCustomer_ID;
-            System.out.println(CustomerEditController.schedularselectedcustomerID);
-        }
 
     }
 }

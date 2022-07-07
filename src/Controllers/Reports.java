@@ -1,5 +1,6 @@
 package Controllers;
 
+import Main.LambdaInterface;
 import Model.Contact;
 import Model.Customer;
 import javafx.collections.FXCollections;
@@ -136,13 +137,14 @@ public class Reports {
         TotalPie.setLabelsVisible(true);
         TotalPie.setLegendVisible(true);
 
-        String labelstring="Totals by User Input"+"\n------------------------";
+        String labelstring="Totals by User Input\nNew Appointments"+"\n------------------------";
         while (resultSet.next()) {
             String typeofappointment = resultSet.getString("User_Name");
             Integer typetotal = resultSet.getInt("total");
             pieChartData.add(new PieChart.Data(typeofappointment+" "+typetotal, typetotal));
             labelstring=labelstring+"\n"+typeofappointment+" : "+typetotal;
         }
+        resultSet.next();
         //TotalPie.setTitle("Total Appointments by Type");
         TotalPie.setData(pieChartData);
         Label2.setText(labelstring);
@@ -165,9 +167,16 @@ public class Reports {
             String typeofappointment = resultSet.getString("type");
             Integer typetotal = resultSet.getInt("total");
             pieChartData.add(new PieChart.Data(typeofappointment+" "+typetotal, typetotal));
-            labelstring=labelstring+"\n"+typeofappointment+" : "+typetotal;
+
+            //Lambda Usage : add five strings together with anonymous method
+            //Set the label display as the returned value
+            LambdaInterface L1 = (s1, s2,s3,s4,s5) -> s1 + s2+s3+s4+s5;
+
+            labelstring=L1.concat(labelstring,"\n",typeofappointment," : ",typetotal.toString());
+            labelstring=L1.concat(labelstring,"\n",typeofappointment," : ",typetotal.toString());
+
         }
-        //TotalPie.setTitle("Total Appointments by Type");
+
         TotalPie.setData(pieChartData);
         Label2.setText(labelstring);
     }

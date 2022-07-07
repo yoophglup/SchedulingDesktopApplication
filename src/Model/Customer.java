@@ -33,8 +33,6 @@ public class Customer {
         Postal_Code = postal_Code;
         Phone = phone;
 
-
-
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Division from first_level_divisions;");
         ResultSet resultSet = preparedStatement.executeQuery();
         ObservableList<String> all_divisionsList = FXCollections.observableArrayList();
