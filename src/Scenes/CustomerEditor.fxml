@@ -46,7 +46,7 @@
                   <TableColumn fx:id="Location1" minWidth="0.0" onEditCommit="#ValueChangedAppointments" prefWidth="88.0" text="Location" />
                   <TableColumn fx:id="Type1" minWidth="0.0" onEditCommit="#ValueChangedAppointments" prefWidth="123.0" text="Type" />
                   <TableColumn fx:id="Start1" minWidth="0.0" onEditCommit="#appointmenteditCommit" onEditStart="#appointmentStartToEdit" prefWidth="134.0" text="Start" />
-                  <TableColumn fx:id="End1" minWidth="0.0" onEditCommit="#appointmenteditEndCommit" onEditStart="#appointmentStartToEdit" prefWidth="128.0" text="End" />
+                  <TableColumn fx:id="End1" minWidth="0.0" onEditCommit="#appointmentEndeditCommit" onEditStart="#appointmentStartToEdit" prefWidth="128.0" text="End" />
                   <TableColumn fx:id="Create_Date1" minWidth="0.0" prefWidth="180.0" text="Create_Date" />
                   <TableColumn fx:id="Create_By1" minWidth="0.0" prefWidth="90.0" text="Created_By" />
                   <TableColumn fx:id="Last_Update1" minWidth="0.0" prefWidth="127.0" text="Last_Update" />

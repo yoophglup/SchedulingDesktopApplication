@@ -49,7 +49,6 @@ public class CustomerEditController {
     public TableColumn Postal_Code;
     public TableColumn Phone;
     public TableColumn DivisionCombobox;
-    //public TableColumn Division;
     public TableColumn Create_Date;
     public TableColumn Create_By;
     public TableColumn Last_Update;
@@ -59,10 +58,6 @@ public class CustomerEditController {
     public ObservableList<String> ChangedatelistColumn=FXCollections.observableArrayList();
     public ObservableList<String> Changedatalistvalue=FXCollections.observableArrayList();
     public Boolean DoNotLeave = false;
-
-
-
-
     public Button AddNewButton;
     public TableView appointmentsTable;
     public TableColumn Appointment_ID1;
@@ -84,15 +79,12 @@ public class CustomerEditController {
     public TableColumn ContactIDComboBox;
     public ObservableList<Customer> AllCustomers;
     public ObservableList<Appointment> AllAppointments;
-
     public ObservableList<String> DefaultDivisions = FXCollections.observableArrayList();
     public ObservableList<String> DefaultAppointmentsCustomer_ID = FXCollections.observableArrayList();
     public ObservableList<String> DefaultAppointmentsUser_ID = FXCollections.observableArrayList();
     public ObservableList<String> DefaultAppointmentsContact_ID = FXCollections.observableArrayList();
-
     public ObservableList<String> ModSqlCommandsSaved = FXCollections.observableArrayList();
     public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
-
 
     public void initialize() throws SQLException {
         try {
@@ -285,7 +277,6 @@ public class CustomerEditController {
 
     }
 
-
     public void saveAlteredAppointmentData(ActionEvent actionEvent) throws SQLException, IOException {
         ObservableList<String> hasCustomer_IDchanged = FXCollections.observableArrayList();
         ObservableList<String> hasUser_IDchanged = FXCollections.observableArrayList();
@@ -341,7 +332,6 @@ public class CustomerEditController {
         stage.setScene(scene);
         stage.show();
     }
-
 
     public void loadAppointments(MouseEvent mouseEvent) throws SQLException {
         appointmentsTable.refresh();
@@ -545,7 +535,6 @@ public class CustomerEditController {
         AppointmentModSqlCommandsSaved.add(sqlstring);
     }
 
-
     public void appointmenteditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox = "Start";
         Appointmentpicker.olddatevalue = String.valueOf(event.getNewValue());
@@ -633,10 +622,10 @@ public class CustomerEditController {
         }
         appointmentsTable.setItems(EditedAppointmentlist);
         AppointmentModSqlCommandsSaved.add(newsqldate);
-
+        System.out.println(newsqldate);
     }
 
-    public void appointmenteditEndCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
+    public void appointmentEndeditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox = "End";
         Appointmentpicker.olddatevalue = String.valueOf(event.getNewValue());
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
@@ -644,8 +633,7 @@ public class CustomerEditController {
         for (Appointment SingleAppointment : clicklist) {
             ClickedAppointment_ID = SingleAppointment.getAppointment_ID();
         }
-
-
+        Appointmentpicker.ClickedAppointment_ID = ClickedAppointment_ID;
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/appointmentpicker.fxml")));
         Scene scene = new Scene(root, 380, 200);
         Stage stage2 = new Stage();
@@ -654,14 +642,9 @@ public class CustomerEditController {
         stage2.setAlwaysOnTop(true);
         stage2.showAndWait();
 
-        //ObservableList<Appointment> currentlist = appointmentsTable.getSelectionModel().getSelectedItems();
         ObservableList<Appointment> currentlist = appointmentsTable.getItems();
         ObservableList<Appointment> EditedAppointmentlist = FXCollections.observableArrayList();
         Integer count=0;
-        //ChangedatalistId
-        //ChangedatalistRow
-        //ChangedatelistColumn
-        //Changedatalistvalue
 
         for (Appointment SingleAppointment : currentlist) {
             Integer thisappointmentID = SingleAppointment.getAppointment_ID();
@@ -670,13 +653,12 @@ public class CustomerEditController {
             String thisLocation = SingleAppointment.getLocation();
             String thisType = SingleAppointment.getType();
             String thisStart=SingleAppointment.getStart();
-
-
-
-
             String thisEnd = SingleAppointment.getEnd();
+
+
             if (event.getTablePosition().getRow()==count){
                 thisEnd = newdatefrompick;}
+
             String thisCreate_date = SingleAppointment.getCreate_Date();
             String thisCreate_by = SingleAppointment.getCreated_By();
             String thisLastUpdate = SingleAppointment.getLast_Update();
@@ -703,6 +685,7 @@ public class CustomerEditController {
                         thisType = Changedatalistvalue.get(changedindex);
                     }
 
+
                     ChangedatalistId.remove(changedindex);
                     ChangedatelistColumn.remove(changedindex);
                     Changedatalistvalue.remove(changedindex);
@@ -716,10 +699,8 @@ public class CustomerEditController {
         }
         appointmentsTable.setItems(EditedAppointmentlist);
         AppointmentModSqlCommandsSaved.add(newsqldate);
-
-
+        System.out.println(newsqldate);
     }
-
 
     public void appointmentStartToEdit(TableColumn.CellEditEvent cellEditEvent) throws InterruptedException {
         Thread.sleep(20);
@@ -728,7 +709,6 @@ public class CustomerEditController {
         keyboard.keyPress(KeyCode.ENTER);
 
     }
-
 
     public void AddNewAppointment(ActionEvent actionEvent) throws Exception {
 
