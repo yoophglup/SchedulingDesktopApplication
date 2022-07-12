@@ -170,10 +170,9 @@ public class Reports {
 
             //Lambda Usage : add five strings together with anonymous method
             //Set the label display as the returned value
-            LambdaInterface L1 = (s1, s2,s3,s4,s5) -> s1 + s2+s3+s4+s5;
+            LambdaInterface Lamda1 = (s1, s2,s3) -> s1 + "\n"+s2+" : "+s3;
 
-            labelstring=L1.concat(labelstring,"\n",typeofappointment," : ",typetotal.toString());
-            labelstring=L1.concat(labelstring,"\n",typeofappointment," : ",typetotal.toString());
+            labelstring=Lamda1.concat(labelstring,typeofappointment,typetotal.toString());
 
         }
 

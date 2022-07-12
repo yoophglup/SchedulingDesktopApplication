@@ -1,5 +1,6 @@
 package Controllers;
 
+import Main.LambdaInterface;
 import Model.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -79,14 +80,16 @@ public class Appointmentpicker {
     public void SubmitNewAppointment(ActionEvent actionEvent) {
 
         String sqlsubstring=AppointmentDatepicker.getValue()+" "+apphour.getValue()+":"+appmins.getValue()+":00";
-        LocalDate localcreateDate = LocalDate.parse(sqlsubstring.substring(0,10));
-        LocalTime localCreateTime = LocalTime.parse(sqlsubstring.substring(11,19));
-        ZoneId UTCZone= ZoneId.of("UTC");
-        ZoneId localZoneId = ZoneId.systemDefault();
-        ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
-        Instant llc= ThisCreate_date.toInstant();
-        ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(UTCZone);
-        ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(localZoneId);
+        //LocalDate localcreateDate = LocalDate.parse(sqlsubstring.substring(0,10));
+        //LocalTime localCreateTime = LocalTime.parse(sqlsubstring.substring(11,19));
+        //ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
+        //ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(ZoneId.of("UTC"));
+        //ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(ZoneId.systemDefault());
+
+        LambdaInterface.ZonedTime LamdaZone = (s,z) -> ZonedDateTime.of(LocalDate.parse(s.substring(0,10)),LocalTime.parse(s.substring(11,19)),z);
+        ZonedDateTime ThisCreate_date = LamdaZone.String2Zoned(sqlsubstring,ZoneId.systemDefault());
+        ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(ZoneId.of("UTC"));
+        ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(ZoneId.systemDefault());
 
         sqlsubstring=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
         String formdata=ddl.toString().replaceFirst("T"," ").substring(0,16)+":00";

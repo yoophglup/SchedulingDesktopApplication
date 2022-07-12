@@ -56,8 +56,6 @@ public class LogInController {
         titletext.setText("Veuillez vous connecter");
         login.setText("connexion");
         exitbut.setText("sortir");
-
-
     }
 
 

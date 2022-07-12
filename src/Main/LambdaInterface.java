@@ -1,8 +1,11 @@
 package Main;
 
-public interface LambdaInterface {
-    String concat(String s1,String s2,String s3, String s4, String s5);
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
-public interface EXT {
-    String concat(String s1,String s2);
+public interface LambdaInterface {
+    String concat(String s1,String s2,String s3);
+
+public interface ZonedTime {
+    ZonedDateTime String2Zoned(String s, ZoneId z);
 }}
