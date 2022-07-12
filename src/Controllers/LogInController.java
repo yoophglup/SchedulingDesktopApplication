@@ -29,7 +29,8 @@ import java.util.Objects;
 
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
-
+/** LogInController is designed to allow the User to log in to the application.
+ */
 public class LogInController {
     public Label outputbox;
     public Button login;

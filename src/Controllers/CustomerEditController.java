@@ -34,7 +34,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-
+/** CustomerEditController is designed to allow the User to edit customers and appointments.
+ */
 public class CustomerEditController {
     public static String uservalue;
     public static String newsqldate;

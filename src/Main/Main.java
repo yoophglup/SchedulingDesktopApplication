@@ -31,7 +31,6 @@ public class Main extends Application {
     /**
      * This method changes the scene to the main menu.
      * @param primaryStage creates the main menu scene
-     * @throws IOException primaryStage
      */
     @Override
     public void start(Stage primaryStage) throws Exception{

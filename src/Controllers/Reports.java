@@ -21,7 +21,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
 import java.util.Objects;
-
+/** Reports is designed to allow the user to load different reports.
+ */
 public class Reports {
 
     public PieChart TotalPie;

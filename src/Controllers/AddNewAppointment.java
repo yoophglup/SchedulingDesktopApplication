@@ -27,7 +27,8 @@ import java.sql.SQLException;
 import java.time.*;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-
+/** AddNewAppointment is designed to allow the User to add New Appointments.
+ */
 public class AddNewAppointment {
     public Boolean DoNotLeave = false;
     public Integer Alertnumber=0;

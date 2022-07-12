@@ -17,7 +17,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Objects;
-
+/** AddNewCustomer is designed to allow the User to add New Customers.
+ */
 public class AddNewCustomer {
     public TextField Customer_Name_input;
     public TextField Address_input;

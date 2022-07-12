@@ -15,7 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.*;
 import java.util.Objects;
-
+/** MainMenuController is designed to be a menu for the User to load scenes.
+ */
 public class MainMenuController {
     public Label AlertLabel;
 

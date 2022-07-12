@@ -25,7 +25,8 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.Objects;
-
+/** SchedulerController is designed to allow the user to load appointment based on their user id.
+ */
 public class SchedulerController {
     public TableView appointmentsTable;
     public TableColumn Appointment_ID;
