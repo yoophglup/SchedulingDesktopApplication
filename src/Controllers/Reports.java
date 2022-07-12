@@ -46,10 +46,11 @@ public class Reports {
     public TableColumn CustomerID;
     public ToggleGroup MainRadios;
 
-    public void initialize() throws SQLException {
-
-    }
-
+    /** Generates a report on how many total Appointments exist in the database
+     *
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void totalRadioClicked(ActionEvent actionEvent) throws SQLException {
         ContactsScheduleTable.setVisible(false);
 
@@ -62,6 +63,12 @@ public class Reports {
 
     }
 
+    /** Generates a report for Contacts schedule.  Shows reports sorted by contacts and
+     * time of the start of the appointment.
+     *
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void contactsRadioClicked(ActionEvent actionEvent) throws SQLException {
         Label1.setText("");
         Label2.setText("");
@@ -124,6 +131,12 @@ public class Reports {
 
     }
 
+    /** Generates a report for how many reports a user has entered into the system.
+     * This is the additional report choses by the author which is different from the other
+     * reports and logs.  I chose to use user per entry of appointments.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void additionalRadioClicked(ActionEvent actionEvent) throws SQLException {
         ContactsScheduleTable.setVisible(false);
         monthRadio.setSelected(false);
@@ -150,6 +163,12 @@ public class Reports {
         Label2.setText(labelstring);
     }
 
+    /** Generates a report which shows how many appointments exist by type of appointment.
+     * This method retrieves data from the database and displays that data grouped by Type of appointment.
+     * This method incorporates the second required Lambda expression to improve code.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void totalTypeRadioClicked(ActionEvent actionEvent) throws SQLException {
         ContactsScheduleTable.setVisible(false);
 
@@ -168,11 +187,11 @@ public class Reports {
             Integer typetotal = resultSet.getInt("total");
             pieChartData.add(new PieChart.Data(typeofappointment+" "+typetotal, typetotal));
 
-            //Lambda Usage : add five strings together with anonymous method
-            //Set the label display as the returned value
-            LambdaInterface Lamda1 = (s1, s2,s3) -> s1 + "\n"+s2+" : "+s3;
-
-            labelstring=Lamda1.concat(labelstring,typeofappointment,typetotal.toString());
+            /** Second Lambda Expression. Adds 3 strings variables with constant strings.
+             * Lambda Usage : add three strings variables together with anonymous method
+             * Set the label display as the returned value **/
+            LambdaInterface Lambda1 = (s1, s2,s3) -> s1 + "\n"+s2+" : "+s3;
+            labelstring=Lambda1.concat(labelstring,typeofappointment,typetotal.toString());
 
         }
 
@@ -180,6 +199,11 @@ public class Reports {
         Label2.setText(labelstring);
     }
 
+    /** Generates a report which shows how many appointments exist by month of appointment.
+     * This method retrieves data from the database and displays that data grouped by month of appointment.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void totalMonthRadioClicked(ActionEvent actionEvent) throws SQLException {
         ContactsScheduleTable.setVisible(false);
 
@@ -202,6 +226,11 @@ public class Reports {
         Label2.setText(labelstring);
     }
 
+    /** Changes scene to main menu.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void ReturntoMenu(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

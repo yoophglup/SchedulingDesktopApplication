@@ -88,6 +88,10 @@ public class CustomerEditController {
     public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
     public Text titletext;
 
+    /** The initialize method loads the CustomerTable with data, if the value is set from Scheduler then this method
+     * will also initialize the loadappointment method, which loads appointments.
+     * @throws SQLException
+     */
     public void initialize() throws SQLException {
         try {
             TableView tableView = customertable;
@@ -170,6 +174,11 @@ public class CustomerEditController {
         loadAppointments(null);
     }
 
+    /**This method switches the Scene to the AddNewCustomer Scene
+     * This method is triggered by a button the user presses.
+     * @param actionEvent
+     * @throws Exception
+     */
     public void switchSceneAddNewCustomer(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewCustomer.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -182,6 +191,10 @@ public class CustomerEditController {
 
     }
 
+    /** This method Changeds the scene to the main menu
+     * @param actionEvent
+     * @throws Exception
+     */
     public void LoadMainMenu(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -193,6 +206,11 @@ public class CustomerEditController {
 
     }
 
+    /** This method deletes Customers if they do not have any appointments.
+     *  stored in the database.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void deleteCustomer(ActionEvent actionEvent) throws SQLException {
         ObservableList<Customer> thislist = customertable.getSelectionModel().getSelectedItems();
         for (Customer ct : thislist) {
@@ -246,6 +264,12 @@ public class CustomerEditController {
         }
     }
 
+    /**This method will Save all customer data which has been edited by the user.  Certain cells can
+     * be edited by the user but are not saved until this method runs.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void SaveCustomerData(ActionEvent actionEvent) throws SQLException, IOException {
         ObservableList<String> hasDivisionschanged = FXCollections.observableArrayList();
         ObservableList<Customer> selectlist = AllCustomers;
@@ -279,6 +303,12 @@ public class CustomerEditController {
 
     }
 
+    /**This method will Save all appointment data which has been edited by the user.  Certain cells can
+     * be edited by the user but are not saved until this method runs.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void saveAlteredAppointmentData(ActionEvent actionEvent) throws SQLException, IOException {
         ObservableList<String> hasCustomer_IDchanged = FXCollections.observableArrayList();
         ObservableList<String> hasUser_IDchanged = FXCollections.observableArrayList();
@@ -335,6 +365,13 @@ public class CustomerEditController {
         stage.show();
     }
 
+    /** This method loads the appointments from the database to the appointments table.
+     * It will show the appointments for the Customer which has been clicked in the customer table
+     * by the user.  As the user clicks on differect customers, this method is called each time and the data
+     * is shown in the appointment table.
+     * @param mouseEvent
+     * @throws SQLException
+     */
     public void loadAppointments(MouseEvent mouseEvent) throws SQLException {
         appointmentsTable.refresh();
         appointmentsTable.requestFocus();
@@ -454,6 +491,10 @@ public class CustomerEditController {
         AllAppointments = Appointmentlist;
     }
 
+    /** This method will display a message and delete appointments.  It will then display
+     * a message indicating the appointment has been deleted.
+     * @param actionEvent
+     */
     public void DeleteAppointment(ActionEvent actionEvent) {
         ObservableList<Appointment> selectlist = appointmentsTable.getSelectionModel().getSelectedItems();
         for (Appointment SelectedAppointment : selectlist) {
@@ -495,6 +536,10 @@ public class CustomerEditController {
 
     }
 
+    /** This method adds SQL commands to a list to be executed later on.
+     *  This method stores the data to save for customers.
+     * @param cellEditEvent
+     */
     public void ValueChanged(TableColumn.CellEditEvent cellEditEvent) {
         Object oldvalue = cellEditEvent.getOldValue();
         Object newvalue = cellEditEvent.getNewValue();
@@ -513,6 +558,10 @@ public class CustomerEditController {
         ModSqlCommandsSaved.add(sqlstring);
     }
 
+    /** This method adds SQL commands to a list to be executed later on.
+     *  This method stores the data to save for appointments.
+     * @param cellEditEvent
+     */
     public void ValueChangedAppointments(TableColumn.CellEditEvent cellEditEvent) {
         Object oldvalue = cellEditEvent.getOldValue();
         Object newvalue = cellEditEvent.getNewValue();
@@ -537,6 +586,13 @@ public class CustomerEditController {
         AppointmentModSqlCommandsSaved.add(sqlstring);
     }
 
+    /** This method is called when Start cell is committed by the user.  This calls the AppointmentPicker scene
+     * but loads it on top of the existing window.  Once the user completes the form, this method stores the new
+     * date and time for Start in the SQL commands to be executed if the user clicks on save.
+     * @param event
+     * @throws IOException
+     * @throws SQLException
+     */
     public void appointmenteditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox = "Start";
         Appointmentpicker.olddatevalue = String.valueOf(event.getNewValue());
@@ -626,6 +682,13 @@ public class CustomerEditController {
         AppointmentModSqlCommandsSaved.add(newsqldate);
     }
 
+    /** Called when End cell is committed by the user.  This calls the AppointmentPicker scene
+    * but loads it on top of the existing window.  Once the user completes the form, this method stores the new
+    * date and time for End in the SQL commands to be executed if the user clicks on save.
+    * @param event
+    * @throws IOException
+    * @throws SQLException
+    **/
     public void appointmentEndeditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
         Appointmentpicker.namebox = "End";
         Appointmentpicker.olddatevalue = String.valueOf(event.getNewValue());
@@ -702,6 +765,11 @@ public class CustomerEditController {
         AppointmentModSqlCommandsSaved.add(newsqldate);
     }
 
+    /** Called when the user clicks the cell to edit Start or End.  This method will automaticly end the edit and call
+     * the Commit action which will call the Appointmentpicker.
+     * @param cellEditEvent
+     * @throws InterruptedException
+     */
     public void appointmentStartToEdit(TableColumn.CellEditEvent cellEditEvent) throws InterruptedException {
         Thread.sleep(20);
         Robot keyboard = new Robot();
@@ -710,6 +778,11 @@ public class CustomerEditController {
 
     }
 
+    /** Switches scene to add a new appointment.
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void AddNewAppointment(ActionEvent actionEvent) throws Exception {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewAppointment.fxml")));
@@ -721,6 +794,11 @@ public class CustomerEditController {
         stage.show();
     }
 
+    /** Logs out the User and returns to the Log in scene
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void Logout(ActionEvent actionEvent) throws Exception{
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/loginscreen.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -731,12 +809,21 @@ public class CustomerEditController {
         stage.show();
     }
 
+    /** Exits the entire application
+     *
+     * @param actionEvent
+     */
     public void ExitApplication(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
 
     }
 
+    /** Changes the scene to the Desktop Scheduler for the logged in user.
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void LoadScheduler(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Scheduler.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -747,6 +834,11 @@ public class CustomerEditController {
         stage.show();
     }
 
+    /** Changes the scene to the reports scene.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void GenerateReports(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Reports.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();

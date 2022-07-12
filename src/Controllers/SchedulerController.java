@@ -43,6 +43,10 @@ public class SchedulerController {
     public Integer viewselected;
     public RadioButton AllViewRadio;
 
+    /** Loads table values and combo box choice selections and selects the combo box based on
+     * which user is logged in.  The list will populate with the appointments assigned to the user.
+     * @throws SQLException
+     */
     public void initialize() throws SQLException {
         MonthRadio.setSelected(false);
         WeekRadio.setSelected(false);
@@ -146,6 +150,11 @@ public class SchedulerController {
         appointmentsTable.setItems(Appointmentlist);
     }
 
+    /** Changes User Id to view appointments for other users.
+     *
+      * @param actionEvent
+     * @throws SQLException
+     */
     public void IDChanged(ActionEvent actionEvent) throws SQLException {
         ObservableList<Appointment> Appointmentlist = FXCollections.observableArrayList();
         String ClickedUser_ID = User_ID_combo.getValue().toString();
@@ -199,6 +208,11 @@ public class SchedulerController {
         appointmentsTable.setItems(Appointmentlist);
     }
 
+    /** Displays appointments which start in the next month or less
+     *
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void MonthRadioClicked(ActionEvent actionEvent) throws SQLException {
         MonthRadio.setSelected(true);
         viewselected=31;
@@ -206,6 +220,11 @@ public class SchedulerController {
 
     }
 
+    /** Displays appointments which start in the next week or less.
+     *
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void WeekRadioClicked(ActionEvent actionEvent) throws SQLException {
         WeekRadio.setSelected(true);
         viewselected=7;
@@ -213,6 +232,11 @@ public class SchedulerController {
 
     }
 
+    /** Displays all appointments by user (this is set by default)
+     *
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void AllRadioClicked(ActionEvent actionEvent) throws SQLException {
 
         AllViewRadio.setSelected(true);
@@ -221,6 +245,11 @@ public class SchedulerController {
 
     }
 
+    /** Changes scened to the main menu
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void ReturntoMenu(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/MainMenu.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -232,6 +261,11 @@ public class SchedulerController {
 
     }
 
+    /** Changes scene to the edit customer and appointments but has the selected appointment loaded in
+     * the appointment list on that scene.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void EditAppointment(ActionEvent actionEvent) throws IOException {
         CustomerEditController.isfromschedular=true;
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
@@ -244,6 +278,11 @@ public class SchedulerController {
 
     }
 
+    /** Changes scene to the AddNewAppointment scene.
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void AddNewAppointment(ActionEvent actionEvent) throws Exception {
 
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewAppointment.fxml")));
@@ -255,6 +294,10 @@ public class SchedulerController {
         stage.show();
     }
 
+    /** Sets a static variable in CustomerEditController so CustomerEditController will know which
+     * appointment was selected.
+     * @param mouseEvent
+     */
     public void selectappointment(MouseEvent mouseEvent) {
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
         Integer ClickedCustomer_ID = 0;

@@ -25,6 +25,11 @@ public class AddNewCustomer {
     public TextField Phone_input;
     public ComboBox Division_input;
 
+    /**
+     * The initialize method initialize values, sets the choices for all comboBoxes, sets any known data
+     * from previous scenes.
+     *
+     */
     public void initialize() throws SQLException {
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Division from first_level_divisions;");
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -38,6 +43,11 @@ public class AddNewCustomer {
 
     }
 
+    /**
+     * This method changes the scene to the customer edit menu and does not save any data.
+     * @param actionEvent changes the scene
+     * @throws  IOException actionEvent
+     */
     public void cancel(ActionEvent actionEvent) throws Exception {
         Parent root= FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
         Stage stage = (Stage)((Node)actionEvent.getSource()).getScene().getWindow();
@@ -49,6 +59,11 @@ public class AddNewCustomer {
 
     }
 
+    /**This method saves the new customer to the database.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void addNewCustomer(ActionEvent actionEvent) throws SQLException, IOException {
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Max(Customer_ID) from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();

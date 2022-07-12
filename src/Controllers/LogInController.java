@@ -41,6 +41,9 @@ public class LogInController {
     public TextField uservalue;
     public PasswordField passvalue;
 
+    /** Initialize checks if the Locale language is in English, if not then it calls a method to change
+     * all the text to french.
+     */
     public void initialize(){
         //Locale.setDefault(new Locale("fr"));
         locationdata.setText("US-English");
@@ -49,6 +52,10 @@ public class LogInController {
             gofrench();
         }
     }
+
+    /** Changes all text to french
+     * Changes the log in scene only to french in the user is not US-English
+     */
     public void gofrench(){
         locationdata.setText("Français");
         pwordtext.setText("le mot de passe");
@@ -58,11 +65,22 @@ public class LogInController {
         exitbut.setText("sortir");
     }
 
-
+    /** Quits the application
+     * Exits
+     * @param actionEvent
+     */
     public void quit_clicked(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
     }
+
+    /**Saves all log in attempts and whether the log in was successful to a file
+     * If the file does not exist, then it will create it. If it exist, it will append.
+     * The file is login_activity.txt store in the root folder of the Scheduler Application
+     * @param Username
+     * @param Password
+     * @throws IOException
+     */
     public void saveloginattempt(String Username, Boolean Password) throws IOException {
         String logthis="LogIn Attempt: "+"UserID: "+Username+","+"Success: "+Password+" ZoneDateTimeStamp: "+ZonedDateTime.now().toString().replaceFirst("T"," ")+"\n";
         System.out.println(logthis);
@@ -70,6 +88,12 @@ public class LogInController {
         byte[] StringBytes = logthis.getBytes(StandardCharsets.UTF_8);
         Files.write(path,StringBytes,CREATE,APPEND);
     }
+
+    /** Checks if the password and username matches
+     * Retrieves the data from the database and compares to the data entered by the user.
+     * @param actionEvent
+     * @throws IOException
+     */
     public void validate(ActionEvent actionEvent) throws IOException {
 
         try {

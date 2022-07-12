@@ -6,32 +6,32 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
-
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.*;
-
 import static java.lang.String.valueOf;
-
+/** Appointmentpicker is designed to collect new dates and times from the user.
+/* by utilizing datepicker and combo boxes data is required to be valid.
+ */
 public class Appointmentpicker {
     public static String olddatevalue;
     public static Integer ClickedAppointment_ID;
     public static String namebox;
     public Boolean DoNotLeave = false;
-
     public DatePicker AppointmentDatepicker;
     public ComboBox apphour;
     public ComboBox appmins;
     public ObservableList<String> hourslist = FXCollections.observableArrayList();
     public ObservableList<String> hourlist = FXCollections.observableArrayList();
-
     public ObservableList<String> minslist = FXCollections.observableArrayList();
 
+    /**
+     * The initialize method initialize values, sets the choices for all comboBoxes, sets any known data
+     * from previous scenes.
+     *This also initializes the allowed time choices.  Only times which are within the business hours are
+     * available for the user to choose.
+     */
     public void initialize() {
         for (int i=0;i<24;i++){
             if (valueOf(i).length() < 2){
@@ -62,30 +62,34 @@ public class Appointmentpicker {
 
 
         }
-
         apphour.setItems(hourlist.sorted());
         apphour.setValue(hourlist.get(0));
-
-
-        //AppointmentDatepicker.setValue(LocalDate.parse(olddatevalue));
         String ddate=olddatevalue.substring(0,10);
-        String dhour=olddatevalue.substring(11,13);
         String dmins=olddatevalue.substring(14,16);
         AppointmentDatepicker.setValue(LocalDate.parse(ddate));
-        //apphour.setItems(hourslist);
         appmins.setItems(minslist);
         appmins.setValue(dmins);
     }
 
+    /** This method Submits new values which the user selected from datepicker and combo boxes.
+     * This Method also incorporates a Lambda Expression to improve code.
+     * This Method also changes the scene by closing the Appointment picker window.
+     * @param actionEvent
+     */
     public void SubmitNewAppointment(ActionEvent actionEvent) {
-
         String sqlsubstring=AppointmentDatepicker.getValue()+" "+apphour.getValue()+":"+appmins.getValue()+":00";
-        //LocalDate localcreateDate = LocalDate.parse(sqlsubstring.substring(0,10));
-        //LocalTime localCreateTime = LocalTime.parse(sqlsubstring.substring(11,19));
-        //ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
-        //ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(ZoneId.of("UTC"));
-        //ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(ZoneId.systemDefault());
-
+        /** The following is the first Lamda Expression required to improve code
+         * It uses the LamdaInterface.ZonedTime interface
+         * It uses LamdaZone to define its functionality and uses the Lambda expression ->
+         * It returens a Zoned date when a string date is passed from the user input.
+         * the data can then be converted between local time or any other timezone.
+         * It repaced the following code :
+         * <code>  LocalDate localcreateDate = LocalDate.parse(sqlsubstring.substring(0,10));
+         *         LocalTime localCreateTime = LocalTime.parse(sqlsubstring.substring(11,19));
+         *         ZonedDateTime ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
+         *         ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(ZoneId.of("UTC"));
+         *         ZonedDateTime ddl = ThisCreate_date.withZoneSameInstant(ZoneId.systemDefault());</code>
+         * **/
         LambdaInterface.ZonedTime LamdaZone = (s,z) -> ZonedDateTime.of(LocalDate.parse(s.substring(0,10)),LocalTime.parse(s.substring(11,19)),z);
         ZonedDateTime ThisCreate_date = LamdaZone.String2Zoned(sqlsubstring,ZoneId.systemDefault());
         ZonedDateTime ddc = ThisCreate_date.withZoneSameInstant(ZoneId.of("UTC"));
@@ -102,6 +106,11 @@ public class Appointmentpicker {
         stage.close();
 
     }
+
+    /**This method returns to the Customer\Appointment editor without gathering any new data
+     * All data is discarded when this method runs.
+     * @param actionEvent
+     */
     public void CancelSetNewAppointment(ActionEvent actionEvent) {
         CustomerEditController.newdatefrompick=olddatevalue;
 

@@ -1,5 +1,13 @@
 package Controllers;
-
+/**
+ * class controller.AddNewAppointment.java
+ */
+/**
+ * class AddNewAppointment.java
+ */
+/**
+ * @author Chad Self
+ */
 import Model.Customer;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,8 +48,12 @@ public class AddNewAppointment {
     public ObservableList<String> hourlist = FXCollections.observableArrayList();
     public ObservableList<String> minslist = FXCollections.observableArrayList();
 
+    /**
+     * The initialize method initialize values, sets the choices for all comboBoxes, sets any known data
+     * from previous scenes.
+     *
+     */
     public void initialize() throws SQLException {
-
         ObservableList<String> AllCustomerNames = FXCollections.observableArrayList();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,6 +137,11 @@ public class AddNewAppointment {
         UserCbox.setValue(UserID);
     }
 
+    /**
+     * This method changes the scene to the customer edit menu and does not save any data.
+     * @param actionEvent changes the scene
+     * @throws  IOException actionEvent
+     */
     public void cancel(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -136,6 +153,14 @@ public class AddNewAppointment {
 
     }
 
+    /** This Method checks to input to make sure the new dates do not overlapp existing dates.
+     * When invalid data is entered a boolean is set which prevents the user from saving the data
+     * or leaving the add new appointment scene.
+     * @param Startstring
+     * @param EndString
+     * @param CustomerID
+     * @throws SQLException
+     */
     public void checkinput(String Startstring, String EndString, String CustomerID) throws SQLException {
 
 
@@ -170,10 +195,10 @@ public class AddNewAppointment {
 
     }
 
-
-
-
-
+    /** This method sets the email combo box when the user selects the corresponding name combo box.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void ContactNameComboBoxHasAction(ActionEvent actionEvent) throws SQLException {
         String newContactName=ContactNameCbox.getValue().toString();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Email from contacts where Contact_Name='" + newContactName + "';");
@@ -185,6 +210,10 @@ public class AddNewAppointment {
 
     }
 
+    /** This method sets the name combo box when the user selects the corresponding email combo box.
+     * @param actionEvent
+     * @throws SQLException
+     */
     public void ContactEmailComboBoxHasAction(ActionEvent actionEvent) throws SQLException {
         String newmail = emailCbox.getValue().toString();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Contact_Name from contacts where Email='" + newmail + "';");
@@ -195,6 +224,11 @@ public class AddNewAppointment {
         }
     }
 
+    /**This method saves the new appointment to the database.
+     * @param actionEvent
+     * @throws SQLException
+     * @throws IOException
+     */
     public void submitNewAppointment(ActionEvent actionEvent) throws SQLException, IOException {
         System.out.println("Button Pressed setting Alertnumber "+Alertnumber );
         Alertnumber=0;
@@ -269,7 +303,6 @@ public class AddNewAppointment {
         }
 
     }
-
 
 }
 

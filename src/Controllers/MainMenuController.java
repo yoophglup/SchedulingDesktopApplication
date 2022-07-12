@@ -17,9 +17,12 @@ import java.time.*;
 import java.util.Objects;
 
 public class MainMenuController {
-
-
     public Label AlertLabel;
+
+    /** Intialize checks the time and displays a message if there are any appointments within the next 15 minutes.
+     * It will alert the user if so, or display a message on the screen if not.
+     * @throws SQLException
+     */
     public void initialize() throws SQLException {
 
         AlertLabel.setText("");
@@ -29,7 +32,6 @@ public class MainMenuController {
         ZoneId UTCZone = ZoneId.of("UTC");
         ZonedDateTime LocalZonedNowDate = ZonedDateTime.of(localcreateDate, localCreateTime, localZoneId);
         ZonedDateTime UTCLocalZonedNowDate = LocalZonedNowDate.withZoneSameInstant(UTCZone);
-
         String StringUTCLocalZonedNowDate = UTCLocalZonedNowDate.toString().replaceFirst("T", " ").substring(0, 16) + ":00";
         PreparedStatement sqlappointment = JDBC.getConnection().prepareStatement("select * from appointments where User_ID=(select User_ID from users where User_Name='" + CustomerEditController.uservalue + "') and Start > Now() And Start < Now()+Interval 15 minute;");
         ResultSet apresults = sqlappointment.executeQuery();
@@ -53,6 +55,11 @@ public class MainMenuController {
         }
     }
 
+    /** Changes the scene to the CustomerEdit scene where the user can edit customers and appointments.
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void LoadCustomerEditor(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -64,12 +71,21 @@ public class MainMenuController {
 
     }
 
+    /** Exits or Quits the applicaiton, return to OS
+     *
+     * @param actionEvent
+     */
     public void ExitApplication(ActionEvent actionEvent) {
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
 
     }
 
+    /** Logs out the user and return to log in scene
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void Logout(ActionEvent actionEvent) throws Exception{
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/loginscreen.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -80,16 +96,11 @@ public class MainMenuController {
         stage.show();
     }
 
-    public void AddNewAppointment(ActionEvent actionEvent) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewAppointment.fxml")));
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        Scene scene = new Scene(root, 750, 400);
-        stage.setTitle("Add a new Appointment");
-        stage.setScene(scene);
-        stage.centerOnScreen();
-        stage.show();
-    }
-
+    /** Loads the Scheduler scene to view upcoming appointments by User_ID
+     *
+     * @param actionEvent
+     * @throws Exception
+     */
     public void LoadScheduler(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Scheduler.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -100,6 +111,11 @@ public class MainMenuController {
         stage.show();
     }
 
+    /** Chagnes the scene to the Reports scene.
+     *
+     * @param actionEvent
+     * @throws IOException
+     */
     public void GenerateReports(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Reports.fxml")));
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
