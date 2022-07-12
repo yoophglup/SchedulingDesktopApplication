@@ -221,7 +221,7 @@ public class Appointment {
         Create_Date = create_date;
     }
 
-        public void setCustomer_ID(Integer customer_ID) {
+    public void setCustomer_ID(Integer customer_ID) {
         Customer_ID = customer_ID;
     }
 

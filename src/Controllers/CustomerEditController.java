@@ -20,6 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.TilePane;
 import javafx.scene.robot.Robot;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -85,6 +86,7 @@ public class CustomerEditController {
     public ObservableList<String> DefaultAppointmentsContact_ID = FXCollections.observableArrayList();
     public ObservableList<String> ModSqlCommandsSaved = FXCollections.observableArrayList();
     public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
+    public Text titletext;
 
     public void initialize() throws SQLException {
         try {
@@ -622,7 +624,6 @@ public class CustomerEditController {
         }
         appointmentsTable.setItems(EditedAppointmentlist);
         AppointmentModSqlCommandsSaved.add(newsqldate);
-        System.out.println(newsqldate);
     }
 
     public void appointmentEndeditCommit(TableColumn.CellEditEvent event) throws IOException, SQLException {
@@ -699,7 +700,6 @@ public class CustomerEditController {
         }
         appointmentsTable.setItems(EditedAppointmentlist);
         AppointmentModSqlCommandsSaved.add(newsqldate);
-        System.out.println(newsqldate);
     }
 
     public void appointmentStartToEdit(TableColumn.CellEditEvent cellEditEvent) throws InterruptedException {
@@ -720,4 +720,42 @@ public class CustomerEditController {
         stage.centerOnScreen();
         stage.show();
     }
+
+    public void Logout(ActionEvent actionEvent) throws Exception{
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/loginscreen.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 340, 200);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    public void ExitApplication(ActionEvent actionEvent) {
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.close();
+
+    }
+
+    public void LoadScheduler(ActionEvent actionEvent) throws Exception {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Scheduler.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 750, 400);
+        stage.setTitle("Main Menu");
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+    public void GenerateReports(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/Reports.fxml")));
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root, 600, 450);
+        stage.setTitle("Generate Reports");
+        stage.setScene(scene);
+        stage.centerOnScreen();
+        stage.show();
+    }
+
+
 }

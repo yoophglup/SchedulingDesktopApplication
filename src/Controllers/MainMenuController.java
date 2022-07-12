@@ -48,7 +48,7 @@ public class MainMenuController {
             areyousure.showAndWait();
             AlertLabel.setText(" Alert: An appointment is starting in less than 15 Minutes! \n " + "Appoinment #"+thisappointmentID+" Starts at "+StartString+" "+localZoneId);
         }
-        if (AlertLabel.getText()==""){
+        if (AlertLabel.getText().equals("")){
             AlertLabel.setText("There are no upcoming appointments.");
         }
     }
@@ -79,7 +79,6 @@ public class MainMenuController {
         stage.centerOnScreen();
         stage.show();
     }
-
 
     public void AddNewAppointment(ActionEvent actionEvent) throws Exception {
         Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/AddNewAppointment.fxml")));

@@ -257,8 +257,11 @@ public class SchedulerController {
 
     public void selectappointment(MouseEvent mouseEvent) {
         ObservableList<Appointment> clicklist = appointmentsTable.getSelectionModel().getSelectedItems();
-        CustomerEditController.schedularselectedcustomerID=clicklist.get(0).getUser_ID();
-
-
+        Integer ClickedCustomer_ID = 0;
+        for (Appointment SingleAppointment : clicklist) {
+            ClickedCustomer_ID = SingleAppointment.getCustomer_ID();
+        }
+        CustomerEditController.schedularselectedcustomerID = ClickedCustomer_ID;
+        System.out.println(ClickedCustomer_ID);
     }
 }

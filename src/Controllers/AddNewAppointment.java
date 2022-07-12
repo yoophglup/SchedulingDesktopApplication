@@ -41,8 +41,7 @@ public class AddNewAppointment {
     public ObservableList<String> minslist = FXCollections.observableArrayList();
 
     public void initialize() throws SQLException {
-        System.out.println(CustomerEditController.uservalue);
-        System.out.println(CustomerEditController.selectedcustomerID);
+
         ObservableList<String> AllCustomerNames = FXCollections.observableArrayList();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -99,7 +98,6 @@ public class AddNewAppointment {
                 LocalTime OpenTimeETC = LocalTime.of(8 + y, 00, 00);
                 ZonedDateTime OpenDateETC = ZonedDateTime.of(NowDate, OpenTimeETC, ZoneId.of("America/New_York"));
                 ZonedDateTime LocalOpenTime = OpenDateETC.withZoneSameInstant(ZoneId.systemDefault());
-                System.out.println(LocalOpenTime);
                 String thishour="0"+String.valueOf(LocalOpenTime.getHour());
                 hourlist.add(thishour.substring(thishour.length()-2));
 
@@ -143,7 +141,6 @@ public class AddNewAppointment {
 
         if (DoNotLeave == false) {
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + Startstring + "' >= Start) as StartSData,('" + Startstring + "' < End) as StartEData,('"+  EndString + "' >= Start) as EndSData,('" + EndString + "' < End) as EndEData from appointments where Customer_ID="+CustomerID);
-            System.out.println(preparedStatement);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 Integer St = resultSet.getInt("StartSData");
@@ -151,8 +148,8 @@ public class AddNewAppointment {
                 Integer EnSt = resultSet.getInt("EndSData");
                 Integer EnEn = resultSet.getInt("EndEData");
 
-                System.out.println("St : "+St);
-                System.out.println("EN : "+En);
+                //System.out.println("St : "+St);
+                //System.out.println("EN : "+En);
                 if ((St == 1 & En == 1)|(EnSt == 1 & EnEn==1)) {
                     DoNotLeave = true;
                     Alert areyousure = new Alert(Alert.AlertType.ERROR);
@@ -180,7 +177,6 @@ public class AddNewAppointment {
     public void ContactNameComboBoxHasAction(ActionEvent actionEvent) throws SQLException {
         String newContactName=ContactNameCbox.getValue().toString();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Email from contacts where Contact_Name='" + newContactName + "';");
-        System.out.println(preparedStatement);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             String thisString = resultSet.getString("Email");
@@ -192,7 +188,6 @@ public class AddNewAppointment {
     public void ContactEmailComboBoxHasAction(ActionEvent actionEvent) throws SQLException {
         String newmail = emailCbox.getValue().toString();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Contact_Name from contacts where Email='" + newmail + "';");
-        System.out.println(preparedStatement);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             String thisString = resultSet.getString("Contact_Name");
@@ -252,7 +247,6 @@ public class AddNewAppointment {
 
         checkinput(Start,End,Customer_ID);
 
-        System.out.println(AppointmentID);
 
 
 
@@ -265,7 +259,6 @@ public class AddNewAppointment {
             preparedStatement.execute();
         }
         catch (Exception e){
-            System.out.println(e);
         }
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
