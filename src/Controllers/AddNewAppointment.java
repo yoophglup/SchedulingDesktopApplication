@@ -55,6 +55,7 @@ public class AddNewAppointment {
      *
      */
     public void initialize() throws SQLException {
+
         ObservableList<String> AllCustomerNames = FXCollections.observableArrayList();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -304,6 +305,7 @@ public class AddNewAppointment {
         }
 
     }
+
 
 }
 

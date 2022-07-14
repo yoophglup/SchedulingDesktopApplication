@@ -88,6 +88,7 @@ public class CustomerEditController {
     public ObservableList<String> ModSqlCommandsSaved = FXCollections.observableArrayList();
     public ObservableList<String> AppointmentModSqlCommandsSaved = FXCollections.observableArrayList();
     public Text titletext;
+    public TableColumn CountryCombobox;
 
     /** The initialize method loads the CustomerTable with data, if the value is set from Scheduler then this method
      * will also initialize the loadappointment method, which loads appointments.
@@ -111,6 +112,7 @@ public class CustomerEditController {
 
             Phone.setCellValueFactory(new PropertyValueFactory<Customer, String>("Phone"));
             Phone.setCellFactory(TextFieldTableCell.forTableColumn());
+            CountryCombobox.setCellValueFactory(new PropertyValueFactory<Customer, String>("CountryCombobox"));
             DivisionCombobox.setCellValueFactory(new PropertyValueFactory<Customer, String>("DivisionCombobox"));
 
 
@@ -160,7 +162,7 @@ public class CustomerEditController {
                 ddc = ThisCreate_date.withZoneSameInstant(localZoneId);
                 thisLast_Update=ddc.toString().replaceFirst("T"," ").substring(0,19);
                 String thisLast_Updated_By = rs.getString("Last_Updated_By");
-                Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thisdivision, thisdivisionid, thisCreate_Date, thisCreate_By, thisLast_Update, thisLast_Updated_By);
+                Customer thiscustomer = new Customer(thisid, thiscust, thisaddress, thisPostal_Code, thisphone, thiscountry,thisdivision, thisdivisionid, thisCreate_Date, thisCreate_By, thisLast_Update, thisLast_Updated_By);
                 allcust.add(thiscustomer);
             }
             AllCustomers = allcust;
@@ -557,6 +559,7 @@ public class CustomerEditController {
         ModSqlCommandsSaved.add(updatedbysql);
         ModSqlCommandsSaved.add(last_updatesql);
         ModSqlCommandsSaved.add(sqlstring);
+        System.out.println("Value Changed");
     }
 
     /** This method adds SQL commands to a list to be executed later on.
@@ -850,5 +853,12 @@ public class CustomerEditController {
         stage.show();
     }
 
+    public void CountryAction(ActionEvent actionEvent) {
 
+    }
+
+    public void CountryValueChanged(TableColumn.CellEditEvent cellEditEvent) {
+        ValueChanged(cellEditEvent);
+
+    }
 }

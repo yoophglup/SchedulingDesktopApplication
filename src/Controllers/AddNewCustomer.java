@@ -96,4 +96,7 @@ public class AddNewCustomer {
         stage.show();
 
     }
+
+    public void CountryAction(ActionEvent actionEvent) {
+    }
 }

@@ -26,6 +26,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import static java.nio.file.StandardOpenOption.APPEND;
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -46,10 +47,13 @@ public class LogInController {
      * all the text to french.
      */
     public void initialize(){
-        //Locale.setDefault(new Locale("fr"));
-        locationdata.setText("US-English");
+        /** set this code to change the system to French **/
+        //Locale.setDefault(Locale.FRANCE);
+        //TimeZone.setDefault(TimeZone.getTimeZone("Europe/Paris"));
+        locationdata.setText(ZoneId.systemDefault().toString()+"\n"+Locale.getDefault());
 
-        if (Locale.getDefault()!=Locale.US){
+        /** Checks if the computer language is set to French **/
+        if (Locale.getDefault()==Locale.FRANCE){
             gofrench();
         }
     }
@@ -58,7 +62,7 @@ public class LogInController {
      * Changes the log in scene only to french in the user is not US-English
      */
     public void gofrench(){
-        locationdata.setText("Français");
+
         pwordtext.setText("le mot de passe");
         unametext.setText("Nom d'utilisateur");
         titletext.setText("Veuillez vous connecter");
