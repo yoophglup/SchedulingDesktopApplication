@@ -81,9 +81,7 @@ public class Customer {
             all_divisionsList.add(thisdivision);
         }
         DivisionCombobox.setItems(all_divisionsList);
-        System.out.println(CountryCombobox.getValue().toString());
 
-        System.out.println(getCustomer_ID());
 
     }
 

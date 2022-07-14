@@ -25,6 +25,7 @@ public class AddNewCustomer {
     public TextField Postal_Code_input;
     public TextField Phone_input;
     public ComboBox Division_input;
+    public ComboBox country_input;
 
     /**
      * The initialize method initialize values, sets the choices for all comboBoxes, sets any known data
@@ -32,16 +33,21 @@ public class AddNewCustomer {
      *
      */
     public void initialize() throws SQLException {
-        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Division from first_level_divisions;");
-        ResultSet resultSet = preparedStatement.executeQuery();
+        PreparedStatement preparedStatementA = JDBC.getConnection().prepareStatement("select Country from countries;");
+        ResultSet resultSetA = preparedStatementA.executeQuery();
+
         ObservableList<String> all_divisionsList = FXCollections.observableArrayList();
-        while (resultSet.next()) {
-            String thisStringDivision=resultSet.getString("Division");
-            all_divisionsList.add(thisStringDivision);
+        ObservableList<String> all_CountriesList = FXCollections.observableArrayList();
+
+        while (resultSetA.next()) {
+            String thisCountry=resultSetA.getString("Country");
+            all_CountriesList.add(thisCountry);
         }
+
+        all_divisionsList.add("Select a Country First");
             //ComboBox combo_box = new ComboBox(FXCollections.observableArrayList(all_divisionsList));
         Division_input.setItems(all_divisionsList);
-
+        country_input.setItems(all_CountriesList);
     }
 
     /**
@@ -97,6 +103,15 @@ public class AddNewCustomer {
 
     }
 
-    public void CountryAction(ActionEvent actionEvent) {
+    public void CountryAction(ActionEvent actionEvent) throws SQLException {
+        ObservableList<String> all_divisionsList = FXCollections.observableArrayList();
+        PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select f.Division_ID, f.Division, f.Country_ID, c.Country from first_level_divisions f join countries c on f.Country_ID=c.Country_ID where c.Country='"+country_input.getValue().toString()+"'");
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            String thisdivision=resultSet.getString("Division");
+            all_divisionsList.add(thisdivision);
+        }
+        Division_input.setItems(all_divisionsList);
+
     }
 }
