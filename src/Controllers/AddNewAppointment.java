@@ -55,7 +55,6 @@ public class AddNewAppointment {
      *
      */
     public void initialize() throws SQLException {
-
         ObservableList<String> AllCustomerNames = FXCollections.observableArrayList();
         PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select Customer_Name from customers;");
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -164,8 +163,6 @@ public class AddNewAppointment {
      * @throws SQLException
      */
     public void checkinput(String Startstring, String EndString, String CustomerID) throws SQLException {
-
-
         if (DoNotLeave == false) {
             PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + Startstring + "' >= Start) as StartSData,('" + Startstring + "' < End) as StartEData,('"+  EndString + "' >= Start) as EndSData,('" + EndString + "' < End) as EndEData from appointments where Customer_ID="+CustomerID);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -267,7 +264,6 @@ public class AddNewAppointment {
         UTCZone= ZoneId.of("UTC");
         localZoneId = ZoneId.systemDefault();
         ThisCreate_date = ZonedDateTime.of(localcreateDate,localCreateTime,localZoneId);
-        llc= ThisCreate_date.toInstant();
         ddc = ThisCreate_date.withZoneSameInstant(UTCZone);
         ddl = ThisCreate_date.withZoneSameInstant(localZoneId);
         End=ddc.toString().replaceFirst("T"," ").substring(0,16)+":00";
@@ -288,14 +284,16 @@ public class AddNewAppointment {
 
 
         String NewAppointmentSQL="Insert into appointments values ("+AppointmentID+",'"+Title+"','"+Description+"','"+Location+"','"+Type+"','"+Start+"','"+End+"',"+Create_Date+",'"+Created_By+"',"+Last_Update+",'"+Last_Updated_By+"',"+Customer_ID+","+User_ID+","+Contact_ID+")";
-        if (DoNotLeave==false){
-        try {
-            preparedStatement = JDBC.getConnection().prepareStatement(NewAppointmentSQL);
+        System.out.println(DoNotLeave);
+        System.out.println(NewAppointmentSQL);
 
-            preparedStatement.execute();
-        }
-        catch (Exception e){
-        }
+        if (DoNotLeave==false){
+            try {
+                preparedStatement = JDBC.getConnection().prepareStatement(NewAppointmentSQL);
+                preparedStatement.execute();
+            }
+            catch (Exception e){
+            }
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("../Scenes/CustomerEditor.fxml")));
             Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
             Scene scene = new Scene(root, 850, 450);
@@ -308,6 +306,7 @@ public class AddNewAppointment {
 
 
 }
+
 
 
 

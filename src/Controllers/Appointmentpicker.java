@@ -6,9 +6,14 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.stage.Stage;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.*;
 import static java.lang.String.valueOf;
 /** Appointmentpicker is designed to collect new dates and times from the user.
@@ -19,6 +24,7 @@ public class Appointmentpicker {
     public static Integer ClickedAppointment_ID;
     public static String namebox;
     public Boolean DoNotLeave = false;
+    public Integer Alertnumber=0;
     public DatePicker AppointmentDatepicker;
     public ComboBox apphour;
     public ComboBox appmins;
@@ -71,12 +77,92 @@ public class Appointmentpicker {
         appmins.setValue(dmins);
     }
 
+    public void checkinput(String NewValue) throws SQLException {
+        String EndValue="";
+        String StartValue="";
+        String StartString="";
+        String EndString="";
+
+        PreparedStatement GetCustomerIDFromAppointmentID = JDBC.getConnection().prepareStatement("select Customer_ID from appointments where Appointment_ID="+ClickedAppointment_ID);
+        ResultSet CustomerIDFromAppointmentID = GetCustomerIDFromAppointmentID.executeQuery();
+        String CustomerID="";
+        while (CustomerIDFromAppointmentID.next()) {
+                CustomerID=CustomerIDFromAppointmentID.getString("Customer_ID");
+            }
+        System.out.println("customerid "+CustomerID);
+        System.out.println("Box: "+namebox);
+        System.out.println("appointment "+ClickedAppointment_ID);
+        if (namebox.toString().equals("Start")){
+                StartString=NewValue;
+                PreparedStatement getend=JDBC.getConnection().prepareStatement("select End from appointments where Appointment_ID="+ClickedAppointment_ID);
+                ResultSet ResultsofEnd = getend.executeQuery();
+                while (ResultsofEnd.next()) {
+                    EndString=ResultsofEnd.getString("End");
+                }
+                System.out.println("Start : "+StartString);
+
+                System.out.println("End zoned : "+EndString);
+            }
+        if (namebox.toString().equals("End")){
+            EndString=NewValue;
+            PreparedStatement getend=JDBC.getConnection().prepareStatement("select Start from appointments where Appointment_ID="+ClickedAppointment_ID);
+            ResultSet ResultsofEnd = getend.executeQuery();
+            while (ResultsofEnd.next()) {
+                StartValue=ResultsofEnd.getString("Start");
+            }
+
+            StartString=StartValue;
+            System.out.println("Start : "+StartString);
+            System.out.println("End : "+EndString);
+        }
+        if (DoNotLeave == false) {
+            PreparedStatement preparedStatement = JDBC.getConnection().prepareStatement("select  ('" + StartString + "' >= Start) as StartSData,('" + StartString + "' < End) as StartEData,('"+  EndString + "' >= Start) as EndSData,('" + EndString + "' < End) as EndEData from appointments where Customer_ID="+CustomerID+" AND Appointment_ID!="+ClickedAppointment_ID );
+            System.out.println(preparedStatement);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+                Integer St = resultSet.getInt("StartSData");
+                Integer En = resultSet.getInt("StartEData");
+                Integer EnSt = resultSet.getInt("EndSData");
+                Integer EnEn = resultSet.getInt("EndEData");
+
+                System.out.println("St : "+St);
+                System.out.println("EN : "+En);
+                System.out.println("EnSt : "+EnSt);
+                System.out.println("EnEn : "+EnEn);
+                System.out.println(((St == 1 & En == 1)|(EnSt == 1 & EnEn==1)));
+                if ((St == 1 & En == 1)|(EnSt == 1 & EnEn==1)) {
+                    System.out.println("Overlapping Appointment");
+                    DoNotLeave = true;
+                    Alert areyousure = new Alert(Alert.AlertType.ERROR);
+                    areyousure.setTitle("Unable to Schedule Appointment");
+                    areyousure.setHeaderText("The date chosen is Overlapping another Appointment.");
+                    areyousure.setContentText("Please choose a new date");
+                    System.out.println("Alert "+Alertnumber);
+                    if (Alertnumber==0){
+                        areyousure.setX(380);
+                        areyousure.setY(400);
+                        areyousure.showAndWait();
+                        Alertnumber++;}
+
+                }
+
+
+            }
+
+        }
+
+    }
+
+
+
+
+
     /** This method Submits new values which the user selected from datepicker and combo boxes.
      * This Method also incorporates a Lambda Expression to improve code.
      * This Method also changes the scene by closing the Appointment picker window.
      * @param actionEvent
      */
-    public void SubmitNewAppointment(ActionEvent actionEvent) {
+    public void SubmitNewAppointment(ActionEvent actionEvent) throws SQLException {
         String sqlsubstring=AppointmentDatepicker.getValue()+" "+apphour.getValue()+":"+appmins.getValue()+":00";
         /** The following is the first Lamda Expression required to improve code
          * It uses the LamdaInterface.ZonedTime interface
@@ -100,11 +186,12 @@ public class Appointmentpicker {
         String sqlstring="update appointments set "+namebox+"='"+sqlsubstring+"' where Appointment_ID="+ClickedAppointment_ID+";";
         CustomerEditController.newsqldate=sqlstring;
         CustomerEditController.newdatefrompick=formdata;
-
-
-        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-        stage.close();
-
+        DoNotLeave = false;
+        checkinput(sqlsubstring);
+        if (!DoNotLeave) {
+            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+            stage.close();
+        }
     }
 
     /**This method returns to the Customer\Appointment editor without gathering any new data
@@ -116,5 +203,10 @@ public class Appointmentpicker {
 
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
         stage.close();
+    }
+
+    public void edittookplace(ActionEvent actionEvent) {
+        Alertnumber=0;
+        DoNotLeave = false;
     }
 }

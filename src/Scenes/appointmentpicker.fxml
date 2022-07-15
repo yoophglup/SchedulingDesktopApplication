@@ -10,8 +10,8 @@
 <AnchorPane prefHeight="181.0" prefWidth="364.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controllers.Appointmentpicker">
    <children>
       <DatePicker fx:id="AppointmentDatepicker" layoutX="24.0" layoutY="92.0" />
-      <ComboBox fx:id="apphour" layoutX="214.0" layoutY="92.0" prefHeight="25.0" prefWidth="60.0" />
-      <ComboBox fx:id="appmins" layoutX="288.0" layoutY="92.0" prefHeight="25.0" prefWidth="60.0" />
+      <ComboBox fx:id="apphour" onAction="#edittookplace" layoutX="214.0" layoutY="92.0" prefHeight="25.0" prefWidth="60.0" />
+      <ComboBox fx:id="appmins" onAction="#edittookplace" layoutX="288.0" layoutY="92.0" prefHeight="25.0" prefWidth="60.0" />
       <Text layoutX="4.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Set a new Appointment time." textAlignment="CENTER" wrappingWidth="348.0">
          <font>
             <Font size="23.0" />
